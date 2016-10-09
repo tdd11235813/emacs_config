@@ -50,3 +50,13 @@ alias emsci="emacs -nw -l ~/.emacs.d/init_scivis.el"
 alias emssci="emsci --daemon=workspaceS"                                                                                                  
 alias emcsci="emacsclient -nw -s workspaceS"
 ```
+
+## Screenshots
+![Screenshot Emacs with CUDA Code](/images/screenshot.jpg)
+CUDA Code (no cmake-ide, no rtags support)
+
+![Screenshot Emacs with C++ Code](/images/screenshot01.jpg)
+C++ Code (with cmake-ide and rtags support)
+
+![Screenshot Emacs with R Code](/images/screenshot02.jpg)
+R Code (run with init_scivis.el as Emacs init file)
