@@ -27,7 +27,9 @@ Run recursive git clone for loading submodules glsl-mode and ESS:
 ```
 git clone --recursive https://github.com/tdd11235813/emacs_config.git
 ```
-rtags is required:
+Run `make` in lisp/ESS.
+
+rtags is required (which requires LLVM/Clang compiler):
 - rtags `git clone --recursive https://github.com/Andersbakken/rtags.git`
 
 For auto-installing further emacs packages, uncomment in init.el and init_scivis.el:
