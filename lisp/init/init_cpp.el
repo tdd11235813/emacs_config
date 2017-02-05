@@ -16,10 +16,12 @@
 (use-package flycheck
   :diminish flycheck-mode)
 
+(use-package cc-mode)
 
 (use-package company-clang
   :ensure auto-complete-clang
   )
+
 (use-package cmake-mode)
 ;; git clone --recursive https://github.com/Andersbakken/rtags.git (requires llvm, gcc with c++11 support)
 ;; probably set make-ide-rdm-executable and cmake-ide-rc-executable
@@ -35,24 +37,36 @@
     )
 
 (use-package cmake-ide
-      :config
-      (defun cide-hook ()
-        ;; probably set cmake-ide-flags-c++ with flags and include paths (eg. by gcc -v -xc++ /dev/null -fsyntax-only)
-        ;; if cmake needs specific flags, then you might customize by cmake-ide-cmake-command or move directly to the build directory to run cmake manually
-        ;; with CMAKE_EXPORT_COMPILE_COMMANDS=ON (cmake-ide needs that compile_commands.json)
-        ;;
-        ;; ...
-        ;; (setq cmake-ide-build-dir "build")
-        (setq cmake-ide-build-pool-dir "~/.cmake-ide/build")
-        (setq cmake-ide-build-pool-use-persistent-naming t)
-        (cmake-ide-setup)
-        (setq rtags-autostart-diagnostics t)
-        (rtags-diagnostics)
+  :config
+  (defun cide-hook ()
+    "Enables cmake-ide environment."
+    ;; probably set cmake-ide-flags-c++ with flags and include paths (eg. by gcc -v -xc++ /dev/null -fsyntax-only)
+    ;; if cmake needs specific flags, then you might customize by cmake-ide-cmake-command or move directly to the build directory to run cmake manually
+    ;; with CMAKE_EXPORT_COMPILE_COMMANDS=ON (cmake-ide needs that compile_commands.json)
+    ;;
+    ;; ...
+    ;; (setq cmake-ide-build-dir "build")
+    (setq cmake-ide-build-pool-dir "~/.cmake-ide/build")
+    (setq cmake-ide-build-pool-use-persistent-naming t)
+    (cmake-ide-setup)
+    (setq rtags-autostart-diagnostics t)
+    (rtags-diagnostics)
+    )
+  (defun cide-hook-do ()
+    "Enables cmake-ide environment."
+    (interactive)
+    (add-hook 'prog-mode-hook 'flycheck-mode)
+    (add-hook 'c++-mode-hook 'cide-hook)
+    (add-hook 'c-mode-hook 'cide-hook)
+    (revert-buffer)
+    )
+  :bind
+  (
+   :map c-mode-base-map
+        ("M-ä" . cide-hook-do)
         )
-      (add-hook 'prog-mode-hook 'flycheck-mode)
-      (add-hook 'c++-mode-hook 'cide-hook)
-      (add-hook 'c-mode-hook 'cide-hook)
-      )
+  )
+
 
 (use-package modern-cpp-font-lock
   :config

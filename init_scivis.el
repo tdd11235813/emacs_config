@@ -3,7 +3,6 @@
 ;;;
 ;;; Code:
 
-
 (setq max-lisp-eval-depth 1000)
 (setq inhibit-splash-screen t
       initial-scratch-message nil)

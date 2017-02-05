@@ -3,17 +3,14 @@
 ;;;  Packs org based settings for init
 ;;; Code:
 
-;; basic function to install packages if needed,
-;; but use-package normally will do that job for us
-;; (defun init-base-load (pkg_list)
-;;   "Load packages listed in PKG_LIST."
-;;   (cl-loop for pkg in pkg_list do
-;;            (unless (package-installed-p pkg)
-;;              (message "Refreshing package database...")
-;;              (package-refresh-contents)
-;;              (package-install pkg)
-;;            )))
 
+(setq backup-directory-alist `(("." . "~/.emacs.d/user/saves"))
+      backup-by-copying t
+      delete-old-versions t
+      kept-new-versions 6
+      kept-old-versions 2
+      version-control t
+      vc-make-backup-files t)
 
 (use-package org
   :init
@@ -116,6 +113,7 @@
 (use-package tramp
   :config
   (setq tramp-default-method "ssh")
+  (setq tramp-backup-directory-alist backup-directory-alist)
   )
 
 (use-package ido
@@ -145,9 +143,14 @@
   )
 
 ;; Package: yasnippet
+;; check https://github.com/AndreaCrotti/yasnippet-snippets.git
+;; https://joaotavora.github.io/yasnippet/snippet-development.html
 (use-package yasnippet
-  :config
+  :ensure t
+  :init
   (yas-global-mode 1)
+  :config
+  (add-to-list 'yas-snippet-dirs "~/.emacs.d/snippets/yasnippet-snippets")
   )
 
 ;; buffer cleanup
@@ -200,6 +203,87 @@
       (set-window-start (selected-window) other-window-start))
     (select-window other-window)))
 
+;; from https://github.com/howardabrams/dot-files/blob/master/emacs.org
+(defun unfill-paragraph ()
+  "Convert a multi-line paragraph into a single line of text."
+  (interactive)
+  (let ((fill-column (point-max)))
+        (fill-paragraph nil)))
+
+(use-package expand-region
+  :ensure t
+  :config
+  (defun ha/expand-region (lines)
+    "Prefix-oriented wrapper around Magnar's `er/expand-region'.
+
+Call with LINES equal to 1 (given no prefix), it expands the
+region as normal.  When LINES given a positive number, selects
+the current line and number of lines specified.  When LINES is a
+negative number, selects the current line and the previous lines
+specified.  Select the current line if the LINES prefix is zero."
+    (interactive "p")
+    (cond ((= lines 1)   (er/expand-region 1))
+          ((< lines 0)   (ha/expand-previous-line-as-region lines))
+          (t             (ha/expand-next-line-as-region (1+ lines)))))
+
+  (defun ha/expand-next-line-as-region (lines)
+    (message "lines = %d" lines)
+    (beginning-of-line)
+    (set-mark (point))
+    (end-of-line lines))
+
+  (defun ha/expand-previous-line-as-region (lines)
+    (end-of-line)
+    (set-mark (point))
+    (beginning-of-line (1+ lines)))
+  :bind ("C-f" . ha/expand-region))
+
+(use-package recentf
+  :init
+  (setq recentf-max-menu-items 25
+        recentf-auto-cleanup 'never
+        recentf-keep '(file-remote-p file-readable-p))
+  (recentf-mode 1)
+  (let ((last-ido "~/.emacs.d/ido.last"))
+    (when (file-exists-p last-ido)
+      (delete-file last-ido)))
+  :bind ("C-c f f" . recentf-open-files))
+
+(setq save-place-forget-unreadable-files t
+      save-place-skip-check-regexp "\\`/\\(?:cdrom\\|floppy\\|mnt\\|/[0-9]\\|\\(?:[^@/:]*@\\)?[^@/:]*[^@/:.]:\\)"
+      save-place-file "~/.emacs.d/places")
+(save-place-mode t)
+
+(defun align-comma (start end c)
+  "Repeat alignment with a character padded with spaces for
+comma-separated columns."
+  (interactive "r\nsAlign character: ")
+  (align-regexp start end
+                (concat c "\\(\\s-*\\)") 1 1 t))
+
+
+(use-package hs-minor-mode
+  :init
+  (defun ha/hs-show-all ()
+    (interactive)
+    (hs-minor-mode 1)
+    (hs-show-all))
+
+  (defun ha/hs-hide-all ()
+    (interactive)
+    (hs-minor-mode 1)
+    (hs-hide-all))
+
+  (defun ha/hs-toggle-hiding ()
+    (interactive)
+    (hs-minor-mode 1)
+    (hs-toggle-hiding))
+  :bind
+  ("C-c T h" . hs-minor-mode)
+  ("C-c h a" . ha/hs-hide-all)
+  ("C-c h s" . ha/hs-show-all)
+  ("C-c h h" . ha/hs-toggle-hiding))
+
 
 (use-package misc-cmds
   :config
@@ -210,8 +294,8 @@
      ("C-x <right>" . next-buffer-repeat)
      ("<f6>" . bs-show)
      ("<f5>" . revert-buffer-no-confirm)
-     ("<C-prior>" . bs-cycle-previous)
-     ("<C-next>" . bs-cycle-next)
+     ("<C-next>" . bs-cycle-previous)
+     ("<C-prior>" . bs-cycle-next)
      )
     :config
     ;; (global-set-key [remap bs-cycle-previous] 'bs-cycle-previous-repeat) ; ctrl+LeftArrow
@@ -225,6 +309,8 @@
     )
   (use-package drag-stuff)
   (drag-stuff-global-mode t)
+  (global-set-key (kbd "M-<up>") 'drag-stuff-up)
+  (global-set-key (kbd "M-<down>") 'drag-stuff-down)
   (global-set-key (kbd "M-<home>") 'beginning-of-buffer)
   (global-set-key (kbd "M-<end>") 'end-of-buffer)
   (global-set-key "\C-d" 'duplicate-line) ; clone line
@@ -241,6 +327,14 @@
   (define-key global-map (kbd "C-x <up>") 'other-window)
   (define-key global-map (kbd "C-x <down>") 'previous-multiframe-window)
 
+  (global-set-key (kbd "C-M-<prior>") 'scroll-down-line)
+  (global-set-key (kbd "C-M-<next>") 'scroll-up-line)
+
+  (global-set-key (kbd "M-{") 'insert-pair)
+  (global-set-key (kbd "M-<") 'insert-pair)
+  (global-set-key (kbd "M-'") 'insert-pair)
+  (global-set-key (kbd "M-\"") 'insert-pair)
+
   (setq select-enable-clipboard t)
                                         ; show empy line markers, file endings
   (setq-default indicate-empty-lines t)
@@ -251,6 +345,14 @@
                 indent-tabs-mode nil)
                                         ; one-character answer
   (defalias 'yes-or-no-p 'y-or-n-p)
+
+  (setq initial-scratch-message "")
+  (when (window-system)
+    (tool-bar-mode 0)               ;; Toolbars were only cool with XEmacs
+    (when (fboundp 'horizontal-scroll-bar-mode)
+      (horizontal-scroll-bar-mode -1))
+    (scroll-bar-mode -1))            ;; Scrollbars are waste screen estate
+
   (setq echo-keystrokes 0.1
         use-dialog-box nil
         visible-bell t)
@@ -260,19 +362,21 @@
   (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
   (setq scroll-step 1) ;; keyboard scroll one line at a time
 
-  (setq backup-directory-alist `(("." . "~/.emacs.d/user/saves"))
-        backup-by-copying t
-        delete-old-versions t
-        kept-new-versions 6
-        kept-old-versions 2
-        version-control t)
-
   (put 'downcase-region 'disabled nil)
   (global-set-key (kbd "C-x M-t") 'cleanup-region)
   (global-set-key (kbd "C-c n") 'cleanup-buffer)
   (delete-selection-mode t)
   (transient-mark-mode t)
   )
+
+(setq company-dabbrev-downcase nil) ;; for case-sensitive autocompletion
+
+(defun save-all ()
+  "Save all dirty buffers without asking for confirmation."
+  (interactive)
+  (save-some-buffers t))
+
+(add-hook 'focus-out-hook 'save-all)
 
 (provide 'init_base)
 
