@@ -24,16 +24,6 @@
 ;; if you need to install packages on the fly
 ;; (setq use-package-always-ensure t)
 
-(use-package init_base
-  :load-path "lisp/init/"
-  :ensure f
-  )
-
-(use-package flycheck
-  :config
-  (add-hook 'prog-mode-hook 'flycheck-mode)
-  )
-
 (use-package gnuplot-mode
   :ensure t
   :config
@@ -48,6 +38,20 @@
   :config
   (setq ess-history-file nil)
   )
+
+(ess-toggle-underscore nil)
+
+
+(use-package init_base
+  :load-path "lisp/init/"
+  :ensure f
+  )
+
+(use-package flycheck
+  :config
+  (add-hook 'prog-mode-hook 'flycheck-mode)
+  )
+
 
 (use-package init_theme
   :load-path "lisp/init/"
