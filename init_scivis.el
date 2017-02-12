@@ -46,7 +46,7 @@
   :ensure t
   :init
   (setq flyspell-issue-message-flag nil)
-  (setq ispell-local-dictionary "en_US")
+  (setq ispell-local-dictionary "english")
   :config
   (defun fd-switch-dictionary()
     (interactive)
@@ -112,7 +112,6 @@
   (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
   (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
   (add-hook 'LaTeX-mode-hook 'TeX-source-correlate-mode)
-  (add-hook 'LaTeX-mode-hook 'turn-on-auto-fill)
   (add-hook 'LaTeX-mode-hook (lambda () (abbrev-mode +1)))
   )
 
