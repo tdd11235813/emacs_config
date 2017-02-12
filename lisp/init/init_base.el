@@ -82,6 +82,97 @@
                '("\\.cu" . speedbar-parse-c-or-c++tag))
   )
 
+;; from https://github.com/lunaryorn/.emacs.d/blob/master/init.el
+(use-package dired                      ; Edit directories
+  :defer t
+  :config
+  (setq
+   dired-auto-revert-buffer t           ; Revert on re-visiting
+   ;; Better dired flags: `-l' is mandatory, `-a' shows all files, `-h' uses
+   ;; human-readable sizes, and `-F' appends file-type classifiers to file names
+   ;; (for better highlighting)
+   dired-listing-switches "-alhF"
+   dired-ls-F-marks-symlinks t          ; -F marks links with @
+   ;; Inhibit prompts for simple recursive operations
+   dired-recursive-copies 'always
+   ;; Auto-copy to other Dired split window
+   dired-dwim-target t)
+
+  (when (or (memq system-type '(gnu gnu/linux))
+            (string= (file-name-nondirectory insert-directory-program) "gls"))
+    ;; If we are on a GNU system or have GNU ls, add some more `ls' switches:
+    ;; `--group-directories-first' lists directories before files, and `-v'
+    ;; sorts numbers in file names naturally, i.e. "image1" goes before
+    ;; "image02"
+    (setq
+     dired-listing-switches
+     (concat dired-listing-switches " --group-directories-first -v")))
+
+  ;; from https://github.com/vdemeester/emacs-config
+  (defun dired-get-size ()
+    (interactive)
+    (let ((files (dired-get-marked-files)))
+      (with-temp-buffer
+        (apply 'call-process "/usr/bin/du" nil t nil "-schL" files) ;; -L to dereference (git-annex folder)
+        (message
+         "Size of all marked files: %s"
+         (progn
+           (re-search-backward "\\(^[ 0-9.,]+[A-Za-z]+\\).*\\(insgesamt\\|total\\)$")
+           (match-string 1))))))
+  (define-key dired-mode-map (kbd "Z") 'dired-get-size)
+  (define-key dired-mode-map "F" 'find-name-dired)
+  )
+
+
+(use-package dired-x                    ; Additional tools for Dired
+  :defer t
+  :bind (("C-c f j" . dired-jump)
+         ("C-x C-j" . dired-jump))
+  :init
+  (add-hook 'dired-mode-hook #'dired-omit-mode)
+  :after dired
+  :config
+  (setq dired-omit-verbose nil)        ; Shut up, dired
+
+  (when (eq system-type 'darwin)
+    ;; OS X bsdtar is mostly compatible with GNU Tar
+    (setq dired-guess-shell-gnutar "tar"))
+
+  ;; Diminish dired-omit-mode. We need this hack, because Dired Omit Mode has
+  ;; a very peculiar way of registering its lighter explicitly in
+  ;; `dired-omit-startup'.  We can't just use `:diminish' because the lighter
+  ;; isn't there yet after dired-omit-mode is loaded.
+  (add-function :after (symbol-function 'dired-omit-startup)
+                (lambda () (diminish 'dired-omit-mode "dired"))
+                '((name . dired-omit-mode-diminish)))
+  ;; from https://github.com/vdemeester/emacs-config
+  (setq dired-guess-shell-alist-user
+        '(("\\.pdf\\'" "okular")
+          ("\\.\\(?:djvu\\|eps\\)\\'" "okular")
+          ("\\.\\(?:jpg\\|jpeg\\|png\\|gif\\|xpm\\)\\'" "gwenview")
+          ("\\.\\(?:xcf\\)\\'" "gimp")
+          ("\\.tex\\'" "pdflatex" "latex")
+          ("\\.\\(?:mp4\\|mkv\\|avi\\|flv\\|ogv\\)\\(?:\\.part\\)?\\'"
+           "vlc")
+          ("\\.\\(?:mp3\\|flac\\)\\'" "vlc")
+          ("\\.html?\\'" "palemoon")))
+  (put 'dired-find-alternate-file 'disabled nil)
+  )
+
+(use-package dired+
+  :ensure t
+  :init
+  (setq diredp-hide-details-initially-flag nil)
+  )
+
+(use-package bookmark                   ; Bookmarks for Emacs buffers
+  :bind (("C-c f b" . list-bookmarks))
+  ;; Save bookmarks immediately after a bookmark was added
+  :config (setq bookmark-save-flag 1))
+
+
+
+
 (use-package company
   :bind
   (("M-f" . company-files))
