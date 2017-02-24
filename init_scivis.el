@@ -146,6 +146,48 @@
   :ensure f
   )
 
+;; requires install.packages('rmarkdown') in R and pandoc
+(use-package polymode
+  :ensure t
+  :config
+  (use-package poly-R)
+  (use-package poly-markdown)
+  ;;; MARKDOWN
+  (add-to-list 'auto-mode-alist '("\\.md" . poly-markdown-mode))
+  ;;; R modes
+  (add-to-list 'auto-mode-alist '("\\.Snw" . poly-noweb+r-mode))
+  (add-to-list 'auto-mode-alist '("\\.Rnw" . poly-noweb+r-mode))
+  (add-to-list 'auto-mode-alist '("\\.Rmd" . poly-markdown+r-mode))
+
+  ;; from https://gist.github.com/benmarwick/ee0f400b14af87a57e4a
+  ;; compile rmarkdown to HTML or PDF with M-n s
+  ;; use YAML in Rmd doc to specify the usual options
+  ;; which can be seen at http://rmarkdown.rstudio.com/
+  ;; thanks http://roughtheory.com/posts/ess-rmarkdown.html
+  (defun ess-rmarkdown ()
+    "Compile R markdown (.Rmd). Should work for any output type."
+    (interactive)
+                                        ; Check if attached R-session
+    (condition-case nil
+        (ess-get-process)
+      (error
+       (ess-switch-process)))
+    (let* ((rmd-buf (current-buffer)))
+      (save-excursion
+        (let* ((sprocess (ess-get-process ess-current-process-name))
+               (sbuffer (process-buffer sprocess))
+               (buf-coding (symbol-name buffer-file-coding-system))
+               (R-cmd
+                (format "library(rmarkdown); rmarkdown::render(\"%s\")"
+                        buffer-file-name)))
+          (message "Running rmarkdown on %s" buffer-file-name)
+          (ess-execute R-cmd 'buffer nil nil)
+          (switch-to-buffer rmd-buf)
+          (ess-show-buffer (buffer-name sbuffer) nil)))))
+
+  (define-key polymode-mode-map "\M-ns" 'ess-rmarkdown)
+  )
+
 (init-theme-dark 1)
 ;;;
 ;;;
