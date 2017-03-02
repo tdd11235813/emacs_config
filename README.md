@@ -39,8 +39,7 @@
 | `M-<down>`            | drag line down                      |
 | `C-;`                 | (un)comment region                  |
 | `C-c n`               | cleanup buffer                      |
-| `<f9>`                | switch dictionary (en, de)          |
-|                       | (init_scivis.el)                    |
+| `<f9>`                | switch dictionary (en, de) (init_scivis.el) |
 
 ### Coding (with cmake-ide and rtags enabled)
 
@@ -119,6 +118,8 @@ C++ Code (with cmake-ide and rtags support)
 R Code (run with init_scivis.el as Emacs init file)
 ![Screenshot Emacs with R Code](/images/screenshot02.jpg)
 
+Emacs Window
+![Screenshot Emacs Window](/images/screenshot03.jpg)
 
 ## Used Packages
 
