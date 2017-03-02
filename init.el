@@ -188,7 +188,7 @@
      (comment if
               (eq alternative
                   (quote 2))
-              "#557755"
+              "#006600"
               (if
                   (eq alternative
                       (quote 1))

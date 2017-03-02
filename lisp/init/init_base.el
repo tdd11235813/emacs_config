@@ -27,6 +27,7 @@
 
   ;; Org-agenda
   (global-set-key (kbd "C-c a") 'org-agenda)
+  (global-set-key (kbd "C-c l") 'org-store-link)
   (setq org-agenda-show-log t
         org-agenda-todo-ignore-scheduled t
         org-agenda-todo-ignore-deadlines t)
@@ -58,7 +59,6 @@
       (insert (format-time-string "%Y-%m-%d\n\n" new-date))))
 
   )
-
 
 (use-package sr-speedbar
   :bind
@@ -298,14 +298,24 @@ comma-separated columns."
      ("<C-prior>" . bs-cycle-next)
      )
     :config
-    ;; (global-set-key [remap bs-cycle-previous] 'bs-cycle-previous-repeat) ; ctrl+LeftArrow
-    ;; (global-set-key [remap bs-cycle-next]     'bs-cycle-next-repeat)
+    (add-to-list 'bs-configurations
+                 '("emacs" nil nil nil
+                   (lambda (buf)
+                     (with-current-buffer buf
+                       (not (memq major-mode
+                                  '(emacs-lisp-mode))))) nil))
+    (add-to-list 'bs-configurations
+                 '("org" nil nil nil
+                   (lambda (buf)
+                     (with-current-buffer buf
+                       (not (memq major-mode
+                                  '(org-mode))))) nil))
     (add-to-list 'bs-configurations
                  '("C" nil nil nil
                    (lambda (buf)
                      (with-current-buffer buf
                        (not (memq major-mode
-                                  '(c-mode c++-mode cuda-mode))))) nil))
+                                  '(c-mode c++-mode cuda-mode cmake-mode glsl-mode))))) nil))
     )
   (use-package drag-stuff)
   (drag-stuff-global-mode t)
@@ -360,7 +370,7 @@ comma-separated columns."
   (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
   (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
   (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
-  (setq scroll-step 1) ;; keyboard scroll one line at a time
+  (setq scroll-step 1) ;; keyboard scroll
 
   (put 'downcase-region 'disabled nil)
   (global-set-key (kbd "C-x M-t") 'cleanup-region)
