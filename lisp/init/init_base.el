@@ -432,7 +432,7 @@ comma-separated columns."
   (global-set-key (kbd "C-M-<next>") 'scroll-up-line)
 
   (global-set-key (kbd "M-{") 'insert-pair)
-  (global-set-key (kbd "M-<") 'insert-pair)
+;;  (global-set-key (kbd "M-<") 'insert-pair)
   (global-set-key (kbd "M-'") 'insert-pair)
   (global-set-key (kbd "M-\"") 'insert-pair)
 
