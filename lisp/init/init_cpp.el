@@ -8,11 +8,6 @@
 (setq-default tab-width 2
               indent-tabs-mode nil)
 
-(use-package cuda-mode
-  ;;    :load-path "lisp/"
-  :mode "\\.cu$"
-  )
-
 (use-package flycheck
   :diminish flycheck-mode)
 
@@ -73,6 +68,11 @@
   ;;    (add-hook 'cuda-mode-hook #'modern-c++-font-lock-mode) ; will conflict (test within [template] function signature: write unsigned const)
   (add-hook 'c++-mode-hook #'modern-c++-font-lock-mode)
   (add-hook 'c-mode-hook #'modern-c++-font-lock-mode)
+  )
+
+
+(use-package cuda-mode
+  :load-path "lisp/cuda-mode"
   )
 
 (use-package glsl-mode

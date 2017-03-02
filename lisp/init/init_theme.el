@@ -40,6 +40,7 @@
                               )))
     :config
     (use-package column-enforce-mode
+      :diminish column-enforce-mode
       :config
       (setq column-enforce-comments nil)
       (custom-set-faces '(column-enforce-face ((t (:background "#161616")))))
@@ -66,6 +67,7 @@
                                   ("\\<\\([a-z]+[a-zA-Z_]*_\\)\\>"  1 'cpp-member-highlight-face)
                                   ("\\(\\[[a-zA-Z0-9_]+\\]\\)?\\(\\.\\|->\\|::\\)\\{1\\}\\<\\([a-zA-Z_]+[a-zA-Z0-9_]*\\)\\>"  3 'cpp-member-access-highlight-face) ; [..](.|->|::)
                                   ))
+
     (font-lock-add-keywords 'c-mode c-mode-add-keywords)
     (font-lock-add-keywords 'c++-mode c-mode-add-keywords)
     (add-hook 'prog-mode-hook 'column-enforce-mode)
@@ -82,7 +84,9 @@
       (add-hook 'glsl-mode-hook
                 (lambda () (run-hooks 'prog-mode-hook)))
       )
+
     (use-package cuda-mode
+      :load-path "lisp/cuda-mode"
       :config
       (font-lock-add-keywords 'cuda-mode c-mode-add-keywords)
       (add-hook 'cuda-mode-hook 'column-enforce-mode)

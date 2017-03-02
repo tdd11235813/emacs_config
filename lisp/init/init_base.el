@@ -408,7 +408,8 @@ comma-separated columns."
                        (not (memq major-mode
                                   '(c-mode c++-mode cuda-mode cmake-mode glsl-mode))))) nil))
     )
-  (use-package drag-stuff)
+  (use-package drag-stuff
+    :diminish drag-stuff-mode)
   (drag-stuff-global-mode t)
   (global-set-key (kbd "M-<up>") 'drag-stuff-up)
   (global-set-key (kbd "M-<down>") 'drag-stuff-down)

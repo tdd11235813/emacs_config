@@ -4,3 +4,6 @@
 [submodule "lisp/ESS"]
 	path = lisp/ESS
 	url = https://github.com/emacs-ess/ESS.git
+[submodule "lisp/cuda-mode"]
+	path = lisp/cuda-mode
+	url = https://github.com/flipflapflop/cuda-mode.git
