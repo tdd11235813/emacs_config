@@ -77,20 +77,23 @@
 ...
 
 ## Install
-Run recursive git clone for loading submodules glsl-mode and ESS:
+
+- Run recursive git clone for loading submodules glsl-mode and ESS:
 ```bash
 git clone --recursive https://github.com/tdd11235813/emacs_config.git
 ```
-Run `make` in lisp/ESS.
+  - Run `make` in lisp/ESS.
 
-rtags is required (which requires LLVM/Clang compiler):
-- rtags `git clone --recursive https://github.com/Andersbakken/rtags.git`
+- [rtags](https://github.com/Andersbakken/rtags) is required (which requires LLVM/Clang compiler):
+```bash
+git clone --recursive https://github.com/Andersbakken/rtags.git
+```
 
-For auto-installing further emacs packages, uncomment in init.el and init_scivis.el:
+- For auto-installing further emacs packages, uncomment in init.el and init_scivis.el:
 ```lisp
 (setq use-package-always-ensure t)
 ```
-For cmake-ide build-pool-dir is used (`cmake-ide-build-pool-dir "~/.cmake-ide/build"`).
+- For cmake-ide build-pool-dir is used (`cmake-ide-build-pool-dir "~/.cmake-ide/build"`).
 For further hints see `init_cpp.el`.
 
 ## Emacs alias
