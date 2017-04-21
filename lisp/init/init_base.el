@@ -205,6 +205,11 @@
   :config
   (setq tramp-default-method "ssh")
   (setq tramp-backup-directory-alist backup-directory-alist)
+  ;; .ssh/config must be set to use controlpersist options:
+  ;; ControlMaster auto
+  ;; ControlPath /tmp/%r@%h:%p
+  ;; ControlPersist yes
+  (setq tramp-use-ssh-controlmaster-options nil)
   )
 
 (use-package ido

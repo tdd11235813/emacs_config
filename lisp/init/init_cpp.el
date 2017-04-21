@@ -73,6 +73,7 @@
 
 (use-package cuda-mode
   :load-path "lisp/cuda-mode"
+  :mode "\\.cuh$"
   )
 
 (use-package glsl-mode
