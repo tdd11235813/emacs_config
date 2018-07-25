@@ -88,9 +88,11 @@
 
 (defun indent2 ()
   (interactive)
+  (setq cmake-tab-width 2)
   (setq c-basic-offset 2))
 (defun indent4 ()
   (interactive)
+  (setq cmake-tab-width 4)
   (setq c-basic-offset 4))
 (global-set-key (kbd "C-c ö") 'indent2)
 (global-set-key (kbd "C-c ä") 'indent4)

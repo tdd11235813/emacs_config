@@ -4,6 +4,8 @@
 ;;; https://vxlabs.com/2016/04/11/step-by-step-guide-to-c-navigation-and-completion-with-emacs-and-the-clang-based-rtags/
 ;;; Code:
 
+;; to debug on error, use toggle-debug-on-error
+
 ;; C-SPC SPC - set marker
 ;; C-u SPC - jump back
 ;; C-x C-x - select marked region, rectangle mode: C-x SPC
