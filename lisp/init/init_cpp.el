@@ -88,12 +88,14 @@
 
 (defun indent2 ()
   (interactive)
-  (setq cmake-tab-width 2)
-  (setq c-basic-offset 2))
+  (setq c-basic-offset 2)
+  (setq tab-width 2)
+  (setq cmake-tab-width 2))
 (defun indent4 ()
   (interactive)
-  (setq cmake-tab-width 4)
-  (setq c-basic-offset 4))
+  (setq c-basic-offset 4)
+  (setq tab-width 4)
+  (setq cmake-tab-width 4))
 (global-set-key (kbd "C-c ö") 'indent2)
 (global-set-key (kbd "C-c ä") 'indent4)
 
@@ -108,6 +110,7 @@
   (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
   (autoload 'ansi-color-for-comint-mode-on "ansi-color" nil t)
   (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
+  (c-set-offset (quote cpp-macro) 0 nil)
   )
 
 (provide 'init_cpp)
