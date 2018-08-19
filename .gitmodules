@@ -7,3 +7,7 @@
 [submodule "lisp/cuda-mode"]
 	path = lisp/cuda-mode
 	url = https://github.com/flipflapflop/cuda-mode.git
+[submodule "snippets"]
+	path = snippets
+	url = https://github.com/tdd11235813/yasnippet-snippets
+	branch = cuda-mode
