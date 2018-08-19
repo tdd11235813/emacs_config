@@ -1,4 +1,4 @@
-;;; package --- sci-vis setting
+;;; Package --- sci-vis setting
 ;;; Commentary:
 ;;;
 ;;; Code:
@@ -158,7 +158,7 @@
   (add-to-list 'auto-mode-alist '("\\.Snw" . poly-noweb+r-mode))
   (add-to-list 'auto-mode-alist '("\\.Rnw" . poly-noweb+r-mode))
   (add-to-list 'auto-mode-alist '("\\.Rmd" . poly-markdown+r-mode))
-
+  (markdown-toggle-math t)
   ;; from https://gist.github.com/benmarwick/ee0f400b14af87a57e4a
   ;; compile rmarkdown to HTML or PDF with M-n s
   ;; use YAML in Rmd doc to specify the usual options
