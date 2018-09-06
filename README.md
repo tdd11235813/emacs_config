@@ -54,6 +54,14 @@
 | `C-c ö`               | switch to 2-space indentation style |
 | `C-c ä`               | switch to 4-space indentation style |
 
+### Coding (jump-to without rtags)
+
+| Command | Description               |
+| :---    | :---                      |
+| `M-g o` | dumb-jump-go-other-window |
+| `M-g j` | dumb-jump-go              |
+| `M-g i` | dumb-jump-go-prompt       |
+        
 ### Misc
 
 | Command               | Description                         |
@@ -141,6 +149,7 @@ cuda-mode
 deft
 dired
 dired-x
+dump-jump
 drag-stuff
 ess-site
 expand-region
