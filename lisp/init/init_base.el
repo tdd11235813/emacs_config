@@ -210,6 +210,9 @@
   ;; ControlPath /tmp/%r@%h:%p
   ;; ControlPersist yes
   (setq tramp-use-ssh-controlmaster-options nil)
+  ;; Disable git backend to speed up sshfs file load among other things
+  ;;(setq vc-handled-backends (quote (RCS CVS SVN SCCS Bzr Hg Mtn Arch)))
+  (setq vc-handled-backends nil)
   )
 
 (use-package ido
@@ -482,6 +485,7 @@ comma-separated columns."
   :bind (("M-g o" . dumb-jump-go-other-window)
          ("M-g j" . dumb-jump-go)
          ("M-g i" . dumb-jump-go-prompt)
+         ("M-g b" . dumb-jump-back)
          ;; ("M-g x" . dumb-jump-go-prefer-external)
          ;; ("M-g z" . dumb-jump-go-prefer-external-other-window)
          )
