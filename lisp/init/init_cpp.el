@@ -77,7 +77,7 @@
   )
 
 (use-package glsl-mode
-  :load-path "lisp/glsl-mode/"
+  :load-path "lisp/glsl-mode"
   :config
   (autoload 'glsl-mode "glsl-mode" nil t)
   (add-to-list 'auto-mode-alist '("\\.glsl\\'" . glsl-mode))

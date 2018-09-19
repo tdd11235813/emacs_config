@@ -81,9 +81,12 @@
   (add-to-list 'speedbar-fetch-etags-parse-list
                '("\\.cu" . speedbar-parse-c-or-c++tag))
   )
-
+(use-package diminish
+  :ensure t
+  )
 ;; from https://github.com/lunaryorn/.emacs.d/blob/master/init.el
 (use-package dired                      ; Edit directories
+  :ensure nil ; see https://emacs.stackexchange.com/questions/26810/why-doesnt-use-package-dired-work-for-me
   :defer t
   :config
   (setq
@@ -125,6 +128,7 @@
 
 
 (use-package dired-x                    ; Additional tools for Dired
+  :load-path "lisp"
   :defer t
   :bind (("C-c f j" . dired-jump)
          ("C-x C-j" . dired-jump))
@@ -160,7 +164,7 @@
   )
 
 (use-package dired+
-  :ensure t
+  :load-path "lisp"
   :init
   (setq diredp-hide-details-initially-flag nil)
   )
@@ -249,7 +253,7 @@
   :init
   (yas-global-mode 1)
   :config
-  (add-to-list 'yas-snippet-dirs "~/.emacs.d/snippets/yasnippet-snippets")
+  (add-to-list 'yas-snippet-dirs "~/.emacs.d/snippets")
   )
 
 ;; buffer cleanup
@@ -361,7 +365,10 @@ comma-separated columns."
                 (concat c "\\(\\s-*\\)") 1 1 t))
 
 
-(use-package hs-minor-mode
+(use-package hideshow
+  :load-path "lisp"
+  :ensure t
+  :pin manual
   :init
   (defun ha/hs-show-all ()
     (interactive)
@@ -385,6 +392,7 @@ comma-separated columns."
 
 
 (use-package misc-cmds
+  :load-path "lisp"
   :config
   (use-package bs
     :bind

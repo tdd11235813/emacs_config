@@ -78,7 +78,7 @@
                 (font-lock-add-keywords nil
                                         '(("\\<\\(FIX\\|FIXME\\|TODO\\|BUG\\|HACK\\):" 1 font-lock-warning-face t)))))
     (use-package glsl-mode
-      :load-path "lisp/"
+      :load-path "lisp"
       :config
       (font-lock-add-keywords 'glsl-mode c-mode-add-keywords)
       (add-hook 'glsl-mode-hook
