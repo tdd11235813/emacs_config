@@ -129,6 +129,8 @@
 
 (use-package dired-x                    ; Additional tools for Dired
   :load-path "lisp"
+  :ensure f
+  :pin manual
   :defer t
   :bind (("C-c f j" . dired-jump)
          ("C-x C-j" . dired-jump))
@@ -165,6 +167,8 @@
 
 (use-package dired+
   :load-path "lisp"
+  :ensure f
+  :pin manual
   :init
   (setq diredp-hide-details-initially-flag nil)
   )
@@ -367,7 +371,7 @@ comma-separated columns."
 
 (use-package hideshow
   :load-path "lisp"
-  :ensure t
+  :ensure f
   :pin manual
   :init
   (defun ha/hs-show-all ()
