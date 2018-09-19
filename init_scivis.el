@@ -64,7 +64,7 @@
 
 ;; after download just run make in lisp/ESS/ to byte-compile it
 (use-package ess-site
-  :load-path "lisp/ESS/lisp/"
+  :load-path "lisp/ESS/lisp"
   :ensure f
   :config
   (setq ess-history-file nil)
@@ -160,7 +160,7 @@
     (add-hook 'bibtex-mode-hook (lambda () (set-fill-column 120)))))
 
 (use-package init_base
-  :load-path "lisp/init/"
+  :load-path "lisp/init"
   :ensure f
   )
 
@@ -171,7 +171,7 @@
 
 
 (use-package init_theme
-  :load-path "lisp/init/"
+  :load-path "lisp/init"
   :ensure f
   )
 

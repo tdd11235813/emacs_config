@@ -73,11 +73,13 @@
 
 (use-package cuda-mode
   :load-path "lisp/cuda-mode"
+  :ensure f
   :mode "\\.cuh$"
   )
 
 (use-package glsl-mode
   :load-path "lisp/glsl-mode"
+  :ensure f
   :config
   (autoload 'glsl-mode "glsl-mode" nil t)
   (add-to-list 'auto-mode-alist '("\\.glsl\\'" . glsl-mode))
