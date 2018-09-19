@@ -498,8 +498,10 @@ comma-separated columns."
          ;; ("M-g x" . dumb-jump-go-prefer-external)
          ;; ("M-g z" . dumb-jump-go-prefer-external-other-window)
          )
-  :config (setq dumb-jump-selector 'ivy) ;; (setq dumb-jump-selector 'helm)
-    :ensure)
+  :config
+  (setq dumb-jump-selector 'ivy) ;; (setq dumb-jump-selector 'helm)
+  (setq dumb-jump-max-find-time 10)
+  :ensure)
 
 (defun save-all ()
   "Save all dirty buffers without asking for confirmation."
