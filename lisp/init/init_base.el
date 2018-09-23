@@ -453,6 +453,8 @@ comma-separated columns."
 ;;  (global-set-key (kbd "M-<") 'insert-pair)
   (global-set-key (kbd "M-'") 'insert-pair)
   (global-set-key (kbd "M-\"") 'insert-pair)
+  ;; to align relative to expression
+  (global-set-key (kbd "M-g k") 'align-regexp)
 
   (setq select-enable-clipboard t)
                                         ; show empy line markers, file endings
