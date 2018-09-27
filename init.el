@@ -73,7 +73,9 @@
         ;; Install use-package if not installed yet.
         (unless (package-installed-p 'use-package)
           (package-refresh-contents)
-          (package-install 'use-package))
+          (package-install 'use-package)
+          (package-install 'diminish)
+          )
         ;; (require 'use-package)
         (setq use-package-always-ensure t)
         (let ((package-user-dir-real (file-truename package-user-dir)))

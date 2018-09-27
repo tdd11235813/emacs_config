@@ -84,6 +84,9 @@
 (use-package diminish
   :ensure t
   )
+(use-package magit
+  :ensure t
+  )
 ;; from https://github.com/lunaryorn/.emacs.d/blob/master/init.el
 (use-package dired                      ; Edit directories
   :ensure nil ; see https://emacs.stackexchange.com/questions/26810/why-doesnt-use-package-dired-work-for-me
