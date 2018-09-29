@@ -11,10 +11,15 @@
 (use-package flycheck
   :diminish flycheck-mode)
 
-(use-package cc-mode)
+(use-package cc-mode
+  :init
+  (add-to-list 'auto-mode-alist '("\\.tpp\\'" . c++-mode))
+  )
 
 (use-package company-clang
   :ensure auto-complete-clang
+  :config
+  (global-company-mode nil)
   )
 
 (use-package cmake-mode)
@@ -115,33 +120,6 @@
   (c-set-offset (quote cpp-macro) 0 nil)
   )
 
-(defun my-compile ()
-  "Run compile and resize the compile window"
-  (interactive)
-  (progn
-    (call-interactively 'compile)
-    (setq cur (selected-window))
-    (setq w (get-buffer-window "*compilation*"))
-    (select-window w)
-    (setq h (window-height w))
-    (shrink-window (- h 10))
-    (select-window cur)
-    )
-  )
-
-(defun my-compilation-hook ()
-  "Make sure that the compile window is splitting vertically"
-  (progn
-    (if (not (get-buffer-window "*compilation*"))
-        (progn
-	        (split-window-vertically)
-	        )
-	    )
-    )
-  )
-
-(add-hook 'compilation-mode-hook 'my-compilation-hook)
-(global-set-key [f9] 'my-compile)
 
 (provide 'init_cpp)
 ;;; init_cpp.el ends here

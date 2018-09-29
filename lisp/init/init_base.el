@@ -513,6 +513,40 @@ comma-separated columns."
   (interactive)
   (save-some-buffers t))
 
+(use-package cd-compile
+  :ensure t
+  :bind (("C-c c" . compile)
+         ("C-c x" . cd-compile)
+         ("C-c y" . kill-compilation))
+  )
+
+(defun my-compile ()
+  "Run compile and resize the compile window"
+  (interactive)
+  (progn
+    (call-interactively 'cd-compile)
+    (setq cur (selected-window))
+    (setq w (get-buffer-window "*compilation*"))
+    (select-window w)
+    (setq h (window-height w))
+    (shrink-window (- h 10))
+    (select-window cur)
+    )
+  )
+(defun my-compilation-hook ()
+  "Make sure that the compile window is splitting vertically"
+  (progn
+    (if (not (get-buffer-window "*compilation*"))
+        (progn
+	        (split-window-vertically)
+	        )
+	    )
+    )
+  )
+
+(add-hook 'compilation-mode-hook 'my-compilation-hook)
+(global-set-key [f9] 'my-compile)
+
 (add-hook 'focus-out-hook 'save-all)
 
 (provide 'init_base)
