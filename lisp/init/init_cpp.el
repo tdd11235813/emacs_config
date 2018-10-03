@@ -9,7 +9,7 @@
               indent-tabs-mode nil)
 
 (use-package flycheck
-  :diminish flycheck-mode)
+  :delight flycheck-mode)
 
 (use-package cc-mode
   :init

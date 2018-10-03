@@ -81,7 +81,7 @@
   (add-to-list 'speedbar-fetch-etags-parse-list
                '("\\.cu" . speedbar-parse-c-or-c++tag))
   )
-(use-package diminish
+(use-package delight
   :ensure t
   )
 (use-package magit
@@ -429,7 +429,7 @@ comma-separated columns."
                                   '(c-mode c++-mode cuda-mode cmake-mode glsl-mode))))) nil))
     )
   (use-package drag-stuff
-    :diminish drag-stuff-mode)
+    :delight drag-stuff-mode)
   (drag-stuff-global-mode t)
   (global-set-key (kbd "M-<up>") 'drag-stuff-up)
   (global-set-key (kbd "M-<down>") 'drag-stuff-down)

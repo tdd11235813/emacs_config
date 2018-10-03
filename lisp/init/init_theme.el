@@ -40,7 +40,7 @@
                               )))
     :config
     (use-package column-enforce-mode
-      :diminish column-enforce-mode
+      :delight column-enforce-mode
       :config
       (setq column-enforce-comments nil)
       (custom-set-faces '(column-enforce-face ((t (:background "#161616")))))
