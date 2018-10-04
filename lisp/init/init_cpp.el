@@ -117,9 +117,15 @@
   (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
   (autoload 'ansi-color-for-comint-mode-on "ansi-color" nil t)
   (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
-  (c-set-offset (quote cpp-macro) 0 nil)
+  ;;  (c-set-offset (quote cpp-macro) 0 nil) ;; see ppindent
   )
 
+(use-package ppindent
+  :load-path "lisp/"
+  :ensure f
+  :bind (("C-c i" . ppindent-h))
+  :config (custom-set-variables '(ppindent-increment 1))
+  )
 
 (provide 'init_cpp)
 ;;; init_cpp.el ends here
