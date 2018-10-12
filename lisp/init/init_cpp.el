@@ -14,6 +14,7 @@
 (use-package cc-mode
   :init
   (add-to-list 'auto-mode-alist '("\\.tpp\\'" . c++-mode))
+  (add-to-list 'auto-mode-alist '("\\.cu\\'" . c++-mode))
   )
 
 (use-package company-clang
