@@ -496,6 +496,7 @@ comma-separated columns."
 (setq company-dabbrev-downcase nil) ;; for case-sensitive autocompletion
 
 (use-package dumb-jump
+  :ensure t
   :bind (("M-g o" . dumb-jump-go-other-window)
          ("M-g j" . dumb-jump-go)
          ("M-g i" . dumb-jump-go-prompt)
