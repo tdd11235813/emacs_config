@@ -507,6 +507,8 @@ comma-separated columns."
   :config
   (setq dumb-jump-selector 'ivy) ;; (setq dumb-jump-selector 'helm)
   (setq dumb-jump-max-find-time 10)
+  (setq my-ag-ignored-patterns '("*.bak" "*.out" "*.csv" "*.pyc" "*.pdf" "*.png"))
+  (add-to-list 'dumb-jump-language-file-exts '(:language "c++" :ext "cu"))
   :ensure)
 
 (defun save-all ()
