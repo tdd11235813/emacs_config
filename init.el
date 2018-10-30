@@ -41,7 +41,7 @@
 ;;(benchmark-init/activate)
 
 ;; startup time measureing on terminal
-;; $ command time -p emacs -l /home/mwerner/.emacs.d/init.el -Q -e kill-emacs
+;; $ command time -p emacs -l $HOME/.emacs.d/init.el -Q -e kill-emacs
 
 ;; byte compile init.el script (not working)
 ;; emacs -Q --batch -l ~/.emacs.d/init.el -f batch-byte-compile ~/.emacs.d/init.el
@@ -94,6 +94,9 @@
   (require 'use-package))
 
 (setq use-package-verbose nil)
+(setq use-package-always-ensure nil)
+;;(setq use-package-verbose t)
+;;(setq use-package-always-ensure t)
 
 (use-package init_base
   :load-path "lisp/init"
@@ -119,27 +122,16 @@
 ;;(init-theme-dark 0)
 
 (use-package gnuplot-mode
-  :ensure t
+  :mode ("\\.gnu\\'" . gnuplot-mode) ;; mode implies defer
   :config
   (defvar gnuplot-program "/usr/bin/gnuplot")
-  (add-to-list 'auto-mode-alist '("\\.gnu$" . gnuplot-mode))
-  )
-
-;; after download just run make in lisp/ESS/ to byte-compile it
-(use-package ess-site
-  :load-path "lisp/ESS/lisp"
-  :ensure f
-  :config
-  (setq ess-history-file nil)
-  (ess-toggle-underscore nil)
+;;  (add-to-list 'auto-mode-alist '("\\.gnu$" . gnuplot-mode))
   )
 
 (use-package flyspell
-  :ensure t
   :init
   (setq flyspell-issue-message-flag nil)
   (setq ispell-local-dictionary "english")
-  :config
   (defun fd-switch-dictionary()
     (interactive)
     (let* ((dic ispell-current-dictionary)
@@ -148,7 +140,11 @@
       (message "Dictionary switched from %s to %s" dic change)
       ))
 
-  (global-set-key (kbd "<f9>")   'fd-switch-dictionary)
+  :bind
+  (
+   ("<f9>" . fd-switch-dictionary)
+   )
+  :config
   (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))
   )
 
@@ -164,12 +160,6 @@
   ;; ##### Enable synctex generation. Even though the command shows
   ;; ##### as "latex" pdflatex is actually called
   (custom-set-variables '(LaTeX-command "latex -synctex=1") )
-
-  ;; ##### Use Okular to open your document at the good
-  ;; ##### point. It can detect the master file.
-  (add-hook 'LaTeX-mode-hook '(lambda ()
-                                (add-to-list 'TeX-expand-list
-                                             '("%u" Okular-make-url))))
 
   (defun Okular-make-url () (concat
                              "file://"
@@ -198,93 +188,125 @@
           (output-html "Palemoon")))
   (setq TeX-view-program-list
         '(("Palemoon" "palemoon %o")))
-  :config
-  (add-hook 'LaTeX-mode-hook 'visual-line-mode)
-  (add-hook 'LaTeX-mode-hook 'flyspell-mode)
-  (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
-  (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
-  (add-hook 'LaTeX-mode-hook 'TeX-source-correlate-mode)
-  (add-hook 'LaTeX-mode-hook (lambda () (abbrev-mode +1)))
+  :hook
+  (LaTeX-mode . turn-off-auto-fill)
+  (LaTeX-mode . turn-on-visual-line-mode)
+  (LaTeX-mode . turn-on-reftex)
+  (LaTeX-mode . (lambda () (TeX-fold-mode t)))
+  (LaTeX-mode . (lambda () (abbrev-mode +1)))
+  (LaTeX-mode . flyspell-mode)
+  (LaTeX-mode . LaTeX-math-mode)
+  (LaTeX-mode . outline-minor-mode)
+  (LaTeX-mode . TeX-source-correlate-mode)
+  ;; ##### Use Okular to open your document at the good
+  ;; ##### point. It can detect the master file.
+  (LaTeX-mode . (lambda ()(add-to-list 'TeX-expand-list
+                                       '("%u" Okular-make-url))))
+;; ##### Use Okular to open your document at the good
+  ;; ##### point. It can detect the master file.
+;;  (add-hook 'LaTeX-mode-hook '(lambda ()
+;;                                (add-to-list 'TeX-expand-list
+ ;;                                            '("%u" Okular-make-url))))
+
+  ;;(add-hook 'LaTeX-mode-hook 'visual-line-mode)
+  ;;(add-hook 'LaTeX-mode-hook 'flyspell-mode)
+  ;;(add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+  ;; (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+  ;;(add-hook 'LaTeX-mode-hook 'TeX-source-correlate-mode)
+  ;; (add-hook 'LaTeX-mode-hook (lambda () (abbrev-mode +1)))
   )
 
 (use-package reftex
-  :ensure t
   :commands turn-on-reftex
   :init
   (setq reftex-plug-into-AUCTeX t)
   )
 
 (use-package bibtex
-  :ensure t
   :mode ("\\.bib" . bibtex-mode)
   :init
   (progn
     (setq bibtex-align-at-equal-sign t)
-    (add-hook 'bibtex-mode-hook (lambda () (set-fill-column 120)))))
+    (add-hook 'bibtex-mode-hook (lambda () (set-fill-column 120))))
+  )
 
-;; enable if needed
-;; (use-package flycheck
-;;   :config
-;;   (add-hook 'prog-mode-hook 'flycheck-mode)
-;;   )
+(use-package flycheck
+  :hook
+  (prog-mode . flycheck-mode)
+  ;; enable if needed
+  ;;   (add-hook 'prog-mode-hook 'flycheck-mode)
+  )
 
-(use-package markdown-mode
-  :ensure t
-  :mode (("README\\.md\\'" . gfm-mode)
-         ("\\.md\\'" . markdown-mode)
-         ("\\.markdown\\'" . markdown-mode))
-  :init (setq markdown-command "multimarkdown")
+;; after download/update just run make clean && make in lisp/ESS/ to byte-compile it
+(use-package ess-site
+  :load-path "lisp/ESS/lisp"
+  :ensure f
+  :defer t
+  :config
+  (setq ess-history-file nil)
+  (ess-toggle-underscore nil)
   )
 
 ;; polymode
 ;; outdated: requires install.packages('rmarkdown') in R and pandoc
 ;; updated: https://www.reddit.com/r/spacemacs/comments/9ciefe/polymode_for_rmd/
 ;; requires specific packages
-;; FIXME: does not work at the moment
+;; FIXME: poly-* might does not work (reinstall?)
 (use-package polymode
-  :ensure t
+  :defer t
+  :mode
+  (
+   ("\\.Rmd" . poly-markdown+r-mode)
+   ("\\.Snw\\'" . poly-noweb+r-mode)
+   ("\\.Rnw\\'" . poly-noweb+r-mode)
+   ("README\\.md\\'" . gfm-mode)
+   ("\\.md\\'" . markdown-mode)
+   ("\\.markdown\\'" . markdown-mode)
+   )
   :init
-  ;; (use-package poly-R
-  ;;   :ensure t)
-  ;; (use-package poly-noweb
-  ;;   :ensure t)
-  ;; (use-package poly-markdown
-  ;;   :ensure t)
+  (setq markdown-command "multimarkdown")
+  (use-package markdown-mode)
+  ;;(autoload 'r-mode "ess-site.el" "Major mode for editing R source." t)
+  (use-package poly-R)
+  (use-package poly-noweb )
+  (use-package poly-markdown)
+  :config
   ;;; MARKDOWN
-  (add-to-list 'auto-mode-alist '("\\.md" . poly-markdown-mode))
+  ;; (add-to-list 'auto-mode-alist '("\\.md" . poly-markdown-mode))
   ;;; R modes
-  (add-to-list 'auto-mode-alist '("\\.Snw" . poly-noweb+r-mode))
-  (add-to-list 'auto-mode-alist '("\\.Rnw" . poly-noweb+r-mode))
-  (add-to-list 'auto-mode-alist '("\\.Rmd" . poly-markdown+r-mode))
-;;;  (markdown-toggle-math t)
+  ;; (add-to-list 'auto-mode-alist '("\\.Snw" . poly-noweb+r-mode))
+  ;; (add-to-list 'auto-mode-alist '("\\.Rnw" . poly-noweb+r-mode))
+  ;; (add-to-list 'auto-mode-alist '("\\.Rmd" . poly-markdown+r-mode))
 
-  ;; ;; from https://gist.github.com/benmarwick/ee0f400b14af87a57e4a
-  ;; ;; compile rmarkdown to HTML or PDF with M-n s
-  ;; ;; use YAML in Rmd doc to specify the usual options
-  ;; ;; which can be seen at http://rmarkdown.rstudio.com/
-  ;; ;; thanks http://roughtheory.com/posts/ess-rmarkdown.html
-  ;; (defun ess-rmarkdown ()
-  ;;   "Compile R markdown (.Rmd). Should work for any output type."
-  ;;   (interactive)
-  ;;                                       ; Check if attached R-session
-  ;;   (condition-case nil
-  ;;       (ess-get-process)
-  ;;     (error
-  ;;      (ess-switch-process)))
-  ;;   (let* ((rmd-buf (current-buffer)))
-  ;;     (save-excursion
-  ;;       (let* ((sprocess (ess-get-process ess-current-process-name))
-  ;;              (sbuffer (process-buffer sprocess))
-  ;;              (buf-coding (symbol-name buffer-file-coding-system))
-  ;;              (R-cmd
-  ;;               (format "library(rmarkdown); rmarkdown::render(\"%s\")"
-  ;;                       buffer-file-name)))
-  ;;         (message "Running rmarkdown on %s" buffer-file-name)
-  ;;         (ess-execute R-cmd 'buffer nil nil)
-  ;;         (switch-to-buffer rmd-buf)
-  ;;         (ess-show-buffer (buffer-name sbuffer) nil)))))
+  (setq markdown-toggle-math t)
 
-  ;; (define-key polymode-mode-map "\M-ns" 'ess-rmarkdown)
+  ;; from https://gist.github.com/benmarwick/ee0f400b14af87a57e4a
+  ;; compile rmarkdown to HTML or PDF with M-n s
+  ;; use YAML in Rmd doc to specify the usual options
+  ;; which can be seen at http://rmarkdown.rstudio.com/
+  ;; thanks http://roughtheory.com/posts/ess-rmarkdown.html
+  (defun ess-rmarkdown ()
+    "Compile R markdown (.Rmd). Should work for any output type."
+    (interactive)
+                                        ; Check if attached R-session
+    (condition-case nil
+        (ess-get-process)
+      (error
+       (ess-switch-process)))
+    (let* ((rmd-buf (current-buffer)))
+      (save-excursion
+        (let* ((sprocess (ess-get-process ess-current-process-name))
+               (sbuffer (process-buffer sprocess))
+               (buf-coding (symbol-name buffer-file-coding-system))
+               (R-cmd
+                (format "library(rmarkdown); rmarkdown::render(\"%s\")"
+                        buffer-file-name)))
+          (message "Running rmarkdown on %s" buffer-file-name)
+          (ess-execute R-cmd 'buffer nil nil)
+          (switch-to-buffer rmd-buf)
+          (ess-show-buffer (buffer-name sbuffer) nil)))))
+
+  (define-key polymode-mode-map "\M-ns" 'ess-rmarkdown)
   )
 
 (init-theme-dark 1)

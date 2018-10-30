@@ -121,10 +121,11 @@
   ;;  (c-set-offset (quote cpp-macro) 0 nil) ;; see ppindent
   )
 
+;; for preprocessor indenting
 (use-package ppindent
   :load-path "lisp/"
   :ensure f
-  :bind (("C-c i" . ppindent-h))
+  :bind (("C-c i" . ppindent-h)) ;; indent preprocessor lines in whole file
   :config (custom-set-variables '(ppindent-increment 1))
   )
 

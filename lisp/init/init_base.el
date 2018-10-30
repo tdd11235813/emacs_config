@@ -13,6 +13,11 @@
       vc-make-backup-files t)
 
 (use-package org
+  :bind
+  (
+   ("C-c a" . org-agenda)
+   ("C-c l" . org-store-link)
+   )
   :init
   (use-package deft
     :config
@@ -26,8 +31,8 @@
         org-todo-keyword-faces '(("STARTED" . (:foreground "blue" :weight bold)) ("CANCELLED" . (:foreground "red" :weight bold))))
 
   ;; Org-agenda
-  (global-set-key (kbd "C-c a") 'org-agenda)
-  (global-set-key (kbd "C-c l") 'org-store-link)
+  ;; (global-set-key (kbd "C-c a") 'org-agenda)
+  ;; (global-set-key (kbd "C-c l") 'org-store-link)
   (setq org-agenda-show-log t
         org-agenda-todo-ignore-scheduled t
         org-agenda-todo-ignore-deadlines t)
@@ -61,6 +66,7 @@
   )
 
 (use-package sr-speedbar
+  :defer t
   :bind
   (("M-ü" . sr-speedbar-toggle)
    ("M-Ü" . sr-speedbar-refresh-toggle))
@@ -81,12 +87,9 @@
   (add-to-list 'speedbar-fetch-etags-parse-list
                '("\\.cu" . speedbar-parse-c-or-c++tag))
   )
-(use-package delight
-  :ensure t
-  )
+(use-package delight)
 (use-package magit
-  :ensure t
-  )
+  :defer t)
 ;; from https://github.com/lunaryorn/.emacs.d/blob/master/init.el
 (use-package dired                      ; Edit directories
   :ensure nil ; see https://emacs.stackexchange.com/questions/26810/why-doesnt-use-package-dired-work-for-me
@@ -136,9 +139,10 @@
   :defer t
   :bind (("C-c f j" . dired-jump)
          ("C-x C-j" . dired-jump))
-  :init
-  (add-hook 'dired-mode-hook #'dired-omit-mode)
-  :after dired
+  :hook
+  (dired-mode . dired-omit-mode)
+;;  (add-hook 'dired-mode-hook #'dired-omit-mode)
+;;  :after dired
   :config
   (setq dired-omit-verbose nil)        ; Shut up, dired
 
@@ -170,6 +174,7 @@
 (use-package dired+
   :load-path "lisp"
   :ensure f
+  :defer t
   :init
   (setq diredp-hide-details-initially-flag nil)
   )
@@ -177,16 +182,18 @@
 (use-package bookmark                   ; Bookmarks for Emacs buffers
   :bind (("C-c f b" . list-bookmarks))
   ;; Save bookmarks immediately after a bookmark was added
-  :config (setq bookmark-save-flag 1))
+  :config (setq bookmark-save-flag 1)
+  )
 
 
 
 
 (use-package company
+  :defer t
   :bind
   (("M-f" . company-files))
-  :config
-  (global-company-mode t)
+  ;;:config
+  ;; (global-company-mode t)
   ;; (use-package fill-column-indicator
   ;;   :config
   ;;   (fci-mode 1)
