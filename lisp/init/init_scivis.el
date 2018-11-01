@@ -137,18 +137,6 @@
   ;; ##### point. It can detect the master file.
   (LaTeX-mode . (lambda ()(add-to-list 'TeX-expand-list
                                        '("%u" Okular-make-url))))
-;; ##### Use Okular to open your document at the good
-  ;; ##### point. It can detect the master file.
-;;  (add-hook 'LaTeX-mode-hook '(lambda ()
-;;                                (add-to-list 'TeX-expand-list
- ;;                                            '("%u" Okular-make-url))))
-
-  ;;(add-hook 'LaTeX-mode-hook 'visual-line-mode)
-  ;;(add-hook 'LaTeX-mode-hook 'flyspell-mode)
-  ;;(add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
-  ;; (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
-  ;;(add-hook 'LaTeX-mode-hook 'TeX-source-correlate-mode)
-  ;; (add-hook 'LaTeX-mode-hook (lambda () (abbrev-mode +1)))
   )
 
 (use-package reftex
@@ -193,18 +181,15 @@
    )
   :init
   (setq markdown-command "multimarkdown")
-  (use-package markdown-mode)
+  (use-package markdown-mode
+    :config
+    (setq markdown-command "pandoc --smart -f markdown -t html")
+    )
   ;;(autoload 'r-mode "ess-site.el" "Major mode for editing R source." t)
   (use-package poly-R)
   (use-package poly-noweb )
   (use-package poly-markdown)
   :config
-  ;;; MARKDOWN
-  ;; (add-to-list 'auto-mode-alist '("\\.md" . poly-markdown-mode))
-  ;;; R modes
-  ;; (add-to-list 'auto-mode-alist '("\\.Snw" . poly-noweb+r-mode))
-  ;; (add-to-list 'auto-mode-alist '("\\.Rnw" . poly-noweb+r-mode))
-  ;; (add-to-list 'auto-mode-alist '("\\.Rmd" . poly-markdown+r-mode))
 
   (setq markdown-toggle-math t)
 
@@ -236,6 +221,9 @@
 
   (define-key polymode-mode-map "\M-ns" 'ess-rmarkdown)
   )
+
+(use-package academic-phrases)
+(use-package powerthesaurus)
 
 (provide 'init_scivis)
 

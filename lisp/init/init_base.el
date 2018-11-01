@@ -12,6 +12,159 @@
       version-control t
       vc-make-backup-files t)
 
+;; https://gist.github.com/nilsdeppe/7645c096d93b005458d97d6874a91ea9
+;; wgrep allows you to edit all files in a grep result. For example,
+;; you can use C-c g or C-c r to search all files in a project, then
+;; use C-c C-o to enter ivy-occur mode, followed by 'w' to make
+;; the grep results buffer editable, then you can edit the results
+;; however you wish.
+(use-package wgrep
+  :defer t)
+(use-package delight)
+(use-package anzu
+  :defer t
+  :bind
+  (
+   ("M-%" . anzu-query-replace)
+   )
+  )
+(use-package smex)
+
+(use-package ivy
+  ;; :bind
+  ;; (
+  ;;  ("C-c C-r" . ivy-resume)
+  ;;  )
+  :delight ivy-mode
+  :config
+  (setq ivy-display-style 'fancy
+        ivy-use-virtual-buffers t
+        enable-recursive-minibuffers t
+        ivy-use-selectable-prompt t
+        ivy-initial-inputs-alist nil
+        ivy-height 15
+        ivy-count-format "[%d/%d] "
+        ivy-re-builders-alist '((t . ivy--regex-ignore-order)) ;; allow input not in order
+        )
+  ;;  (use-package ivy-hydra) ;; further key-bindings ?
+  (use-package avy ;; move cursor to visible by searching
+    :bind
+    (
+     ("C-l" . avy-goto-line)
+     )
+    )
+  (ivy-mode t)
+  )
+
+(use-package multiple-cursors
+  :defer t
+  :bind (("C-c <right>" . mc/mark-next-like-this)
+         ("C-c <left>" . mc/mark-previous-like-this)
+         ("C-x c" . mc/mark-all-like-this)
+         ("C-c e" . mc/edit-lines))
+  )
+
+(use-package counsel
+  :defer t
+  :pin melpa
+  :bind
+  (
+   ("M-x" . counsel-M-x)
+   ("C-x C-f" . counsel-find-file)
+   ("M-y" . counsel-yank-pop)
+   ("C-c C-g" . counsel-git-grep)
+   )
+  :config
+  (setq counsel-find-file-at-point t)
+  )
+
+(use-package swiper
+  :defer t
+  :bind
+  (
+   ("M-s" . swiper)
+   ("M-q" . (lambda () (interactive)
+              (swiper (word-at-point))))
+   )
+  )
+
+(use-package recentf
+  :defer t
+  :init
+  (recentf-mode 1)
+  ;; (let ((last-ido "~/.emacs.d/ido.last"))
+  ;;   (when (file-exists-p last-ido)
+  ;;     (delete-file last-ido)))
+  :bind
+;;  ("C-c f f" . recentf-open-files)
+  ("C-c f f" . counsel-recentf)
+  :config
+  (setq recentf-max-menu-items 50
+        recentf-auto-cleanup 'never
+        recentf-keep '(file-remote-p file-readable-p))
+  )
+
+(use-package undo-tree
+  :defer t
+  :delight undo-tree-mode
+  :config
+  (global-undo-tree-mode +1)
+  )
+
+(use-package company
+  :defer t
+  :bind
+  (("M-f" . company-files))
+  ("<backtab>" . company-complete)
+  :config
+  (setq
+   ;;company-backends '((company-files))
+        company-idle-delay 1
+        company-minimum-prefix-length 1
+        company-show-numbers t
+        company-tooltip-limit 10
+        company-require-match nil
+        company-async-timeout 6
+        company-minimum-prefix-length 1
+        company-global-modes '(not term-mode)
+        )
+
+  (global-company-mode t)
+  (setq company-dabbrev-downcase nil) ;; for case-sensitive autocompletion
+
+  (use-package company-quickhelp
+    :config
+    (setq company-quickhelp-mode 1)
+    (setq company-quickhelp-max-lines 10)
+    )
+  )
+
+;; (use-package fill-column-indicator
+;; :hook
+;; (prog-mode-hook . fci-mode)
+;;     :config
+;;     (fci-mode 1)
+;;     (setq fci-rule-character-color "black"
+;;           fci-rule-column 80)
+;;     (defun on-off-fci-before-company(command)
+;;       (when (string= "show" command)
+;;         (turn-off-fci-mode))
+;;       (when (string= "hide" command)
+;;         (turn-on-fci-mode)))
+;;     (advice-add 'company-call-frontends :before #'on-off-fci-before-company)
+;;     ;;(add-hook 'after-change-major-mode-hook 'fci-mode)
+;;     ;;(add-hook 'prog-mode-hook 'fci-mode)
+;;     )
+
+(use-package neotree
+  :defer t
+  :bind
+  ("C-c t" . neotree-toggle)
+  :config
+  (setq neo-smart-open t)
+  (setq neo-theme 'arrow)
+  )
+
 (use-package org
   :bind
   (
@@ -65,31 +218,43 @@
 
   )
 
-(use-package sr-speedbar
+;; (use-package sr-speedbar
+;;   :defer t
+;;   :bind
+;;   (("M-ü" . sr-speedbar-toggle)
+;;    ("M-Ü" . sr-speedbar-refresh-toggle))
+;;   :init
+;;   ;; also show dotted directories.
+;;   (setq speedbar-directory-unshown-regexp "^\\(CVS\\|RCS\\|SCCS\\|\\.\\.*$\\)\\'")
+;;   :config
+;;   (setq speedbar-use-images nil)
+;;   ;; Make Sr-speedbar open files in the next window, instead of in the previous window
+;;   (defun select-next-window ()
+;;     (other-window 1))
+;;   (defun my-sr-speedbar-open-hook ()
+;;     (add-hook 'speedbar-before-visiting-file-hook 'select-next-window t)
+;;     (add-hook 'speedbar-before-visiting-tag-hook 'select-next-window t)
+;;     )
+;;   (advice-add 'sr-speedbar-open :after #'my-sr-speedbar-open-hook)
+;;   (speedbar-add-supported-extension ".cu")
+;;   (add-to-list 'speedbar-fetch-etags-parse-list
+;;                '("\\.cu" . speedbar-parse-c-or-c++tag))
+;;   )
+
+(use-package magit
   :defer t
   :bind
-  (("M-ü" . sr-speedbar-toggle)
-   ("M-Ü" . sr-speedbar-refresh-toggle))
+  ("C-x g" . magit-status)
   :init
-  ;; also show dotted directories.
-  (setq speedbar-directory-unshown-regexp "^\\(CVS\\|RCS\\|SCCS\\|\\.\\.*$\\)\\'")
-  :config
-  (setq speedbar-use-images nil)
-  ;; Make Sr-speedbar open files in the next window, instead of in the previous window
-  (defun select-next-window ()
-    (other-window 1))
-  (defun my-sr-speedbar-open-hook ()
-    (add-hook 'speedbar-before-visiting-file-hook 'select-next-window t)
-    (add-hook 'speedbar-before-visiting-tag-hook 'select-next-window t)
+  (use-package git-gutter
+    :delight git-gutter-mode
+    :config
+    (global-git-gutter-mode 't)
     )
-  (advice-add 'sr-speedbar-open :after #'my-sr-speedbar-open-hook)
-  (speedbar-add-supported-extension ".cu")
-  (add-to-list 'speedbar-fetch-etags-parse-list
-               '("\\.cu" . speedbar-parse-c-or-c++tag))
+  (use-package git-timemachine)
+  (setq magit-completing-read-function 'ivy-completing-read)
   )
-(use-package delight)
-(use-package magit
-  :defer t)
+
 ;; from https://github.com/lunaryorn/.emacs.d/blob/master/init.el
 (use-package dired                      ; Edit directories
   :ensure nil ; see https://emacs.stackexchange.com/questions/26810/why-doesnt-use-package-dired-work-for-me
@@ -186,37 +351,6 @@
   )
 
 
-
-
-(use-package company
-  :defer t
-  :bind
-  (("M-f" . company-files))
-  ;;:config
-  ;; (global-company-mode t)
-  ;; (use-package fill-column-indicator
-  ;;   :config
-  ;;   (fci-mode 1)
-  ;;   (setq fci-rule-character-color "black"
-  ;;         fci-rule-column 80)
-  ;;   (defun on-off-fci-before-company(command)
-  ;;     (when (string= "show" command)
-  ;;       (turn-off-fci-mode))
-  ;;     (when (string= "hide" command)
-  ;;       (turn-on-fci-mode)))
-  ;;   (advice-add 'company-call-frontends :before #'on-off-fci-before-company)
-  ;;   ;;(add-hook 'after-change-major-mode-hook 'fci-mode)
-  ;;   (add-hook 'prog-mode-hook 'fci-mode)
-  ;;   )
-  )
-
-;; markdown
-(use-package markdown-mode
-  :mode "\\.md$"
-  :config
-  (setq markdown-command "pandoc --smart -f markdown -t html")
-  )
-
 (use-package tramp
   :config
   (setq tramp-default-method "ssh")
@@ -231,41 +365,22 @@
   (setq vc-handled-backends nil)
   )
 
-(use-package ido
-  :config
-  (use-package ido-hacks
-    :config
-    (ido-hacks-mode 1)
-    )
-  (use-package ido-vertical-mode
-    :config
-    (setq ido-vertical-define-keys 'C-n-C-p-up-down-left-right)
-    )
-  (ido-mode t)
-  (ido-everywhere 1)
-  (ido-vertical-mode 1)
-  (setq ido-enable-flex-matching t
-        ido-use-virtual-buffers t
-        ido-use-filename-at-point 'guess
-        )
-  )
-
 ;; Package: ws-butler
 (use-package ws-butler
-  :config
-  (add-hook 'prog-mode-hook 'ws-butler-mode)
-  (add-hook 'cuda-mode-hook 'ws-butler-mode)
+  :hook
+  (prog-mode . ws-butler-mode)
+  (cuda-mode . ws-butler-mode)
   )
 
 ;; Package: yasnippet
 ;; check https://github.com/AndreaCrotti/yasnippet-snippets.git
 ;; https://joaotavora.github.io/yasnippet/snippet-development.html
 (use-package yasnippet
-  :ensure t
-  :init
-  (yas-global-mode 1)
+  :defer t
   :config
+  (yas-global-mode 1)
   (add-to-list 'yas-snippet-dirs "~/.emacs.d/snippets")
+  (use-package ivy-yasnippet)
   )
 
 ;; buffer cleanup
@@ -353,17 +468,6 @@ specified.  Select the current line if the LINES prefix is zero."
     (beginning-of-line (1+ lines)))
   :bind ("C-f" . ha/expand-region))
 
-(use-package recentf
-  :init
-  (setq recentf-max-menu-items 25
-        recentf-auto-cleanup 'never
-        recentf-keep '(file-remote-p file-readable-p))
-  (recentf-mode 1)
-  (let ((last-ido "~/.emacs.d/ido.last"))
-    (when (file-exists-p last-ido)
-      (delete-file last-ido)))
-  :bind ("C-c f f" . recentf-open-files))
-
 (setq save-place-forget-unreadable-files t
       save-place-skip-check-regexp "\\`/\\(?:cdrom\\|floppy\\|mnt\\|/[0-9]\\|\\(?:[^@/:]*@\\)?[^@/:]*[^@/:.]:\\)"
       save-place-file "~/.emacs.d/places")
@@ -404,6 +508,7 @@ comma-separated columns."
 
 (use-package misc-cmds
   :load-path "lisp"
+  :ensure f
   :config
   (use-package bs
     :bind
@@ -447,7 +552,6 @@ comma-separated columns."
   (global-set-key (kbd "C-c d") 'kill-whole-line)
   ;; final customizations
   (global-set-key (kbd "C-;") 'comment-or-uncomment-region)
-  (global-set-key (kbd "C-x g") 'magit-status)
   ;; fix broken keys
   (define-key global-map "\M-[1~" 'beginning-of-line)
   (define-key global-map [select] 'end-of-line)
@@ -500,21 +604,20 @@ comma-separated columns."
   (transient-mark-mode t)
   )
 
-(setq company-dabbrev-downcase nil) ;; for case-sensitive autocompletion
-
 (use-package dumb-jump
   :ensure t
   :bind (("M-g o" . dumb-jump-go-other-window)
          ("M-g j" . dumb-jump-go)
          ("M-g i" . dumb-jump-go-prompt)
          ("M-g b" . dumb-jump-back)
+         ("M-g q" . dumb-jump-quick-look)
          ;; ("M-g x" . dumb-jump-go-prefer-external)
          ;; ("M-g z" . dumb-jump-go-prefer-external-other-window)
          )
   :config
   (setq dumb-jump-selector 'ivy) ;; (setq dumb-jump-selector 'helm)
   (setq dumb-jump-max-find-time 10)
-  (setq my-ag-ignored-patterns '("*.bak" "*.out" "*.csv" "*.pyc" "*.pdf" "*.png"))
+  (setq my-ag-ignored-patterns '("*.bak" "*.out" "*.csv" "*.pyc" "*.pdf" "*.png" "*.jpg"))
   (add-to-list 'dumb-jump-language-file-exts '(:language "c++" :ext "cu"))
   :ensure)
 

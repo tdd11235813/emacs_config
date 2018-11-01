@@ -2,11 +2,11 @@
 ;;; Commentary:
 ;;;  Packs org based settings for init
 ;;; Code:
-(setq init-theme-alternative 0)
-(setq init-theme-alternative-orig 0)
+(defvar init-theme-alternative 0)
+(defvar init-theme-alternative-orig 0)
 (defun init-theme-dark (alternative)
   "Initialize dark theme."
-  (set 'init-theme-alternative 'alternative)
+  (setq init-theme-alternative 'alternative)
   (use-package spacemacs-common
     :ensure spacemacs-theme
     :init
@@ -100,15 +100,20 @@
       :ensure spaceline
       :config
       (spaceline-spacemacs-theme)
-      (use-package semantic/sb
-		   :ensure f)
+      ;; (use-package semantic/sb
+		  ;;  :ensure f)
       )
+
+    )
+  (when (or (eq major-mode 'c-mode)
+            (eq major-mode 'c++-mode))
+    (flycheck-mode -1)
     )
   )
 
 (defun init-theme-light ()
   "Initialize light theme."
-  ;;  (interactive)
+  ;; (interactive)
   ;; (disable-theme 'spacemacs-dark)
   (set-background-color "#ffffff")
   (set-foreground-color "#000000")
@@ -117,22 +122,27 @@
   (setq column-enforce-column 999)
   (global-column-enforce-mode nil)
   (custom-set-faces '(column-enforce-face ((t (:background "#ffffff")))))
-  (set 'init-theme-alternative-orig 'init-theme-alternative)
+  (setq init-theme-alternative-orig 'init-theme-alternative)
   (setq init-theme-alternative 2)
   (setq alternative 2)
   (load-theme 'spacemacs-light t)
+  (when (or (eq major-mode 'c-mode)
+            (eq major-mode 'c++-mode))
+    (flycheck-mode -1)
+    )
   )
 
 (defun switch-theme-lightness ()
   "Switch between dark and light theme."
   (interactive)
   (if (eq init-theme-alternative '2)
-      (init-theme-dark 'init-theme-alternative-orig)
+      (init-theme-dark 'init-theme-alternative-orig) ;; swapping only works with original defined values
       (init-theme-light)
-    )
+      )
   )
 
 (global-set-key (kbd "C-c M-l") 'switch-theme-lightness)
+(global-set-key (kbd "C-c M-k") (lambda() (interactive) (init-theme-dark 1)))
 
 (provide 'init_theme)
 

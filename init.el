@@ -36,6 +36,28 @@
 ;; C-c h s ha/hs-show-all
 ;; C-c h h ha/hs-toggle-hiding
 
+;; swiper
+;; M-s
+;; M-q swiper at point
+;; counsel
+;; C-c C-g counsel-git-grep
+;; neotree
+;; C-c t
+;; undo-tree
+;; C-x u
+
+;; multiple-cursors
+;; C-c <right> next-like-this
+;; C-c <left> previous-like-this
+;; C-x c all-like-this
+;; C-c e edit-lines
+
+;; ivy/avy
+;; C-l goto line
+
+;; theme
+;; C-c M-l lightness
+
 ;;(add-to-list 'load-path "~/.emacs.d/tmp/benchmark-init-el/")
 ;;(require 'benchmark-init-loaddefs)
 ;;(benchmark-init/activate)
@@ -47,6 +69,13 @@
 ;; emacs -Q --batch -l ~/.emacs.d/init.el -f batch-byte-compile ~/.emacs.d/init.el
 
 (setq max-lisp-eval-depth 1000)
+;; By default Emacs triggers garbage collection at ~0.8MB which makes
+;; startup really slow. Since most systems have at least 64MB of memory,
+;; we increase it during initialization.
+(setq gc-cons-threshold 64000000)
+(add-hook 'after-init-hook #'(lambda ()
+                               ;; restore after startup
+                               (setq gc-cons-threshold 800000)))
 
 (setq inhibit-startup-screen t
       initial-scratch-message nil
@@ -94,9 +123,9 @@
   (require 'use-package))
 
 (setq use-package-verbose nil)
-(setq use-package-always-ensure nil)
+;;(setq use-package-always-ensure nil)
 ;;(setq use-package-verbose t)
-;;(setq use-package-always-ensure t)
+(setq use-package-always-ensure t)
 
 (use-package init_base
   :load-path "lisp/init"

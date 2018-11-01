@@ -9,96 +9,120 @@
               indent-tabs-mode nil)
 
 (use-package flycheck
-  :delight flycheck-mode
-  ;;:hook
-  ;;(prog-mode . flycheck-mode)
+;;  :delight flycheck-mode
+  :hook
+  (c++-mode . (lambda()(flycheck-mode -1)))
+  (c-mode . (lambda()(flycheck-mode -1)))
   :defer t
   :config
   (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))
   )
 
-(use-package cc-mode
-  :init
-  (add-to-list 'auto-mode-alist '("\\.tpp\\'" . c++-mode))
-  (add-to-list 'auto-mode-alist '("\\.cu\\'" . c++-mode))
-  )
-
-(use-package company-clang
-  :ensure auto-complete-clang
-  :config
-  (setq global-company-mode nil)
-  )
-
-(use-package cmake-mode)
-;; git clone --recursive https://github.com/Andersbakken/rtags.git (requires llvm, gcc with c++11 support)
-;; probably set make-ide-rdm-executable and cmake-ide-rc-executable
-(use-package rtags
-    :bind
-    (
-     :map c-mode-base-map
-          ("M-." . rtags-find-symbol-at-point)
-          ("M-," . rtags-find-references-at-point)
-          ("<backtab>" . company-complete)
-          ("C-d" . duplicate-line) ; overwrite cc-cmds. from init_base.el.
-          )
-    )
-
-(use-package cmake-ide
-  :config
-  (defun cide-hook ()
-    "Enables cmake-ide environment."
-    ;; probably set cmake-ide-flags-c++ with flags and include paths (eg. by gcc -v -xc++ /dev/null -fsyntax-only)
-    ;; if cmake needs specific flags, then you might customize by cmake-ide-cmake-command or move directly to the build directory to run cmake manually
-    ;; with CMAKE_EXPORT_COMPILE_COMMANDS=ON (cmake-ide needs that compile_commands.json)
-    ;;
-    ;; ...
-    ;; (setq cmake-ide-build-dir "build")
-    (setq cmake-ide-build-pool-dir "~/.cmake-ide/build")
-    (setq cmake-ide-build-pool-use-persistent-naming t)
-    (cmake-ide-setup)
-    (setq rtags-autostart-diagnostics t)
-    (rtags-diagnostics)
-    )
-  (defun cide-hook-do ()
-    "Enables cmake-ide environment."
-    (interactive)
-    (add-hook 'prog-mode-hook 'flycheck-mode)
-    (add-hook 'c++-mode-hook 'cide-hook)
-    (add-hook 'c-mode-hook 'cide-hook)
-    (revert-buffer)
-    )
-  :bind
-  (
-   :map c-mode-base-map
-        ("M-ä" . cide-hook-do)
-        )
-  )
-
-
-(use-package modern-cpp-font-lock
-  :config
-  ;;    (add-hook 'cuda-mode-hook #'modern-c++-font-lock-mode) ; will conflict (test within [template] function signature: write unsigned const)
-  (add-hook 'c++-mode-hook #'modern-c++-font-lock-mode)
-  (add-hook 'c-mode-hook #'modern-c++-font-lock-mode)
-  )
-
-
 (use-package cuda-mode
   :load-path "lisp/cuda-mode"
   :ensure f
-  :mode "\\.cuh$"
+  :mode
+  "\\.cuh$"
+  "\\.cu\\'"
+  )
+
+(use-package cc-mode
+  :mode
+  ("\\.tpp\\'" . c++-mode)
+  )
+
+(use-package modern-cpp-font-lock
+  :hook
+  (c++-mode . modern-c++-font-lock-mode)
+  (c-mode . modern-c++-font-lock-mode)
+;;  :config
+  ;;    (add-hook 'cuda-mode-hook #'modern-c++-font-lock-mode) ; will conflict (test within [template] function signature: write unsigned const)
+  ;; (add-hook 'c++-mode-hook #'modern-c++-font-lock-mode)
+  ;; (add-hook 'c-mode-hook #'modern-c++-font-lock-mode)
   )
 
 (use-package glsl-mode
   :load-path "lisp/glsl-mode"
   :ensure f
+  :mode
+  "\\.glsl\\'"
+  "\\.vert\\'"
+  "\\.frag\\'"
+  "\\.geom\\'"
   :config
   (autoload 'glsl-mode "glsl-mode" nil t)
-  (add-to-list 'auto-mode-alist '("\\.glsl\\'" . glsl-mode))
-  (add-to-list 'auto-mode-alist '("\\.vert\\'" . glsl-mode))
-  (add-to-list 'auto-mode-alist '("\\.frag\\'" . glsl-mode))
-  (add-to-list 'auto-mode-alist '("\\.geom\\'" . glsl-mode))
   )
+
+;; https://gist.github.com/nilsdeppe/7645c096d93b005458d97d6874a91ea9
+(use-package cmake-mode
+  :mode ("CMakeLists.txt" ".cmake")
+  :config
+  (use-package cmake-font-lock
+    :defer t
+    :commands (cmake-font-lock-activate)
+    :hook (cmake-mode . (lambda ()
+                          (cmake-font-lock-activate)
+                          (font-lock-add-keywords
+                           nil '(("\\<\\(FIXME\\|TODO\\|BUG\\|DONE\\)"
+                                  1 font-lock-warning-face t)))
+                          ))
+    )
+  )
+
+(use-package yaml-mode
+  :mode (".yml" ".yaml"))
+
+(use-package json-mode
+  :mode (".json" ".imp"))
+
+;; (use-package company-clang
+;;   :ensure auto-complete-clang
+;;   ;; :config
+;;   ;; (setq global-company-mode nil)
+;;   )
+
+;; git clone --recursive https://github.com/Andersbakken/rtags.git (requires llvm, gcc with c++11 support)
+;; probably set make-ide-rdm-executable and cmake-ide-rc-executable
+;; (use-package rtags
+;;     :bind
+;;     (
+;;      :map c-mode-base-map
+;;           ("M-." . rtags-find-symbol-at-point)
+;;           ("M-," . rtags-find-references-at-point)
+;;           ("C-d" . duplicate-line) ; overwrite cc-cmds. from init_base.el.
+;;           )
+;;     )
+
+;; (use-package cmake-ide
+;;   :config
+;;   (defun cide-hook ()
+;;     "Enables cmake-ide environment."
+;;     ;; probably set cmake-ide-flags-c++ with flags and include paths (eg. by gcc -v -xc++ /dev/null -fsyntax-only)
+;;     ;; if cmake needs specific flags, then you might customize by cmake-ide-cmake-command or move directly to the build directory to run cmake manually
+;;     ;; with CMAKE_EXPORT_COMPILE_COMMANDS=ON (cmake-ide needs that compile_commands.json)
+;;     ;;
+;;     ;; ...
+;;     ;; (setq cmake-ide-build-dir "build")
+;;     (setq cmake-ide-build-pool-dir "~/.cmake-ide/build")
+;;     (setq cmake-ide-build-pool-use-persistent-naming t)
+;;     (cmake-ide-setup)
+;;     (setq rtags-autostart-diagnostics t)
+;;     (rtags-diagnostics)
+;;     )
+;;   (defun cide-hook-do ()
+;;     "Enables cmake-ide environment."
+;;     (interactive)
+;;     (add-hook 'prog-mode-hook 'flycheck-mode)
+;;     (add-hook 'c++-mode-hook 'cide-hook)
+;;     (add-hook 'c-mode-hook 'cide-hook)
+;;     (revert-buffer)
+;;     )
+;;   :bind
+;;   (
+;;    :map c-mode-base-map
+;;         ("M-ä" . cide-hook-do)
+;;         )
+;;   )
 
 (defun indent2 ()
   (interactive)
