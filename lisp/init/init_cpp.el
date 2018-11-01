@@ -20,7 +20,7 @@
 (use-package company-clang
   :ensure auto-complete-clang
   :config
-  (global-company-mode nil)
+  (setq global-company-mode nil)
   )
 
 (use-package cmake-mode)
