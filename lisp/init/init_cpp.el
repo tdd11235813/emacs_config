@@ -9,7 +9,13 @@
               indent-tabs-mode nil)
 
 (use-package flycheck
-  :delight flycheck-mode)
+  :delight flycheck-mode
+  ;;:hook
+  ;;(prog-mode . flycheck-mode)
+  :defer t
+  :config
+  (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))
+  )
 
 (use-package cc-mode
   :init
