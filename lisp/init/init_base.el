@@ -73,6 +73,12 @@
    ("C-x C-f" . counsel-find-file)
    ("M-y" . counsel-yank-pop)
    ("C-c C-g" . counsel-git-grep)
+   ;; Use C-j for immediate termination with the current value, and RET
+   ;; for continuing completion for that directory. This is the ido
+   ;; behaviour.
+   :map ivy-minibuffer-map
+   (("C-j" . ivy-immediate-done)
+    ("RET" . ivy-alt-done))
    )
   :config
   (setq counsel-find-file-at-point t)
