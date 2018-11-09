@@ -2,11 +2,10 @@
 ;;; Commentary:
 ;;;  Packs org based settings for init
 ;;; Code:
-(defvar init-theme-alternative 0)
-(defvar init-theme-alternative-orig 0)
+
 (defun init-theme-dark (alternative)
   "Initialize dark theme."
-  (setq init-theme-alternative 'alternative)
+  (setq init-theme-alternative alternative)
   (use-package spacemacs-common
     :ensure spacemacs-theme
     :init
@@ -100,6 +99,13 @@
       :ensure spaceline
       :config
       (spaceline-spacemacs-theme)
+      (spaceline-toggle-version-control-on)
+      (setq-default
+       powerline-height 24
+       powerline-default-separator 'wave
+       spaceline-flycheck-bullet "❖ %s"
+       spaceline-separator-dir-left '(right . right)
+       spaceline-separator-dir-right '(left . left))
       ;; (use-package semantic/sb
 		  ;;  :ensure f)
       )
@@ -122,7 +128,7 @@
   (setq column-enforce-column 999)
   (global-column-enforce-mode nil)
   (custom-set-faces '(column-enforce-face ((t (:background "#ffffff")))))
-  (setq init-theme-alternative-orig 'init-theme-alternative)
+  (setq init-theme-alternative-orig init-theme-alternative)
   (setq init-theme-alternative 2)
   (setq alternative 2)
   (load-theme 'spacemacs-light t)

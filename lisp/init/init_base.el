@@ -98,9 +98,6 @@
   :defer t
   :init
   (recentf-mode 1)
-  ;; (let ((last-ido "~/.emacs.d/ido.last"))
-  ;;   (when (file-exists-p last-ido)
-  ;;     (delete-file last-ido)))
   :bind
 ;;  ("C-c f f" . recentf-open-files)
   ("C-c f f" . counsel-recentf)
@@ -197,7 +194,7 @@
         org-agenda-todo-ignore-deadlines t)
   (setq org-agenda-files (list "~/.emacs.d/user/org/personal.org"
                                "~/.emacs.d/user/org/groupon.org"))
-                                        ; Org-habit
+  ;; Org-habit
   (use-package org-habit
     :ensure f
     :config
@@ -223,29 +220,6 @@
       (insert (format-time-string "%Y-%m-%d\n\n" new-date))))
 
   )
-
-;; (use-package sr-speedbar
-;;   :defer t
-;;   :bind
-;;   (("M-ü" . sr-speedbar-toggle)
-;;    ("M-Ü" . sr-speedbar-refresh-toggle))
-;;   :init
-;;   ;; also show dotted directories.
-;;   (setq speedbar-directory-unshown-regexp "^\\(CVS\\|RCS\\|SCCS\\|\\.\\.*$\\)\\'")
-;;   :config
-;;   (setq speedbar-use-images nil)
-;;   ;; Make Sr-speedbar open files in the next window, instead of in the previous window
-;;   (defun select-next-window ()
-;;     (other-window 1))
-;;   (defun my-sr-speedbar-open-hook ()
-;;     (add-hook 'speedbar-before-visiting-file-hook 'select-next-window t)
-;;     (add-hook 'speedbar-before-visiting-tag-hook 'select-next-window t)
-;;     )
-;;   (advice-add 'sr-speedbar-open :after #'my-sr-speedbar-open-hook)
-;;   (speedbar-add-supported-extension ".cu")
-;;   (add-to-list 'speedbar-fetch-etags-parse-list
-;;                '("\\.cu" . speedbar-parse-c-or-c++tag))
-;;   )
 
 (use-package magit
   :defer t
@@ -365,10 +339,27 @@
   ;; ControlMaster auto
   ;; ControlPath /tmp/%r@%h:%p
   ;; ControlPersist yes
+  ;; ^^ required, otherwise 'Sending Password' may hang
   (setq tramp-use-ssh-controlmaster-options nil)
   ;; Disable git backend to speed up sshfs file load among other things
   ;;(setq vc-handled-backends (quote (RCS CVS SVN SCCS Bzr Hg Mtn Arch)))
-  (setq vc-handled-backends nil)
+  (setq vc-handled-backends (quote (Git)))
+  (eval-after-load 'tramp '(setenv "SHELL" "/bin/bash"))
+;;  (setq tramp-verbose 10)
+  (with-eval-after-load 'tramp-cache
+    (setq tramp-persistency-file-name "~/.emacs.d/tramp"))
+  ;; don't generate backups for remote files opened as root (security hazzard)
+  backup-enable-predicate
+  (lambda (name)
+    (and (normal-backup-enable-predicate name)
+         (not (let ((method (file-remote-p name 'method)))
+                (when (stringp method)
+                  (member method '("su" "sudo")))))))
+  (setq remote-file-name-inhibit-cache nil)
+  (setq vc-ignore-dir-regexp
+        (format "%s\\|%s"
+                vc-ignore-dir-regexp
+                tramp-file-name-regexp))
   )
 
 ;; Package: ws-butler
