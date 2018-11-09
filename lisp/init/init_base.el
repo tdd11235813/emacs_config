@@ -50,7 +50,7 @@
   (use-package avy ;; move cursor to visible by searching
     :bind
     (
-     ("C-l" . avy-goto-line)
+     ("C-v" . avy-goto-line)
      )
     )
   (ivy-mode t)
