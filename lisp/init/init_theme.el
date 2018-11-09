@@ -11,10 +11,27 @@
     :init
     (show-paren-mode t)
     (add-hook 'prog-mode-hook 'show-paren-mode t)
-    (use-package linum
-      :config
-      (setq linum-format "%4d ")
+
+    (when (< emacs-major-version 26)
+      (use-package linum
+        :config
+        (setq linum-format "%4d ")
+        ))
+    (when (>= emacs-major-version 26)
+      (use-package display-line-numbers
+        ;;:disabled
+        :defer nil
+        :ensure nil
+        :config
+        (global-display-line-numbers-mode)
+        ;; (customize-set-variable 'display-line-numbers-grow-only t) ;; do not shrink again
+        (customize-set-variable 'display-line-numbers-width-start 3)
+        ;; Disable line-numbers minor mode for neotree
+        ;; https://github.crookster.org/macOS-Emacs-26-display-line-numbers-and-me/#display-line-numbers
+        (add-hook 'neo-after-create-hook (lambda (&optional dummy) (display-line-numbers-mode -1)))
+        )
       )
+
     (setq lazy-highlight-cleanup nil)
 
     (setq spacemacs-theme-org-highlight t)

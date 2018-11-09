@@ -56,6 +56,7 @@
   (ivy-mode t)
   )
 
+;; or iedit?
 (use-package multiple-cursors
   :defer t
   :bind (("C-c <right>" . mc/mark-next-like-this)
@@ -108,7 +109,7 @@
   )
 
 (use-package undo-tree
-  :defer t
+  :defer nil
   :delight undo-tree-mode
   :config
   (global-undo-tree-mode +1)
@@ -180,6 +181,7 @@
     (setq deft-directory "~/.emacs.d/user/deft")
     (setq deft-use-filename-as-title t)
     (setq deft-extensions "org")
+    (setq deft-text-mode 'org-mode)
     )
   :config
   (setq org-log-done t
@@ -456,10 +458,15 @@ specified.  Select the current line if the LINES prefix is zero."
     (beginning-of-line (1+ lines)))
   :bind ("C-f" . ha/expand-region))
 
-(setq save-place-forget-unreadable-files t
-      save-place-skip-check-regexp "\\`/\\(?:cdrom\\|floppy\\|mnt\\|/[0-9]\\|\\(?:[^@/:]*@\\)?[^@/:]*[^@/:.]:\\)"
-      save-place-file "~/.emacs.d/places")
-(save-place-mode t)
+(use-package saveplace
+  :defer nil
+  :config
+  (save-place-mode)
+  (setq save-place-forget-unreadable-files t
+        save-place-skip-check-regexp "\\`/\\(?:cdrom\\|floppy\\|mnt\\|/[0-9]\\|\\(?:[^@/:]*@\\)?[^@/:]*[^@/:.]:\\)"
+        save-place-file "~/.emacs.d/places")
+  (save-place-mode t)
+  )
 
 (defun align-comma (start end c)
   "Repeat alignment with a character padded with spaces for
@@ -502,17 +509,40 @@ comma-separated columns."
 (use-package misc-cmds
   :load-path "lisp"
   :ensure f
-  :config
+  :defer nil
+  :bind
+  (
+   ("C-c d" . kill-whole-line)
+   ("C-;" . comment-or-uncomment-region)
+   ("C-c C-k" . ff-find-other-file)
+   ("C-x <up>" . other-window)
+   ("C-x <down>" . previous-multiframe-window)
+   ("C-M-<prior>" . scroll-down-line)
+   ("C-M-<next>" . scroll-up-line)
+   ("M-{" . insert-pair)
+   ("M-'" . insert-pair)
+   ("M-\"" . insert-pair)
+   ("M-g k" . align-regexp)   ;; to align relative to expression
+   ("C-x M-t" . cleanup-region)
+   ("C-c n" . cleanup-buffer)
+   ("C-+" . text-scale-increase)
+   ("C--" . text-scale-decrease)
+   ;; drag
+   ("M-<up>" . drag-stuff-up)
+   ("M-<down>" . drag-stuff-down)
+   ("M-<home>" . beginning-of-buffer)
+   ("M-<end>" . end-of-buffer)
+   ("M-<delete>" . kill-word)
+   ;; bs
+   ("C-x <left>" . previous-buffer-repeat)
+   ("C-x <right>" . next-buffer-repeat)
+   ("<f6>" . bs-show)
+   ("<f5>" . revert-buffer-no-confirm)
+   ("<C-next>" . bs-cycle-previous)
+   ("<C-prior>" . bs-cycle-next)
+   )
+  :init
   (use-package bs
-    :bind
-    (
-     ("C-x <left>" . previous-buffer-repeat)
-     ("C-x <right>" . next-buffer-repeat)
-     ("<f6>" . bs-show)
-     ("<f5>" . revert-buffer-no-confirm)
-     ("<C-next>" . bs-cycle-previous)
-     ("<C-prior>" . bs-cycle-next)
-     )
     :config
     (add-to-list 'bs-configurations
                  '("emacs" nil nil nil
@@ -534,43 +564,25 @@ comma-separated columns."
                                   '(c-mode c++-mode cuda-mode cmake-mode glsl-mode))))) nil))
     )
   (use-package drag-stuff
-    :delight drag-stuff-mode)
-  (drag-stuff-global-mode t)
-  (global-set-key (kbd "M-<up>") 'drag-stuff-up)
-  (global-set-key (kbd "M-<down>") 'drag-stuff-down)
-  (global-set-key (kbd "M-<home>") 'beginning-of-buffer)
-  (global-set-key (kbd "M-<end>") 'end-of-buffer)
-  (global-set-key [M-delete] 'kill-word)
-  (global-set-key (kbd "C-c d") 'kill-whole-line)
-  ;; final customizations
-  (global-set-key (kbd "C-;") 'comment-or-uncomment-region)
+    :delight drag-stuff-mode
+    :config
+    (drag-stuff-global-mode t))
+
+  :config
   ;; fix broken keys
   (define-key global-map "\M-[1~" 'beginning-of-line)
   (define-key global-map [select] 'end-of-line)
 
-  (global-set-key (kbd "C-c C-k") 'ff-find-other-file)
-  (define-key global-map (kbd "C-x <up>") 'other-window)
-  (define-key global-map (kbd "C-x <down>") 'previous-multiframe-window)
-
-  (global-set-key (kbd "C-M-<prior>") 'scroll-down-line)
-  (global-set-key (kbd "C-M-<next>") 'scroll-up-line)
-
-  (global-set-key (kbd "M-{") 'insert-pair)
-;;  (global-set-key (kbd "M-<") 'insert-pair)
-  (global-set-key (kbd "M-'") 'insert-pair)
-  (global-set-key (kbd "M-\"") 'insert-pair)
-  ;; to align relative to expression
-  (global-set-key (kbd "M-g k") 'align-regexp)
-
   (setq select-enable-clipboard t)
-                                        ; show empy line markers, file endings
+  ;; show empy line markers, file endings
   (setq-default indicate-empty-lines t)
   (when (not indicate-empty-lines)
     (toggle-indicate-empty-lines))
-                                        ; remove tabs
+  ;; remove tabs
   (setq-default tab-width 2
                 indent-tabs-mode nil)
-                                        ; one-character answer
+
+  ;; one-character answer
   (defalias 'yes-or-no-p 'y-or-n-p)
 
   (setq initial-scratch-message "")
@@ -590,11 +602,25 @@ comma-separated columns."
   (setq scroll-step 1) ;; keyboard scroll
 
   (put 'downcase-region 'disabled nil)
-  (global-set-key (kbd "C-x M-t") 'cleanup-region)
-  (global-set-key (kbd "C-c n") 'cleanup-buffer)
   (delete-selection-mode t)
   (transient-mark-mode t)
+  (customize-set-variable 'show-trailing-whitespace t)
+  ;; C-k
+  (customize-set-variable 'kill-whole-line t)
+  ;; Paste text where the cursor is, not where the mouse is.
+  ;; https://zzamboni.org/post/my-emacs-configuration-with-commentary/
+  (customize-set-variable 'mouse-yank-at-point t)
   )
+
+(use-package which-key
+  :defer nil
+  :diminish which-key-mode
+  :config
+  (which-key-mode))
+
+(use-package subword
+  :hook
+  (prog-mode . subword-mode))
 
 (use-package dumb-jump
   :ensure t
