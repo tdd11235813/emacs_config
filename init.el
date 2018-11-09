@@ -1,7 +1,6 @@
 ;;; INIT -- STYLE FILE
 ;;; Commentary:
-;;;  Inspired by http://aaronbedra.com/emacs.d/
-;;; https://vxlabs.com/2016/04/11/step-by-step-guide-to-c-navigation-and-completion-with-emacs-and-the-clang-based-rtags/
+;;;  Inspired by http://aaronbedra.com/emacs.d/ and several others
 ;;; Code:
 
 ;; to debug on error, use toggle-debug-on-error
@@ -77,16 +76,17 @@
                                ;; restore after startup
                                (setq gc-cons-threshold 800000)))
 
+;; initially a package-initialize is required to set archives
 (setq inhibit-startup-screen t
       initial-scratch-message nil
       package-user-dir "~/.emacs.d/elpa/"
-      package-archives '(("melpa" . "http://melpa.milkbox.net/packages/")
+      package-archives '(("melpa" . "http://melpa.org/packages/")
                          ("gnu" . "http://elpa.gnu.org/packages/")))
 
 ;; https://github.com/nilcons/emacs-use-package-fast
 ;; Disable package initialize after us.  We either initialize it
 ;; anyway in case of interpreted .emacs, or we don't want slow
-;; initizlization in case of byte-compiled .emacs.elc.
+;; initialization in case of byte-compiled .emacs.elc.
 (setq package-enable-at-startup nil)
 ;; Ask package.el to not add (package-initialize) to .emacs.
 (setq package--init-file-ensured t)

@@ -219,7 +219,7 @@
           (switch-to-buffer rmd-buf)
           (ess-show-buffer (buffer-name sbuffer) nil)))))
 
-  (define-key polymode-mode-map "\M-ns" 'ess-rmarkdown)
+  (define-key polymode-minor-mode-map "\M-ns" 'ess-rmarkdown)
   )
 
 (use-package academic-phrases)
