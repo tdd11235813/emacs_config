@@ -122,10 +122,14 @@
 (eval-when-compile
   (require 'use-package))
 
+;; -- use-package settings --
+
 (setq use-package-verbose nil)
 ;;(setq use-package-always-ensure nil)
 ;;(setq use-package-verbose t)
 (setq use-package-always-ensure t)
+
+;; -- own packages --
 
 (use-package init_base
   :load-path "lisp/init"
@@ -152,10 +156,11 @@
   ;;  )
   ;; :config
   ;; (init-theme-dark 0)
-  )
+  :config
+  ;;(init-theme-dark 0)
+  (init-theme-dark 1)
 
-;;(init-theme-dark 0)
-(init-theme-dark 1)
+  )
 
 
 ;; for the custom variable definitions

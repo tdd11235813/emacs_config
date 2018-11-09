@@ -405,15 +405,6 @@
   (dolist (re '("\\\\│\·*\n" "\W*│\·*"))
     (replace-regexp re "" nil beg end)))
 
-(defun duplicate-line()
-  (interactive)
-  (move-beginning-of-line 1)
-  (kill-line)
-  (yank)
-  (open-line 1)
-  (next-line 1)
-  (yank)
-  )
 
 (defun swap-window-positions ()         ; Stephen Gildea
   "*Swap the positions of this window and the next one."
@@ -506,6 +497,11 @@ comma-separated columns."
   ("C-c h h" . ha/hs-toggle-hiding))
 
 
+(use-package duplicate-thing
+  :bind
+  (("C-d" . duplicate-thing))
+  )
+
 (use-package misc-cmds
   :load-path "lisp"
   :ensure f
@@ -547,7 +543,6 @@ comma-separated columns."
   (global-set-key (kbd "M-<down>") 'drag-stuff-down)
   (global-set-key (kbd "M-<home>") 'beginning-of-buffer)
   (global-set-key (kbd "M-<end>") 'end-of-buffer)
-  (global-set-key "\C-d" 'duplicate-line) ; clone line
   (global-set-key [M-delete] 'kill-word)
   (global-set-key (kbd "C-c d") 'kill-whole-line)
   ;; final customizations
