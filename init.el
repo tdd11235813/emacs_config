@@ -76,12 +76,18 @@
                                ;; restore after startup
                                (setq gc-cons-threshold 800000)))
 
-;; initially a package-initialize is required to set archives
 (setq inhibit-startup-screen t
       initial-scratch-message nil
       package-user-dir "~/.emacs.d/elpa/"
       package-archives '(("melpa" . "http://melpa.org/packages/")
                          ("gnu" . "http://elpa.gnu.org/packages/")))
+
+;; initially a package-initialize is required to set archives
+;; (when (>= emacs-major-version 24)
+;;   (require 'package)
+;;   (package-initialize)
+;;   (package-refresh-contents)
+;;   )
 
 ;; https://github.com/nilcons/emacs-use-package-fast
 ;; Disable package initialize after us.  We either initialize it

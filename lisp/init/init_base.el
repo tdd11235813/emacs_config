@@ -346,6 +346,7 @@
   ;; Disable git backend to speed up sshfs file load among other things
   ;;(setq vc-handled-backends (quote (RCS CVS SVN SCCS Bzr Hg Mtn Arch)))
   (setq vc-handled-backends (quote (Git)))
+  ;;(setq vc-handled-backends nil)
   (eval-after-load 'tramp '(setenv "SHELL" "/bin/bash"))
 ;;  (setq tramp-verbose 10)
   (with-eval-after-load 'tramp-cache
