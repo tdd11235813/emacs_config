@@ -3,36 +3,10 @@
 ;;;  Packs org based settings for init
 ;;; Code:
 
-(defun init-theme-dark (alternative)
-  "Initialize dark theme."
-  (setq init-theme-alternative alternative)
+(defun init-spacetheme (alternative)
   (use-package spacemacs-common
     :ensure spacemacs-theme
     :init
-    (show-paren-mode t)
-    (add-hook 'prog-mode-hook 'show-paren-mode t)
-
-    (when (< emacs-major-version 26)
-      (use-package linum
-        :config
-        (setq linum-format "%4d ")
-        ))
-    (when (>= emacs-major-version 26)
-      (use-package display-line-numbers
-        ;;:disabled
-        :defer nil
-        :ensure nil
-        :config
-        (global-display-line-numbers-mode)
-        ;; (customize-set-variable 'display-line-numbers-grow-only t) ;; do not shrink again
-        (customize-set-variable 'display-line-numbers-width-start 3)
-        ;; Disable line-numbers minor mode for neotree
-        ;; https://github.crookster.org/macOS-Emacs-26-display-line-numbers-and-me/#display-line-numbers
-        (add-hook 'neo-after-create-hook (lambda (&optional dummy) (display-line-numbers-mode -1)))
-        )
-      )
-
-    (setq lazy-highlight-cleanup nil)
 
     (setq spacemacs-theme-org-highlight t)
     (setq spacemacs-theme-org-height nil)
@@ -41,7 +15,7 @@
                             '((str . (if (eq alternative '2) "#aa0000" "#ff8866"))
                               (act1 . (if (eq alternative '2) "#888888" (if (eq alternative '1) "#000030" "#303030")))
                               (act2 . (if (eq alternative '2) "#999999" (if (eq alternative '1) "#111111" "#404040")))
-                              (lnum . "#f0f000")
+                              (lnum . "#999999")
                               (highlight . (if (eq alternative '2) "#cccccc" "#444444"))
                               (green-bg-s . (if (eq alternative '2) "#cccccc" "#444444")) ; for lazy highlight
                               (bg1 . (if (eq alternative '2) "#ffffff" (if (eq alternative '1) "#202020" "#262626")))
@@ -61,9 +35,8 @@
       (setq column-enforce-comments nil)
       (custom-set-faces '(column-enforce-face ((t (:background "#161616")))))
       )
-    (use-package highlight-numbers)
-    (use-package rainbow-delimiters)
     (load-theme 'spacemacs-dark t)
+
     (set-face-attribute font-lock-keyword-face nil :weight 'normal :underline nil)
     (defface c-func-highlight-face '((((background light)) (:inherit bold :foreground "#006a6a"))
                                      (t (:inherit bold :foreground "#87afaf")))
@@ -93,27 +66,19 @@
               (lambda ()
                 (font-lock-add-keywords nil
                                         '(("\\<\\(FIX\\|FIXME\\|TODO\\|BUG\\|HACK\\):" 1 font-lock-warning-face t)))))
-    (use-package glsl-mode
-      :load-path "lisp/glsl-mode"
-      :ensure f
-      :config
-      (font-lock-add-keywords 'glsl-mode c-mode-add-keywords)
-      (add-hook 'glsl-mode-hook
-                (lambda () (run-hooks 'prog-mode-hook)))
-      )
 
-    (use-package cuda-mode
-      :load-path "lisp/cuda-mode"
-      :ensure f
-      :config
-      (font-lock-add-keywords 'cuda-mode c-mode-add-keywords)
-      (add-hook 'cuda-mode-hook 'column-enforce-mode)
-      ;; (add-hook 'cuda-mode-hook 'highlight-numbers-mode) ; conflicts too (write 'unsigned const' in func sign -> it hangs up)
-      ;; (add-hook 'cuda-mode-hook #'rainbow-delimiters-mode) ; same
-      )
+    (font-lock-add-keywords 'glsl-mode c-mode-add-keywords)
+    (add-hook 'glsl-mode-hook
+              (lambda () (run-hooks 'prog-mode-hook)))
+
+    (font-lock-add-keywords 'cuda-mode c-mode-add-keywords)
+    (add-hook 'cuda-mode-hook 'column-enforce-mode)
+    ;; (add-hook 'cuda-mode-hook 'highlight-numbers-mode) ; conflicts too (write 'unsigned const' in func sign -> it hangs up)
+    ;; (add-hook 'cuda-mode-hook #'rainbow-delimiters-mode) ; same
 
     (use-package spaceline-config
       :ensure spaceline
+      :defer 1
       :config
       (spaceline-spacemacs-theme)
       (spaceline-toggle-version-control-on)
@@ -128,6 +93,54 @@
       )
 
     )
+
+  )
+
+(defun init-theme-dark (alternative)
+  "Initialize dark theme."
+  (setq init-theme-alternative alternative)
+
+  (show-paren-mode t)
+  (add-hook 'prog-mode-hook 'show-paren-mode t)
+  ;; line numbers
+  (when (< emacs-major-version 26)
+    (use-package linum
+      :config
+      (setq linum-format "%4d ")
+      ))
+  (when (>= emacs-major-version 26)
+    (use-package display-line-numbers
+      :disabled
+      :defer 1
+      :ensure f
+      :config
+      ;;(global-display-line-numbers-mode)
+      ;; (customize-set-variable 'display-line-numbers-grow-only t) ;; do not shrink again
+      (customize-set-variable 'display-line-numbers-width-start 3)
+      ;; Disable line-numbers minor mode for neotree
+      ;; https://github.crookster.org/macOS-Emacs-26-display-line-numbers-and-me/#display-line-numbers
+      (add-hook 'neo-after-create-hook (lambda (&optional dummy) (display-line-numbers-mode -1)))
+      )
+    )
+
+  (setq lazy-highlight-cleanup nil)
+
+  (use-package glsl-mode
+    :load-path "lisp/glsl-mode"
+    :ensure f
+    )
+  (use-package cuda-mode
+    :load-path "lisp/cuda-mode"
+    :ensure f
+    )
+
+  ;; spacemacs dark
+  (init-spacetheme alternative)
+
+
+  (use-package highlight-numbers)
+  (use-package rainbow-delimiters)
+
   (when (or (eq major-mode 'c-mode)
             (eq major-mode 'c++-mode))
     (flycheck-mode -1)
@@ -138,17 +151,19 @@
   "Initialize light theme."
   ;; (interactive)
   ;; (disable-theme 'spacemacs-dark)
-  (set-background-color "#ffffff")
-  (set-foreground-color "#000000")
 
   (setq column-enforce-comments nil)
   (setq column-enforce-column 999)
   (global-column-enforce-mode nil)
-  (custom-set-faces '(column-enforce-face ((t (:background "#ffffff")))))
   (setq init-theme-alternative-orig init-theme-alternative)
   (setq init-theme-alternative 2)
   (setq alternative 2)
+
+  (set-background-color "#ffffff")
+  (set-foreground-color "#000000")
+  (custom-set-faces '(column-enforce-face ((t (:background "#ffffff")))))
   (load-theme 'spacemacs-light t)
+
   (when (or (eq major-mode 'c-mode)
             (eq major-mode 'c++-mode))
     (flycheck-mode -1)
@@ -159,13 +174,10 @@
   "Switch between dark and light theme."
   (interactive)
   (if (eq init-theme-alternative '2)
-      (init-theme-dark 'init-theme-alternative-orig) ;; swapping only works with original defined values
-      (init-theme-light)
-      )
+      (init-theme-dark init-theme-alternative-orig)
+    (init-theme-light)
+    )
   )
-
-(global-set-key (kbd "C-c M-l") 'switch-theme-lightness)
-(global-set-key (kbd "C-c M-k") (lambda() (interactive) (init-theme-dark 1)))
 
 (provide 'init_theme)
 

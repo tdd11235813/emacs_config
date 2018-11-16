@@ -28,12 +28,13 @@
 ;; M-\ delete whitespaces
 ;; M-^ join to previous line
 ;; C-M-x eval defun (lisp)
+;; M-a backward-sentence
+;; M-<digit> for C-u <digit> ... (M-3 C-d duplicates 3 times)
 
 ;;; hs-minor-mode
-;; C-c T h hs-minor-mode
-;; C-c h a ha/hs-hide-all
-;; C-c h s ha/hs-show-all
-;; C-c h h ha/hs-toggle-hiding
+;; C-c s d ha/hs-hide-all
+;; C-c s a ha/hs-show-all
+;; C-c s s ha/hs-toggle-hiding
 
 ;; swiper
 ;; M-s
@@ -130,7 +131,7 @@
 
 ;; -- use-package settings --
 
-(setq use-package-verbose nil)
+;;(setq use-package-verbose nil)
 ;;(setq use-package-always-ensure nil)
 ;;(setq use-package-verbose t)
 (setq use-package-always-ensure t)
@@ -155,16 +156,14 @@
 (use-package init_theme
   :ensure f
   :load-path "lisp/init"
-  ;; :bind
-  ;; (
-  ;;  ("C-c M-d" . init-theme-dark)
-  ;;  ("C-c M-l" . init-theme-light)
-  ;;  )
-  ;; :config
-  ;; (init-theme-dark 0)
+  :defer 0
+  :bind
+  (
+   ("C-c M-l" . switch-theme-lightness)
+   ("C-c M-k" . (lambda() (interactive) (init-theme-dark 1)))
+   )
   :config
-  ;;(init-theme-dark 0)
-  (init-theme-dark 1)
+  (init-theme-dark 0)
 
   )
 

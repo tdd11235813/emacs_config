@@ -72,7 +72,7 @@
   (
    ("M-x" . counsel-M-x)
    ("C-x C-f" . counsel-find-file)
-   ("M-y" . counsel-yank-pop)
+;; ("M-y" . counsel-yank-pop) ;; I do not like it
    ("C-c C-g" . counsel-git-grep)
    ;; Use C-j for immediate termination with the current value, and RET
    ;; for continuing completion for that directory. This is the ido
@@ -109,7 +109,7 @@
   )
 
 (use-package undo-tree
-  :defer nil
+  :defer 1
   :delight undo-tree-mode
   :config
   (global-undo-tree-mode +1)
@@ -460,7 +460,7 @@ specified.  Select the current line if the LINES prefix is zero."
   :bind ("C-f" . ha/expand-region))
 
 (use-package saveplace
-  :defer nil
+  :defer 0
   :config
   (save-place-mode)
   (setq save-place-forget-unreadable-files t
@@ -496,10 +496,10 @@ comma-separated columns."
     (hs-minor-mode 1)
     (hs-toggle-hiding))
   :bind
-  ("C-c T h" . hs-minor-mode)
-  ("C-c h a" . ha/hs-hide-all)
-  ("C-c h s" . ha/hs-show-all)
-  ("C-c h h" . ha/hs-toggle-hiding))
+;;  ("C-c s t" . hs-minor-mode)
+  ("C-c s d" . ha/hs-hide-all)
+  ("C-c s a" . ha/hs-show-all)
+  ("C-c s s" . ha/hs-toggle-hiding))
 
 
 (use-package duplicate-thing
@@ -507,114 +507,55 @@ comma-separated columns."
   (("C-d" . duplicate-thing))
   )
 
-(use-package misc-cmds
-  :load-path "lisp"
-  :ensure f
-  :defer nil
+(use-package bs
+  :init
+  (use-package misc-cmds
+    :load-path "lisp/"
+    :ensure nil)
   :bind
-  (
-   ("C-c d" . kill-whole-line)
-   ("C-;" . comment-or-uncomment-region)
-   ("C-c C-k" . ff-find-other-file)
-   ("C-x <up>" . other-window)
-   ("C-x <down>" . previous-multiframe-window)
-   ("C-M-<prior>" . scroll-down-line)
-   ("C-M-<next>" . scroll-up-line)
-   ("M-{" . insert-pair)
-   ("M-'" . insert-pair)
-   ("M-\"" . insert-pair)
-   ("M-g k" . align-regexp)   ;; to align relative to expression
-   ("C-x M-t" . cleanup-region)
-   ("C-c n" . cleanup-buffer)
-   ("C-+" . text-scale-increase)
-   ("C--" . text-scale-decrease)
-   ;; drag
-   ("M-<up>" . drag-stuff-up)
-   ("M-<down>" . drag-stuff-down)
-   ("M-<home>" . beginning-of-buffer)
-   ("M-<end>" . end-of-buffer)
-   ("M-<delete>" . kill-word)
-   ;; bs
-   ("C-x <left>" . previous-buffer-repeat)
+  (("C-x <left>" . previous-buffer-repeat)
    ("C-x <right>" . next-buffer-repeat)
    ("<f6>" . bs-show)
    ("<f5>" . revert-buffer-no-confirm)
    ("<C-next>" . bs-cycle-previous)
    ("<C-prior>" . bs-cycle-next)
    )
-  :init
-  (use-package bs
-    :config
-    (add-to-list 'bs-configurations
-                 '("emacs" nil nil nil
-                   (lambda (buf)
-                     (with-current-buffer buf
-                       (not (memq major-mode
-                                  '(emacs-lisp-mode))))) nil))
-    (add-to-list 'bs-configurations
-                 '("org" nil nil nil
-                   (lambda (buf)
-                     (with-current-buffer buf
-                       (not (memq major-mode
-                                  '(org-mode))))) nil))
-    (add-to-list 'bs-configurations
-                 '("C" nil nil nil
-                   (lambda (buf)
-                     (with-current-buffer buf
-                       (not (memq major-mode
-                                  '(c-mode c++-mode cuda-mode cmake-mode glsl-mode))))) nil))
-    )
-  (use-package drag-stuff
-    :delight drag-stuff-mode
-    :config
-    (drag-stuff-global-mode t))
-
   :config
-  ;; fix broken keys
-  (define-key global-map "\M-[1~" 'beginning-of-line)
-  (define-key global-map [select] 'end-of-line)
+  (add-to-list 'bs-configurations
+               '("emacs" nil nil nil
+                 (lambda (buf)
+                   (with-current-buffer buf
+                     (not (memq major-mode
+                                '(emacs-lisp-mode))))) nil))
+  (add-to-list 'bs-configurations
+               '("org" nil nil nil
+                 (lambda (buf)
+                   (with-current-buffer buf
+                     (not (memq major-mode
+                                '(org-mode))))) nil))
+  (add-to-list 'bs-configurations
+               '("C" nil nil nil
+                 (lambda (buf)
+                   (with-current-buffer buf
+                     (not (memq major-mode
+                                '(c-mode c++-mode cuda-mode cmake-mode glsl-mode))))) nil))
+  )
 
-  (setq select-enable-clipboard t)
-  ;; show empy line markers, file endings
-  (setq-default indicate-empty-lines t)
-  (when (not indicate-empty-lines)
-    (toggle-indicate-empty-lines))
-  ;; remove tabs
-  (setq-default tab-width 2
-                indent-tabs-mode nil)
-
-  ;; one-character answer
-  (defalias 'yes-or-no-p 'y-or-n-p)
-
-  (setq initial-scratch-message "")
-  (when (window-system)
-    (tool-bar-mode 0)               ;; Toolbars were only cool with XEmacs
-    (when (fboundp 'horizontal-scroll-bar-mode)
-      (horizontal-scroll-bar-mode -1))
-    (scroll-bar-mode -1))            ;; Scrollbars are waste screen estate
-
-  (setq echo-keystrokes 0.1
-        use-dialog-box nil
-        visible-bell t)
-  ;; scroll one line at a time (less "jumpy" than defaults)
-  (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
-  (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
-  (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
-  (setq scroll-step 1) ;; keyboard scroll
-
-  (put 'downcase-region 'disabled nil)
-  (delete-selection-mode t)
-  (transient-mark-mode t)
-  (customize-set-variable 'show-trailing-whitespace t)
-  ;; C-k
-  (customize-set-variable 'kill-whole-line t)
-  ;; Paste text where the cursor is, not where the mouse is.
-  ;; https://zzamboni.org/post/my-emacs-configuration-with-commentary/
-  (customize-set-variable 'mouse-yank-at-point t)
+(use-package drag-stuff
+  :delight drag-stuff-mode
+  :bind
+  (("M-<up>" . drag-stuff-up)
+   ("M-<down>" . drag-stuff-down)
+   ("M-<home>" . beginning-of-buffer)
+   ("M-<end>" . end-of-buffer)
+   ("M-<delete>" . kill-word)
+   )
+  :config
+  (drag-stuff-global-mode t)
   )
 
 (use-package which-key
-  :defer nil
+  :defer 1
   :diminish which-key-mode
   :config
   (which-key-mode))
@@ -640,44 +581,103 @@ comma-separated columns."
   (add-to-list 'dumb-jump-language-file-exts '(:language "c++" :ext "cu"))
   :ensure)
 
+(use-package cd-compile
+  :defer t
+  :bind (("C-c c" . compile)
+         ("C-c x" . my-compile)
+         ("C-c y" . kill-compilation))
+  :config
+
+  (defun my-compile ()
+    "Run compile and resize the compile window"
+    (interactive)
+    (progn
+      (call-interactively 'cd-compile)
+      (setq cur (selected-window))
+      (setq w (get-buffer-window "*compilation*"))
+      (select-window w)
+      (setq h (window-height w))
+      (shrink-window (- h 10))
+      (select-window cur)
+      )
+    )
+  )
+
+
+(use-package general
+  :bind
+  (
+   ("C-c d" . kill-whole-line)
+   ("C-;" . comment-or-uncomment-region)
+   ("C-c C-k" . ff-find-other-file)
+   ("C-x <up>" . other-window)
+   ("C-x <down>" . previous-multiframe-window)
+   ("C-M-<prior>" . scroll-down-line)
+   ("C-M-<next>" . scroll-up-line)
+   ("M-{" . insert-pair)
+   ("M-'" . insert-pair)
+   ("M-\"" . insert-pair)
+   ("M-g k" . align-regexp)   ;; to align relative to expression
+   ("C-x M-t" . cleanup-region)
+   ("C-c n" . cleanup-buffer)
+   ("C-+" . text-scale-increase)
+   ("C--" . text-scale-decrease)
+   )
+  :config
+  ;; fix broken keys
+  (define-key global-map "\M-[1~" 'beginning-of-line)
+  (define-key global-map [select] 'end-of-line)
+  (setq select-enable-clipboard t)
+  ;; show empy line markers, file endings
+  (setq-default indicate-empty-lines t)
+  (when (not indicate-empty-lines)
+    (toggle-indicate-empty-lines))
+  ;; remove tabs
+  (setq-default tab-width 2
+                indent-tabs-mode nil)
+
+  ;; one-character answer
+  (defalias 'yes-or-no-p 'y-or-n-p)
+
+  (setq initial-scratch-message "")
+  (when (window-system)
+    (tool-bar-mode 0)               ;; Toolbars were only cool with XEmacs
+    (when (fboundp 'horizontal-scroll-bar-mode)
+      (horizontal-scroll-bar-mode -1))
+    (scroll-bar-mode -1)            ;; Scrollbars are waste screen estate
+    (add-to-list 'default-frame-alist '(height . 32))
+    (add-to-list 'default-frame-alist '(width . 120))
+    )
+
+  (setq echo-keystrokes 0.1
+        use-dialog-box nil
+        visible-bell t)
+  ;; scroll one line at a time (less "jumpy" than defaults)
+  (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
+  (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
+  (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
+  (setq scroll-step 1) ;; keyboard scroll
+
+  (put 'downcase-region 'disabled nil)
+  (delete-selection-mode t)
+  (transient-mark-mode t)
+  (customize-set-variable 'show-trailing-whitespace t)
+  ;; C-k
+  (customize-set-variable 'kill-whole-line t)
+  ;; Paste text where the cursor is, not where the mouse is.
+  ;; https://zzamboni.org/post/my-emacs-configuration-with-commentary/
+  (customize-set-variable 'mouse-yank-at-point t)
+
+  ;; Split windows in Emacs 22 compatible way
+  (setq split-height-threshold nil)
+  (setq split-width-threshold most-positive-fixnum)
+
+  )
+
 (defun save-all ()
   "Save all dirty buffers without asking for confirmation."
   (interactive)
   (save-some-buffers t))
-
-(use-package cd-compile
-  :ensure t
-  :bind (("C-c c" . compile)
-         ("C-c x" . cd-compile)
-         ("C-c y" . kill-compilation))
-  )
-
-(defun my-compile ()
-  "Run compile and resize the compile window"
-  (interactive)
-  (progn
-    (call-interactively 'cd-compile)
-    (setq cur (selected-window))
-    (setq w (get-buffer-window "*compilation*"))
-    (select-window w)
-    (setq h (window-height w))
-    (shrink-window (- h 10))
-    (select-window cur)
-    )
-  )
-(defun my-compilation-hook ()
-  "Make sure that the compile window is splitting vertically"
-  (progn
-    (if (not (get-buffer-window "*compilation*"))
-        (progn
-	        (split-window-vertically)
-	        )
-	    )
-    )
-  )
-
-(add-hook 'compilation-mode-hook 'my-compilation-hook)
-(global-set-key [f9] 'my-compile)
 
 (add-hook 'focus-out-hook 'save-all)
 
