@@ -31,11 +31,15 @@
 (use-package smex)
 
 (use-package ivy
+  :defer 0.1
   ;; :bind
   ;; (
   ;;  ("C-c C-r" . ivy-resume)
   ;;  )
   :delight ivy-mode
+  :bind (:map ivy-minibuffer-map
+              ("C-r" . ivy-previous-line-or-history)
+              ("M-r" . ivy-reverse-i-search))
   :config
   (setq ivy-display-style 'fancy
         ivy-use-virtual-buffers t
@@ -228,11 +232,14 @@
   :bind
   ("C-x g" . magit-status)
   :init
-  (use-package git-gutter
-    :delight git-gutter-mode
-    :config
-    (global-git-gutter-mode 't)
-    )
+  ;; do not use git-gutter+tramp:
+  ;; https://github.com/syohex/emacs-git-gutter/issues/151
+  ;; git-gutter+ gives errors, so we will remove it
+;;   (use-package git-gutter+
+;; ;;    :delight git-gutter+-mode
+;;     :config
+;;     (global-git-gutter+-mode)
+;;     )
   (use-package git-timemachine)
   (setq magit-completing-read-function 'ivy-completing-read)
   )
@@ -342,27 +349,53 @@
   ;; ControlPath /tmp/%r@%h:%p
   ;; ControlPersist yes
   ;; ^^ required, otherwise 'Sending Password' may hang
-  (setq tramp-use-ssh-controlmaster-options nil)
+  ;; Hint: Do not use tramp it with git-gutter (bad performance)
+  (customize-set-variable 'tramp-use-ssh-controlmaster-options nil)
+
   ;; Disable git backend to speed up sshfs file load among other things
   ;;(setq vc-handled-backends (quote (RCS CVS SVN SCCS Bzr Hg Mtn Arch)))
   (setq vc-handled-backends (quote (Git)))
   ;;(setq vc-handled-backends nil)
   (eval-after-load 'tramp '(setenv "SHELL" "/bin/bash"))
 ;;  (setq tramp-verbose 10)
+  (setq tramp-completion-reread-directory-timeout nil)
   (with-eval-after-load 'tramp-cache
     (setq tramp-persistency-file-name "~/.emacs.d/tramp"))
   ;; don't generate backups for remote files opened as root (security hazzard)
-  backup-enable-predicate
-  (lambda (name)
-    (and (normal-backup-enable-predicate name)
-         (not (let ((method (file-remote-p name 'method)))
-                (when (stringp method)
-                  (member method '("su" "sudo")))))))
+  ;;(setq disable-tramp-backups nil) ;; allow all tramp files to be backuped
+  ;;(setq disable-tramp-backups '("su" "sudo")) ;; only 'su' and 'sudo'
+  ;;(setq disable-tramp-backups '("ssh" "sftp")) ;; only 'ssh' and 'sftp'
+  (defvar disable-tramp-backups '(all))
+
+  (eval-after-load "tramp"
+    '(progn
+       ;; Modified from https://www.gnu.org/software/emacs/manual/html_node/tramp/Auto_002dsave-and-Backup.html
+       (setq backup-enable-predicate
+             (lambda (name)
+               (and (normal-backup-enable-predicate name)
+                    ;; Disable all tramp backups
+                    (and disable-tramp-backups
+                         (member 'all disable-tramp-backups)
+                         (not (file-remote-p name 'method)))
+                    (not ;; disable backup for tramp with the listed methods
+                     (let ((method (file-remote-p name 'method)))
+                       (when (stringp method)
+                         (member method disable-tramp-backups)))))))
+
+       (defun tramp-set-auto-save--check (original)
+         (if (funcall backup-enable-predicate (buffer-file-name))
+             (funcall original)
+           (auto-save-mode -1)))
+
+       (advice-add 'tramp-set-auto-save :around #'tramp-set-auto-save--check)
+       ))
+
   (setq remote-file-name-inhibit-cache nil)
   (setq vc-ignore-dir-regexp
         (format "%s\\|%s"
                 vc-ignore-dir-regexp
                 tramp-file-name-regexp))
+  (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
   )
 
 ;; Package: ws-butler
@@ -507,6 +540,8 @@ comma-separated columns."
   (("C-d" . duplicate-thing))
   )
 
+;; tried ibuffer, but buffer-list of bs is just more streamlined.
+;; ibuffer also forced tramp to reload even if next buffer is not in tramp mode.
 (use-package bs
   :init
   (use-package misc-cmds
@@ -540,6 +575,7 @@ comma-separated columns."
                      (not (memq major-mode
                                 '(c-mode c++-mode cuda-mode cmake-mode glsl-mode))))) nil))
   )
+
 
 (use-package drag-stuff
   :delight drag-stuff-mode
@@ -605,6 +641,7 @@ comma-separated columns."
 
 
 (use-package general
+  :defer 0
   :bind
   (
    ("C-c d" . kill-whole-line)
@@ -669,8 +706,8 @@ comma-separated columns."
   (customize-set-variable 'mouse-yank-at-point t)
 
   ;; Split windows in Emacs 22 compatible way
-  (setq split-height-threshold nil)
-  (setq split-width-threshold most-positive-fixnum)
+  ;; (setq split-height-threshold nil)
+  ;; (setq split-width-threshold most-positive-fixnum)
 
   )
 
