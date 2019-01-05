@@ -3,7 +3,7 @@
 ## Features
 
 - Supports various languages such as C++11, CUDA, CMake, GLSL, gnuplot, R, LaTeX, ...
-- dumb-jump for navigating through code
+- dumb-jump for navigating through code ([use](https://github.com/jacktasia/dumb-jump#configuration) a `.dumbjump` file to exclude folders is recommended)
 - magit, git-timemachine for git
 - neotree for folder navigation
 - ESS for R
@@ -103,51 +103,34 @@
 
 ## Install
 
-- Run recursive git clone for loading submodules glsl-mode and ESS:
+- Run recursive git clone for loading submodules `glsl-mode`, `cuda-mode`, `snippets` and `ESS`:
 ```bash
 git clone --recursive https://github.com/tdd11235813/emacs_config.git
 ```
-  - Run `make` in lisp/ESS.
+- Run `make` in lisp/ESS (for rebuild run `make clean` before)
 
-- [rtags](https://github.com/Andersbakken/rtags) is required (which requires LLVM/Clang compiler):
+## Misc
+
+### Aliases
+
 ```bash
-git clone --recursive https://github.com/Andersbakken/rtags.git
-```
-
-- For auto-installing further emacs packages, uncomment in init.el and init_scivis.el:
-```lisp
-(setq use-package-always-ensure t)
-```
-- For cmake-ide build-pool-dir is used (`cmake-ide-build-pool-dir "~/.cmake-ide/build"`).
-For further hints see `init_cpp.el`.
-
-## Emacs alias
-C++ IDE, CUDA, ..
-```bash
-alias em="emacs -nw -l ~/.emacs.d/init.el"
+alias em="emacs -l $HOME/.emacs.d/init.el"
 alias ems="em --daemon=workspaceC"
-alias emc="emacsclient -nw -s workspaceC"
+alias emc="emacsclient -s workspaceC"
 ```
-R (using ESS), gnuplot
-```bash
-alias emsci="emacs -nw -l ~/.emacs.d/init_scivis.el"
-alias emssci="emsci --daemon=workspaceS"
-alias emcsci="emacsclient -nw -s workspaceS"
+### Startup Time Measurement
+
+``` bash
+command time -p emacs -l $HOME/.emacs.d/init.el -Q -e kill-emacs
 ```
 
 ## Screenshots
 
-CUDA Code (no cmake-ide, no rtags support)
-![Screenshot Emacs with CUDA Code](/images/screenshot.jpg)
+Emacs running in terminal mode
+![Screenshot Emacs in Terminal](/images/screenshot.jpg)
 
-C++ Code (with cmake-ide and rtags support)
-![Screenshot Emacs with C++ Code](/images/screenshot01.jpg)
-
-R Code (run with init_scivis.el as Emacs init file)
-![Screenshot Emacs with R Code](/images/screenshot02.jpg)
-
-Emacs Window
-![Screenshot Emacs Window](/images/screenshot03.jpg)
+Emacs running in window mode (showing dumb-jump and neotree)
+![Screenshot Emacs Window](/images/screenshot01.jpg)
 
 ## Used Packages
 

@@ -18,6 +18,7 @@
   (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))
   )
 
+;; TODO: move to quelpa fetcher
 (use-package cuda-mode
   :load-path "lisp/cuda-mode"
   :ensure f
@@ -44,6 +45,7 @@
   ;; (add-hook 'c-mode-hook #'modern-c++-font-lock-mode)
   )
 
+;; TODO: move to quelpa fetcher
 (use-package glsl-mode
   :load-path "lisp/glsl-mode"
   :ensure f
