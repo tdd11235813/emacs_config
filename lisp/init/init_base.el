@@ -178,6 +178,8 @@
   (
    ("C-c a" . org-agenda)
    ("C-c l" . org-store-link)
+   ("C-c v" . org-capture)
+   ("C-c q" . org-agenda-list)
    )
   :init
   (use-package deft
@@ -188,18 +190,49 @@
     (setq deft-text-mode 'org-mode)
     )
   :config
-  (setq org-log-done t
-        org-todo-keywords '((sequence "TODO" "STARTED" "CANCELLED" "DONE"))
-        org-todo-keyword-faces '(("STARTED" . (:foreground "blue" :weight bold)) ("CANCELLED" . (:foreground "red" :weight bold))))
-
   ;; Org-agenda
-  ;; (global-set-key (kbd "C-c a") 'org-agenda)
-  ;; (global-set-key (kbd "C-c l") 'org-store-link)
-  (setq org-agenda-show-log t
-        org-agenda-todo-ignore-scheduled t
-        org-agenda-todo-ignore-deadlines t)
-  (setq org-agenda-files (list "~/.emacs.d/user/org/personal.org"
-                               "~/.emacs.d/user/org/groupon.org"))
+  (use-package org-agenda
+    :ensure f
+    :config
+    (custom-set-variables
+     '(org-directory "~/.emacs.d/user")
+     '(org-agenda-files (list org-directory)))
+    (setq org-default-notes-file "~/.emacs.d/user/todo.org")
+    (setq org-agenda-show-log t
+          ;; org-agenda-todo-ignore-scheduled t
+          ;; org-agenda-todo-ignore-deadlines t
+          )
+  )
+  (setq org-archive-location "~/.emacs.d/user/archive/%s_archive::")
+  (defvar org-archive-file-header-format "#+FILETAGS: ARCHIVE\nArchived entries from file %s\n")
+
+  (setq org-log-done t)
+  ;; From https://github.com/gjstein/emacs.d/blob/master/config/gs-org.el
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+          (sequence "WAITING(w@/!)" "INACTIVE(i)" "|" "CANCELLED(c@/!)" "MEETING")))
+  ;; Custom colors for the keywords
+  (setq org-todo-keyword-faces
+        '(("TODO" :foreground "red" :weight bold)
+          ("NEXT" :foreground "blue" :weight bold)
+          ("DONE" :foreground "forest green" :weight bold)
+          ("WAITING" :foreground "orange" :weight bold)
+          ("INACTIVE" :foreground "magenta" :weight bold)
+          ("CANCELLED" :foreground "forest green" :weight bold)
+          ("MEETING" :foreground "forest green" :weight bold)))
+  ;; Auto-update tags whenever the state is changed
+  (setq org-todo-state-tags-triggers
+        '(("CANCELLED" ("CANCELLED" . t))
+          ("WAITING" ("WAITING" . t))
+          ("INACTIVE" ("WAITING") ("INACTIVE" . t))
+          (done ("WAITING") ("INACTIVE"))
+          ("TODO" ("WAITING") ("CANCELLED") ("INACTIVE"))
+          ("NEXT" ("WAITING") ("CANCELLED") ("INACTIVE"))
+          ("DONE" ("WAITING") ("CANCELLED") ("INACTIVE"))))
+
+  (setq org-columns-default-format "%50ITEM(Task) %10CLOCKSUM %16TIMESTAMP_IA")
+;;  (setq org-columns-default-format "%50ITEM(Task) %10Effort(Effort){:} %10CLOCKSUM %16TIMESTAMP_IA")
+
   ;; Org-habit
   (use-package org-habit
     :ensure f
@@ -253,6 +286,62 @@
     (setq org-noter-notes-search-path (list papers-dir))
     (setq org-noter-default-notes-file-names (list "~/.emacs.d/user/papers/index.org")) ;; does not work with papers-refs, last '/' missed
     )
+
+  (use-package org-cliplink
+    :bind
+    ("C-x j" . org-cliplink)
+    )
+  (use-package org-brain)
+  (use-package org-clock-today)
+  (use-package org-clock-convenience
+    :bind (:map org-agenda-mode-map
+                ("M-ü" . org-clock-convenience-timestamp-up)
+                ("M-ö" . org-clock-convenience-timestamp-down)
+                ("ö" . org-clock-convenience-fill-gap)
+                ("ä" . org-clock-convenience-fill-gap-both))
+    )
+
+  (setq org-capture-templates
+        '(
+          ("t" "todo" entry (file org-default-notes-file)
+           "* TODO %?\n%u\n%a\n" :clock-in t :clock-resume t)
+          ("e" "Empty" entry (file org-default-notes-file)
+           "* %?\n%u")
+          ("m" "Meeting" entry (file org-default-notes-file)
+           "* MEETING with %? :MEETING:\n" :clock-in t :clock-resume t)
+          ("d" "Diary" entry (file+datetree "~/.emacs.d/user/diary.org")
+           "* %?\n%U\n" :clock-in t :clock-resume t)
+          ("D" "Daily Log" entry (file "~/.emacs.d/user/daily-log.org")
+           "* %u %?\n#+BEGIN: gjs-daily-clocktable :maxlevel 4 :date \"%u\" :link t :compact t \n#+END:\n\n*Summary*: \n\n*Problem*: \n\n*Insight*: \n\n*Tomorrow*: " :clock-in t :clock-resume t)
+          ("i" "Idea" entry (file org-default-notes-file)
+           "* %? :IDEA: \n%u" :clock-in t :clock-resume t)
+          ("n" "Next Task" entry (file+headline org-default-notes-file "Tasks")
+           "** NEXT %? \nDEADLINE: %t")
+
+          ;; ("t" "Todo" entry (file+headline "~/org/gtd.org" "Tasks")
+          ;;  "* TODO %?\n  %i\n  %a")
+          ;; ("j" "Journal" entry (file+datetree "~/org/journal.org")
+          ;;  "* %?\nEntered on %U\n  %i\n  %a")
+          ("s" "Code Snippet" entry
+           (file (concat org-directory "snippets.org"))
+           ;; Prompt for tag and language
+           "* %?\t%^g\n#+BEGIN_SRC %^{language}\n\n#+END_SRC")
+          ;; ("m" "Media" entry
+          ;;  (file+datetree (concat org-directory "media.org"))
+          ;;            "* %?\nURL: \nEntered on %U\n")
+          ("r" "Meeting Schedule" entry
+           (file+headline file org-default-notes-file "HEADING")
+           "* TODO Meeting - %?
+%i
+Room: %^{Place}
+Subject: %^{Subject}
+Attendees: %^{Attendees}
+
+%a ")
+          ("b" "Bookmark" entry (file+headline org-default-notes-file "Bookmarks")
+           "* %?\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n" :empty-lines 1)
+          )
+        )
 
   (use-package ivy-bibtex
     :after ivy
@@ -665,7 +754,8 @@ comma-separated columns."
 
 (use-package cd-compile
   :defer t
-  :bind (("C-c c" . compile)
+  :bind (:map prog-mode-map
+         ("C-c c" . compile)
          ("C-c x" . my-compile)
          ("C-c y" . kill-compilation))
   :config
