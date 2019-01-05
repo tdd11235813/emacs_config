@@ -13,6 +13,7 @@
 ;; Alt+Enter, Alt+Shift+Right Subitem, Alt+Shift+Up, [Shift]-Tab Folding
 ;; C-c C-c Actions
 ;; C-c [ -> org.agenda
+;; C-c - -> itemize
 
 ;;;
 ;; M-/ dabbrev-expand
@@ -84,11 +85,16 @@
                          ("gnu" . "http://elpa.gnu.org/packages/")))
 
 ;; initially a package-initialize is required to set archives
-;; (when (>= emacs-major-version 24)
-;;   (require 'package)
-;;   (package-initialize)
-;;   (package-refresh-contents)
-;;   )
+;; We take quelpa-use-package as point of reference (it also includes use-package)
+(unless (package-installed-p 'quelpa-use-package)
+  (when (>= emacs-major-version 24)
+    (require 'package)
+    (package-initialize)
+    (package-refresh-contents)
+    ))
+
+;; do not check for quelpa updates
+(setq quelpa-update-melpa-p nil)
 
 ;; https://github.com/nilcons/emacs-use-package-fast
 ;; Disable package initialize after us.  We either initialize it
@@ -107,9 +113,9 @@
         ;; (require 'package)
         (package-initialize)
         ;; Install use-package if not installed yet.
-        (unless (package-installed-p 'use-package)
+        (unless (package-installed-p 'quelpa-use-package)
           (package-refresh-contents)
-          (package-install 'use-package)
+          (package-install 'quelpa-use-package)
           (package-install 'delight)
           )
         ;; (require 'use-package)
@@ -127,14 +133,18 @@
 ;; --- end of pull request ---
 
 (eval-when-compile
-  (require 'use-package))
+  (require 'quelpa-use-package))
 
 ;; -- use-package settings --
 
 (setq use-package-verbose nil)
-;;(setq use-package-always-ensure nil)
 ;;(setq use-package-verbose t)
+
+;;(setq use-package-always-ensure nil)
 (setq use-package-always-ensure t)
+;; ... as quelpa is used, put advice to automatically disable ELPA lookup
+;; (or add :ensure f for the package that has to be loaded from quelpa)
+(quelpa-use-package-activate-advice)
 
 ;; -- own packages --
 

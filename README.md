@@ -2,11 +2,20 @@
 
 ## Features
 
-- C++11 Support with code completion and refactoring features by rtags and cmake-ide (as opt-in)
-- improved, but still incomplete syntax highlighting (aimed for personal code style)
-- CUDA, gnuplot, R
-- **init.el**: for coding (C, C++, CUDA, GLSL, ...)
-- **init_scivis.el**: for scientific visualization and organization (R, gnuplot, LaTeX, org-mode, ..)
+- Supports various languages such as C++11, CUDA, CMake, GLSL, gnuplot, R, LaTeX, ...
+- dumb-jump for navigating through code
+- magit, git-timemachine for git
+- neotree for folder navigation
+- ESS for R
+- polymode, poly-markdown, poly-R for files that contain multiple languages
+- org-ref + org-noter + pdf-tools for paper reading (`user/` is a separate, private, versioned folder)
+- undo-tree is optional
+- counsel only where it helps
+- hideshow for code folding
+- quelpa-use-package for package installation and configuration
+- Tuned startup, but emacsclient/server setup is recommended
+- custom theme, that has dark and bright mode (toggle by key `C-c M-l`)
+- Note: some of the key mappings contain German umlauts
 
 ## Keys
 
@@ -27,32 +36,40 @@
 | `C-c f f`             | open recent files                   |
 | `C-c f b`             | list bookmarks                      |
 | `C-x g`               | magit-status                        |
+| `C-c C-g`             | counsel-git-grep                    |
+| `M-s`                 | swiper                              |
+| `M-q`                 | swiper at point                     |
+| `C-c t`               | neotree (folder navigation)         |
+| `C-x u`               | undo-tree                           |
 
 ### Textwork
 
-| Command               | Description                         |
-| :---                  | :---                                |
-| `C-d`                 | duplicate line                      |
-| `C-c d`               | kill line                           |
-| `M-f`                 | complete filename (company-files)   |
-| `M-<up>`              | drag line up                        |
-| `M-<down>`            | drag line down                      |
-| `C-;`                 | (un)comment region                  |
-| `C-c n`               | cleanup buffer                      |
-| `<f9>`                | switch dictionary (en, de) (init_scivis.el) |
+| Command       | Description                         |
+| :---          | :---                                |
+| `C-d`         | duplicate line                      |
+| `C-c d`       | kill line                           |
+| `M-f`         | complete filename (company-files)   |
+| `M-a`         | start of sentence                   |
+| `M-m`         | start of code line                  |
+| `M-r`         | cursor bottom-center-top            |
+| `M-<up>`      | drag line up                        |
+| `M-<down>`    | drag line down                      |
+| `M-\`         | delete whitespaces                  |
+| `C-;`         | (un)comment region                  |
+| `C-c n`       | cleanup buffer                      |
+| `<f9>`        | switch dictionary (en, de)          |
+| `<Backtab>`   | code completion (company complete)  |
+| `C-c ö`       | switch to 2-space indentation style |
+| `C-c ä`       | switch to 4-space indentation style |
 
-### Coding (with cmake-ide and rtags enabled)
+#### Multiple Cursors
 
-| Command               | Description                         |
-| :---                  | :---                                |
-| `M-ä`                 | enable cmake-ide environment        |
-| `M-ü`                 | speedbar (`M-Ü` to refresh)         |
-| `<Backtab>`           | code completion (company complete)  |
-| `M-.`                 | find symbol/definition/.. at point (rtags) |
-| `M.,`                 | find references at point (rtags)    |
-| `M-m`                 | start of code line                  |
-| `C-c ö`               | switch to 2-space indentation style |
-| `C-c ä`               | switch to 4-space indentation style |
+| Command       | Description                         |
+| :---          | :---                                |
+| `C-c <right>` | next-like-this                      |
+| `C-c <left>`  | previous-like-this                  |
+| `C-x c`       | all-like-this                       |
+| `C-c e`       | edit-lines                          |
 
 ### Coding (jump-to without rtags)
 
@@ -61,7 +78,7 @@
 | `M-g o` | dumb-jump-go-other-window |
 | `M-g j` | dumb-jump-go              |
 | `M-g i` | dumb-jump-go-prompt       |
-        
+
 ### Misc
 
 | Command               | Description                         |
@@ -135,57 +152,89 @@ Emacs Window
 ## Used Packages
 
 ```
+academic-phrases
 ansi-color
+anzu
+avy
 bibtex
+bind-key
 bookmark
 bs
 cc-mode
-cmake-ide
+cd-compile
+cmake-font-lock
 cmake-mode
 column-enforce-mode
 company
-company-clang
+company-quickhelp
+counsel
 cuda-mode
 deft
+delight
 dired
+dired+
 dired-x
-dump-jump
+display-line-numbers
 drag-stuff
+dumb-jump
+duplicate-thing
 ess-site
 expand-region
 fill-column-indicator
 flycheck
 flyspell
+general
+git-gutter+
+git-timemachine
 glsl-mode
 gnuplot-mode
+hideshow
 highlight-numbers
-hs-minor-mode
-ido
-ido-hacks
-ido-vertical-mode
-init_base
-init_theme
+interleave
+ivy
+ivy-bibtex
+ivy-hydra
+ivy-yasnippet
+json-mode
 linum
+magit
 markdown-mode
 misc-cmds
 modern-cpp-font-lock
+multiple-cursors
+neotree
+nov
 org
 org-habit
-poly-R
+org-noter
+org-ref
+pandoc-mode
+pdf-tools
 poly-markdown
 polymode
+poly-noweb
+poly-R
+powerthesaurus
+ppindent
 rainbow-delimiters
 recentf
 reftex
-rtags
-semantic
+saveplace
+semantic/sb
+smex
 spaceline-config
 spacemacs-common
-sr-speedbar
+subword
+swiper
 tex-site
 tramp
+undo-tree
+wgrep
+which-key
 ws-butler
+yaml-mode
 yasnippet
+zotxt
 ```
 
 ## License

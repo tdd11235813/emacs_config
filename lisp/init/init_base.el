@@ -4,7 +4,7 @@
 ;;; Code:
 
 
-(setq backup-directory-alist `(("." . "~/.emacs.d/user/saves"))
+(setq backup-directory-alist `(("." . "~/.emacs.d/saves"))
       backup-by-copying t
       delete-old-versions t
       kept-new-versions 6
@@ -212,6 +212,54 @@
           org-habit-show-habits-only-for-today t
           org-habit-show-all-today t)
     )
+  ;;; This is for interleaving and adding of notes in PDFs (notes are stored in single org file)
+  ;; https://codearsonist.com/reading-for-programmers
+  ;; Add #+INTERLEAVE_PDF: pdf/ to your index.org
+  ;; Open it and run M-x interleave
+  ;; (https://github.com/rudolfochrist/interleave)
+  ;; (pdf-tools installed, see https://github.com/politza/pdf-tools)
+  ;; Open PDF with interleave and M-x org-noter + {i,M-i} for adding notes
+  ;; Open PDF file and use org-ref-pdf-to-bibtex
+  ;; TODO: org-capture for TODO linking
+  ;; TODO: check how to automatically download pdfs from urls
+  (setq papers-dir (expand-file-name "~/.emacs.d/user/papers")
+        papers-pdfs (concat papers-dir "pdf/")
+        papers-notes (concat papers-dir "index.org")
+        papers-refs (concat papers-dir "index.bib"))
+
+  (use-package interleave)
+
+  (use-package nov
+    :mode ("\\.epub\\'" . nov-mode))
+
+  (use-package pdf-tools
+    :magic ("%PDF" . pdf-view-mode)
+    :config
+    (pdf-tools-install))
+
+  (use-package org-ref
+    :init
+    ;; (setq reftex-default-bibliography (list papers-refs))
+    (setq org-ref-completion-library 'org-ref-ivy-cite
+          org-ref-bibliography-notes papers-notes
+          org-ref-default-bibliography (list papers-refs)
+          org-ref-pdf-directory papers-pdfs))
+
+  (use-package org-noter
+    :after org-mode
+    :hook ((pdf-view-mode . org-noter-mode)
+           (nov-mode . org-noter-mode))
+    :config
+    (setq org-noter-notes-search-path (list papers-dir))
+    (setq org-noter-default-notes-file-names (list "~/.emacs.d/user/papers/index.org")) ;; does not work with papers-refs, last '/' missed
+    )
+
+  (use-package ivy-bibtex
+    :after ivy
+    :config
+    (setq bibtex-completion-bibliography papers-refs
+          bibtex-completion-library-path papers-pdfs
+          bibtex-completion-notes-path papers-notes))
 
   ;; http://pages.sachachua.com/.emacs.d/Sacha.html#orgfe5d909
   (defun my/org-insert-heading-for-next-day ()
@@ -288,8 +336,7 @@
 
 
 (use-package dired-x                    ; Additional tools for Dired
-  :load-path "lisp"
-  :ensure f
+  :quelpa (dired-x :fetcher url :url "https://github.com/emacs-mirror/emacs/raw/master/lisp/dired-x.el")
   :defer t
   :bind (("C-c f j" . dired-jump)
          ("C-x C-j" . dired-jump))
@@ -326,8 +373,7 @@
   )
 
 (use-package dired+
-  :load-path "lisp"
-  :ensure f
+  :quelpa (dired+ :fetcher github :repo "emacsmirror/dired-plus")
   :defer t
   :init
   (setq diredp-hide-details-initially-flag nil)
@@ -511,7 +557,7 @@ comma-separated columns."
 
 
 (use-package hideshow
-  :load-path "lisp"
+  :quelpa (hideshow :fetcher url :url "https://github.com/jwiegley/emacs-release/raw/master/lisp/progmodes/hideshow.el")
   :ensure f
   :init
   (defun ha/hs-show-all ()
@@ -545,8 +591,8 @@ comma-separated columns."
 (use-package bs
   :init
   (use-package misc-cmds
-    :load-path "lisp/"
-    :ensure nil)
+    :quelpa (misc-cmds :fetcher github :repo "emacsmirror/misc-cmds")
+    )
   :bind
   (("C-x <left>" . previous-buffer-repeat)
    ("C-x <right>" . next-buffer-repeat)

@@ -107,7 +107,7 @@
 
 ;; for preprocessor indenting
 (use-package ppindent
-  :load-path "lisp/"
+    :quelpa (ppindent :fetcher github :repo "emacsmirror/ppindent")
   :ensure f
   :bind (("C-c i" . ppindent-h)) ;; indent preprocessor lines in whole file
   :config (custom-set-variables '(ppindent-increment 1))

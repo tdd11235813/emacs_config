@@ -225,6 +225,39 @@
 (use-package academic-phrases)
 (use-package powerthesaurus)
 
+;;; I am not happy with zotero+zotxt/org-ref, feels clumsy, furthermore zotero does not take given url automatically,
+;;; zotxt inserts zotero based links, which are not converted to an URL when exporting to e.g. HTML.
+;; http://nickjudd.com/blog/2016/02/13/emacs-notes/
+;; no easy citekey ? => https://github.com/retorquere/zotero-better-bibtex/releases/tag/v5.1.36
+;; - http://raphaelkabo.com/blog/posts/markdown-to-word/
+;; - zotero -> settings -> Better BibTex -> [auth:lower][year] + Quick Copy -> pandoc
+;; pacman -S pandoc-citeproc
+;; yaourt -s zotero
+;; Install zotxt xpi
+;; - https://github.com/egh/zotxt/releases/download/v5.0.2/zotxt-5.0.2.xpi
+;; - https://github.com/egh/zotxt
+;; M-x zotxt-easykey-mode, C-c " k
+;; Not supported in tramp opened file
+;; Short text link:
+;; (use-package pandoc-mode)
+;; (use-package zotxt
+;;   :config
+;;   ;; From http://www.mkbehr.com/posts/a-research-workflow-with-zotero-and-org-mode/
+;;   ;; Activate org-zotxt-mode in org-mode buffers
+;;   (add-hook 'org-mode-hook (lambda () (org-zotxt-mode 1)))
+;;   ;; Bind something to replace the awkward C-u C-c " i
+;;   (define-key org-mode-map
+;;     (kbd "C-c \" \"") (lambda () (interactive)
+;;                         (org-zotxt-insert-reference-link '(4))))
+;;   ;; Change citation format to be less cumbersome in files.
+;;   ;; You'll need to install mkbehr-short into your style manager first.
+;;   (eval-after-load "zotxt"
+;;     '(setq zotxt-default-bibliography-style "mkbehr-short"))
+;;   )
+
+;;; Trying https://codearsonist.com/reading-for-programmers
+;;; going org-mode + org-ref + helm-bibtex, so see init_base.el
+
 (provide 'init_scivis)
 
 ;;; init_scivis ends here
