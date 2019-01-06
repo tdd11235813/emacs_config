@@ -352,7 +352,7 @@ Subject: %^{Subject}
 Attendees: %^{Attendees}
 
 %a ")
-          ("b" "Bookmark" entry (file+headline org-default-notes-file "Bookmarks")
+          ("b" "Bookmark" entry (file+headline "~/.emacs.d/user/bookmarks.org" "Refile")
            "* %?\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n" :empty-lines 1)
           )
         )
