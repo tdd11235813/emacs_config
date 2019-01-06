@@ -12,6 +12,15 @@
       version-control t
       vc-make-backup-files t)
 
+
+
+;; System locale to use for formatting time values.
+(setq system-time-locale "C")         ; Make sure that the weekdays in the
+                                      ; time stamps of your Org mode files and
+                                      ; in the agenda appear in English.
+
+
+
 ;; https://gist.github.com/nilsdeppe/7645c096d93b005458d97d6874a91ea9
 ;; wgrep allows you to edit all files in a grep result. For example,
 ;; you can use C-c g or C-c r to search all files in a project, then
@@ -245,6 +254,8 @@
           org-habit-show-habits-only-for-today t
           org-habit-show-all-today t)
     )
+  ;; hides blank lines between headings
+  (setq org-cycle-separator-lines 0)
   ;;; This is for interleaving and adding of notes in PDFs (notes are stored in single org file)
   ;; https://codearsonist.com/reading-for-programmers
   ;; Add #+INTERLEAVE_PDF: pdf/ to your index.org
@@ -300,7 +311,10 @@
                 ("ö" . org-clock-convenience-fill-gap)
                 ("ä" . org-clock-convenience-fill-gap-both))
     )
-
+  ;; (use-package org-clock)
+  ;; (add-to-list
+  ;;  'org-clock-clocktable-language-setup
+  ;; '("en" "File" "L" "Timestamp" "Task" "Time" "ALL" "Total time" "File time" "Time Sheet at"))
   (setq org-capture-templates
         '(
           ("t" "todo" entry (file org-default-notes-file)
@@ -342,6 +356,18 @@ Attendees: %^{Attendees}
            "* %?\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n" :empty-lines 1)
           )
         )
+
+  ;; Clocktable (C-c C-x C-r) defaults
+  ;; Use fixed month instead of (current-month) because I want to keep a table for each month
+  (setq org-clock-clocktable-default-properties
+        `(:block ,(format-time-string "%Y-%m") :scope file-with-archives))
+
+  ;; Clocktable (reporting: r) in the agenda
+  (setq org-clocktable-defaults
+        '(:maxlevel 3 :lang "en" :scope file-with-archives
+                    :wstart 1 :mstart 1 :tstart nil :tend nil :step week :stepskip0 nil :fileskip0 nil
+                    :tags nil :emphasize nil :link t :narrow 70! :indent t :formula nil :timestamp nil
+                    :level nil :tcolumns nil :formatter nil))
 
   (use-package ivy-bibtex
     :after ivy
