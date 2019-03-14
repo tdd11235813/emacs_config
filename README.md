@@ -16,6 +16,7 @@
 - Tuned startup, but emacsclient/server setup is recommended
 - custom theme, that has dark and bright mode (toggle by key `C-c M-l`)
 - Note: some of the key mappings contain German umlauts
+- Note: local copy of [hideshow.el](https://github.com/jwiegley/emacs-release/raw/master/lisp/progmodes/hideshow.el) and [dired-x.el](https://github.com/emacs-mirror/emacs/raw/master/lisp/dired-x.el) (cannot download file via emacs anymore)
 
 ## Keys
 

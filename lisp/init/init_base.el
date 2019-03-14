@@ -451,7 +451,8 @@ Attendees: %^{Attendees}
 
 
 (use-package dired-x                    ; Additional tools for Dired
-  :quelpa (dired-x :fetcher url :url "https://github.com/emacs-mirror/emacs/raw/master/lisp/dired-x.el")
+  :load-path "lisp"
+  ;;:quelpa (dired-x :fetcher url :url "https://github.com/emacs-mirror/emacs/raw/master/lisp/dired-x.el") ;; does not download anymore (emacs url retreiver fails), error: missing package desc as dired-x.el is empty
   :defer t
   :bind (("C-c f j" . dired-jump)
          ("C-x C-j" . dired-jump))
@@ -672,7 +673,8 @@ comma-separated columns."
 
 
 (use-package hideshow
-  :quelpa (hideshow :fetcher url :url "https://github.com/jwiegley/emacs-release/raw/master/lisp/progmodes/hideshow.el")
+  ;;:quelpa (hideshow :fetcher url :url "https://github.com/jwiegley/emacs-release/raw/master/lisp/progmodes/hideshow.el") ;; does not download anymore, see comment above (dired-x)
+  :load-path "lisp"
   :ensure f
   :init
   (defun ha/hs-show-all ()
