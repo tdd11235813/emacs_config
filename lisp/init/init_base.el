@@ -362,6 +362,12 @@ Attendees: %^{Attendees}
   (setq org-clock-clocktable-default-properties
         `(:block ,(format-time-string "%Y-%m") :scope file-with-archives))
 
+  (setq org-duration-format (quote h:mm))
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((emacs-lisp . t)
+     (R . t)))
+
   ;; Clocktable (reporting: r) in the agenda
   (setq org-clocktable-defaults
         '(:maxlevel 3 :lang "en" :scope file-with-archives

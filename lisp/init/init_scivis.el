@@ -155,9 +155,10 @@
 
 ;; after download/update just run make clean && make in lisp/ESS/ to byte-compile it
 (use-package ess-site
-  :load-path "lisp/ESS/lisp"
-  :ensure f
-  :defer t
+  :ensure ess
+  ;; :load-path "lisp/ESS/lisp"
+  ;; :ensure f
+  ;; :defer t
   :config
   (setq ess-history-file nil)
   (ess-toggle-underscore nil)
