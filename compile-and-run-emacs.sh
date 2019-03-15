@@ -15,7 +15,7 @@ if [ "$1" == "install" ]; then
     cd /tmp/emacs-${EMACSVER}
 
     ./autogen.sh
-    ./configure --prefix=$PORTABLE --without-all --without-x CFLAGS="-O3 -g -I$PORTABLE/include" #LDFLAGS="-L$PORTABLE/lib -Wl,-rpath=\\\$\$ORIGIN/../lib"
+    ./configure --prefix=$PORTABLE --without-all --with-gnutls --without-x CFLAGS="-O3 -g -I$PORTABLE/include" #LDFLAGS="-L$PORTABLE/lib -Wl,-rpath=\\\$\$ORIGIN/../lib"
     make -j$(nproc) install
 
     # init.el
