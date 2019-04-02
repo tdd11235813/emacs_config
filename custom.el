@@ -4,23 +4,11 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(LaTeX-command "latex -synctex=1")
- '(ansi-color-names-vector
-   ["#080808" "#d70000" "#67b11d" "#875f00" "#268bd2" "#af00df" "#00ffff" "#b2b2b2"])
- '(cmake-ide-flags-c "-std=c++11")
- '(cmake-ide-flags-c++ "-std=c++11")
- '(company-clang-arguments (quote ("--gcc-toolchain=/sw/global/compilers/gcc/5.3.0")))
- '(flycheck-c/c++-clang-executable
-   "/sw/global/compilers/llvm/3.7/bin/clang++ --gcc-toolchain=/sw/global/compilers/gcc/5.3.0")
- '(gc-cons-threshold 50000000)
- '(gnutls-min-prime-bits 2048)
- '(kill-whole-line t)
- '(mouse-yank-at-point t)
  '(org-agenda-files (list org-directory))
  '(org-directory "~/.emacs.d/user")
  '(package-selected-packages
    (quote
-    (ivy-bibtex org-clock-convenience org-clock-today org-brain org-cliplink org-noter org-ref pdf-tools nov interleave ivy-yasnippet general which-key avy powerthesaurus academic-phrases poly-R json-mode duplicate-thing git-timemachine git-gutter neotree undo-tree swiper counsel multiple-cursors ivy smex anzu wgrep cd-compile magit delight dumb-jump polymode auctex gnuplot-mode yaml-mode travis php-mode spaceline rainbow-delimiters highlight-numbers column-enforce-mode spacemacs-theme glsl-mode modern-cpp-font-lock cmake-ide rtags cmake-mode auto-complete-clang flycheck cuda-mode drag-stuff misc-cmds yasnippet ws-butler ido-vertical-mode ido-hacks markdown-mode company sr-speedbar deft f use-package)))
- '(show-trailing-whitespace t)
+    (ivy-bibtex org-clock-convenience org-clock-today org-brain org-cliplink org-noter org-ref pdf-tools nov interleave yasnippet yaml-mode ws-butler which-key wgrep undo-tree sr-speedbar spacemacs-theme spaceline smex rtags rainbow-delimiters quelpa-use-package ppindent powerthesaurus poly-R neotree multiple-cursors modern-cpp-font-lock misc-cmds magit json-mode ido-vertical-mode ido-hacks highlight-numbers hideshow gnuplot-mode git-timemachine general flycheck expand-region duplicate-thing dumb-jump drag-stuff dired-x dired+ diminish delight deft counsel company column-enforce-mode cmake-ide cmake-font-lock cd-compile avy auto-complete-clang auctex anzu academic-phrases)))
  '(spacemacs-theme-comment-bg nil)
  '(spacemacs-theme-custom-colors
    (quote
@@ -109,7 +97,7 @@
                   (eq alternative
                       (quote 1))
                   "#666666" "#5f8787")))))
- '(tramp-use-ssh-controlmaster-options nil))
+ '(tramp-use-ssh-controlmaster-options nil nil (tramp)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
