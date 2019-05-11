@@ -584,6 +584,12 @@ Attendees: %^{Attendees}
   (use-package ivy-yasnippet)
   )
 
+(use-package dumb-diff
+  :bind (("C-c 1" . dumb-diff-set-region-as-buffer1)
+         ("C-c 2" . dumb-diff-set-region-as-buffer2)
+         ("C-c q" . dumb-diff-quit))
+  :ensure t)
+
 ;; buffer cleanup
 (defun untabify-buffer ()
   (interactive)
