@@ -7,27 +7,27 @@
   (use-package spacemacs-common
     :ensure spacemacs-theme
     :init
-
     (setq spacemacs-theme-org-highlight t)
     (setq spacemacs-theme-org-height nil)
     (custom-set-variables '(spacemacs-theme-comment-bg . nil))
+    ;; https://caiorss.github.io/Emacs-Elisp-Programming/Elisp_Programming.html#sec-1-8
     (custom-set-variables '(spacemacs-theme-custom-colors
                             '(
-                              (concat str (when (= alternative 2) "#aa0000" "#ff8866"))
-                              (concat act1 (when (= alternative 2) "#888888" (when (= alternative 1) "#000030" "#303030")))
-                              (concat act2 (when (= alternative 2) "#999999" (when (= alternative 1) "#111111" "#404040")))
-                              (concat lnum "#999999")
-                              (concat highlight (when (= alternative 2) "#cccccc" "#444444"))
-                              (concat green-bg-s (when (= alternative 2) "#cccccc" "#444444")) ; for lazy highlight
-                              (concat bg1 (when (= alternative 2) "#ffffff" (when (= alternative 1) "#202020" "#262626")))
-                              (concat keyword (when (= alternative 2) "#2200dd" (when (= alternative 1) "#22ddff" "#99cc55")))
-                              (concat const (when (= alternative 2) "#000000" "#ffffff"))
-                              (concat type (when (= alternative 2) "#000044" "#88ee88"))
-                              (concat var (when (= alternative 2) "#000000" "#aaffaa"))
-                              (concat func (when (= alternative 2) "#0000aa" "#ff99ff"))
-                              (concat base (when (= alternative 2) "#101010" (when (= alternative 1) "#cccccc" "#b2b2b2")))
-                              (concat base-dim (when (= alternative 2) "#121212" (when (= alternative 1) "#999999" "#888888")))
-                              (concat comment (when (= alternative 2) "#006600" (when (= alternative 1) "#666666" "#5f8787")))
+                              (when (= alternative 2) (str . "#aa0000") (str . "#ff8866"))
+                              (when (= alternative 2) (act1 . "#888888") (when (= alternative 1) (act1 . "#000030") (act1 . "#303030")))
+                              (when (= alternative 2) (act2 . "#999999") (when (= alternative 1) (act2 . "#111111") (act2 . "#404040")))
+                              (lnum . "#999999")
+                              (when (= alternative 2) (highlight . "#cccccc") (highlight . "#444444"))
+                              (when (= alternative 2) (green-bg-s . "#cccccc") (green-bg-s . "#444444")) ; for lazy highlight
+                              (when (= alternative 2) (bg1 . "#ffffff") (when (= alternative 1) (bg1 . "#202020") (bg1 . "#262626")))
+                              (when (= alternative 2) (keyword . "#2200dd") (when (= alternative 1) (keyword . "#22ddff") (keyword . "#99cc55")))
+                              (when (= alternative 2) (const . "#000000") (const . "#ffffff"))
+                              (when (= alternative 2) (type . "#000044") (type . "#88ee88"))
+                              (when (= alternative 2) (var . "#000000") (var . "#aaffaa"))
+                              (when (= alternative 2) (func . "#0000aa") (func . "#ff99ff"))
+                              (when (= alternative 2) (base . "#101010") (when (= alternative 1) (base . "#cccccc") (base . "#b2b2b2")))
+                              (when (= alternative 2) (base-dim . "#121212") (when (= alternative 1) (base-dim . "#999999") (base-dim . "#888888")))
+                              (when (= alternative 2) (comment . "#006600") (when (= alternative 1) (comment . "#666666") (comment . "#5f8787")))
                               )))
     :config
     (use-package column-enforce-mode
