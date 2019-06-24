@@ -12,21 +12,22 @@
     (setq spacemacs-theme-org-height nil)
     (custom-set-variables '(spacemacs-theme-comment-bg . nil))
     (custom-set-variables '(spacemacs-theme-custom-colors
-                            '((str . (if (eq alternative '2) "#aa0000" "#ff8866"))
-                              (act1 . (if (eq alternative '2) "#888888" (if (eq alternative '1) "#000030" "#303030")))
-                              (act2 . (if (eq alternative '2) "#999999" (if (eq alternative '1) "#111111" "#404040")))
-                              (lnum . "#999999")
-                              (highlight . (if (eq alternative '2) "#cccccc" "#444444"))
-                              (green-bg-s . (if (eq alternative '2) "#cccccc" "#444444")) ; for lazy highlight
-                              (bg1 . (if (eq alternative '2) "#ffffff" (if (eq alternative '1) "#202020" "#262626")))
-                              (keyword . (if (eq alternative '2) "#2200dd" (if (eq alternative '1) "#22ddff" "#99cc55")))
-                              (const . (if (eq alternative '2) "#000000" "#ffffff"))
-                              (type . (if (eq alternative '2) "#000044" "#88ee88"))
-                              (var . (if (eq alternative '2) "#000000" "#aaffaa"))
-                              (func . (if (eq alternative '2) "#0000aa" "#ff99ff"))
-                              (base . (if (eq alternative '2) "#101010" (if (eq alternative '1) "#cccccc" "#b2b2b2")))
-                              (base-dim . (if (eq alternative '2) "#121212" (if (eq alternative '1) "#999999" "#888888")))
-                              (comment . (if (eq alternative '2) "#006600" (if (eq alternative '1) "#666666" "#5f8787")))
+                            '(
+                              (concat str (when (= alternative 2) "#aa0000" "#ff8866"))
+                              (concat act1 (when (= alternative 2) "#888888" (when (= alternative 1) "#000030" "#303030")))
+                              (concat act2 (when (= alternative 2) "#999999" (when (= alternative 1) "#111111" "#404040")))
+                              (concat lnum "#999999")
+                              (concat highlight (when (= alternative 2) "#cccccc" "#444444"))
+                              (concat green-bg-s (when (= alternative 2) "#cccccc" "#444444")) ; for lazy highlight
+                              (concat bg1 (when (= alternative 2) "#ffffff" (when (= alternative 1) "#202020" "#262626")))
+                              (concat keyword (when (= alternative 2) "#2200dd" (when (= alternative 1) "#22ddff" "#99cc55")))
+                              (concat const (when (= alternative 2) "#000000" "#ffffff"))
+                              (concat type (when (= alternative 2) "#000044" "#88ee88"))
+                              (concat var (when (= alternative 2) "#000000" "#aaffaa"))
+                              (concat func (when (= alternative 2) "#0000aa" "#ff99ff"))
+                              (concat base (when (= alternative 2) "#101010" (when (= alternative 1) "#cccccc" "#b2b2b2")))
+                              (concat base-dim (when (= alternative 2) "#121212" (when (= alternative 1) "#999999" "#888888")))
+                              (concat comment (when (= alternative 2) "#006600" (when (= alternative 1) "#666666" "#5f8787")))
                               )))
     :config
     (use-package column-enforce-mode
