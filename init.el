@@ -169,19 +169,16 @@
   :load-path "lisp/init"
   )
 
-(use-package init_theme
-  :ensure f
-  :load-path "lisp/init"
-  :defer 0
-  :bind
-  (
-   ("C-c M-l" . switch-theme-lightness)
-   ("C-c M-k" . (lambda() (interactive) (init-theme-dark 1)))
-   )
-  :config
-  (init-theme-dark 0)
-
-  )
+(use-package heaven-and-hell
+  :init
+  (add-to-list 'custom-theme-load-path "~/.emacs.d/lisp/themes")
+  (setq heaven-and-hell-theme-type 'dark) ;; Omit to use light by default
+  (setq heaven-and-hell-themes
+        '((light . scicpp-light)
+          (dark . scicpp-dark))) ;; Themes can be the list: (dark . (tsdh-dark wombat))
+  :hook (after-init . heaven-and-hell-init-hook)
+  :bind (("C-c M-k" . heaven-and-hell-load-default-theme)
+         ("C-c M-l" . heaven-and-hell-toggle-theme)))
 
 
 ;; for the custom variable definitions
