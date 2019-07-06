@@ -156,23 +156,6 @@
     )
   )
 
-;; (use-package fill-column-indicator
-;; :hook
-;; (prog-mode-hook . fci-mode)
-;;     :config
-;;     (fci-mode 1)
-;;     (setq fci-rule-character-color "black"
-;;           fci-rule-column 80)
-;;     (defun on-off-fci-before-company(command)
-;;       (when (string= "show" command)
-;;         (turn-off-fci-mode))
-;;       (when (string= "hide" command)
-;;         (turn-on-fci-mode)))
-;;     (advice-add 'company-call-frontends :before #'on-off-fci-before-company)
-;;     ;;(add-hook 'after-change-major-mode-hook 'fci-mode)
-;;     ;;(add-hook 'prog-mode-hook 'fci-mode)
-;;     )
-
 (use-package neotree
   :defer t
   :bind
@@ -190,14 +173,6 @@
    ("C-c v" . org-capture)
    ("C-c q" . org-agenda-list)
    )
-  :init
-  (use-package deft
-    :config
-    (setq deft-directory "~/.emacs.d/user/deft")
-    (setq deft-use-filename-as-title t)
-    (setq deft-extensions "org")
-    (setq deft-text-mode 'org-mode)
-    )
   :config
   ;; Org-agenda
   (use-package org-agenda
@@ -790,7 +765,7 @@ comma-separated columns."
   (setq dumb-jump-max-find-time 10)
   (setq my-ag-ignored-patterns '("*.bak" "*.out" "*.csv" "*.pyc" "*.pdf" "*.png" "*.jpg"))
   (add-to-list 'dumb-jump-language-file-exts '(:language "c++" :ext "cu"))
-  :ensure)
+  )
 
 (use-package cd-compile
   :defer t
