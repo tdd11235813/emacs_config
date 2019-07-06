@@ -10,20 +10,20 @@
   (custom-set-variables '(spacemacs-theme-custom-colors
                           '(
                             (str . "#ff8866")
-                            (act1 . "#000030")
-                            (act2 . "#111111")
+                            (act1 . "#303030")
+                            (act2 . "#404040")
                             (lnum . "#999999")
                             (highlight . "#444444")
                             (green-bg-s . "#444444") ; for lazy highlight
-                            (bg1 . "#202020")
-                            (keyword . "#22ddff")
+                            (bg1 . "#262626")
+                            (keyword . "#99cc55")
                             (const . "#ffffff")
                             (type . "#88ee88")
                             (var . "#aaffaa")
                             (func . "#ff99ff")
-                            (base . "#cccccc")
-                            (base-dim . "#999999")
-                            (comment . "#666666")
+                            (base . "#b2b2b2")
+                            (base-dim . "#888888")
+                            (comment . "#5f8787")
                             )))
 
   :config
