@@ -176,7 +176,8 @@
   (setq heaven-and-hell-themes
         '((light . scicpp-light)
           (dark . scicpp-dark))) ;; Themes can be the list: (dark . (tsdh-dark wombat))
-  :hook (after-init . heaven-and-hell-init-hook)
+;;  :hook (after-init . heaven-and-hell-init-hook) ;; did not work
+  :hook (emacs-startup . heaven-and-hell-init-hook)
   :bind (("C-c M-k" . heaven-and-hell-load-default-theme)
          ("C-c M-l" . heaven-and-hell-toggle-theme)))
 
