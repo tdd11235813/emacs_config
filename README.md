@@ -147,6 +147,29 @@ alias emc="emacsclient -s workspaceC"
 command time -p emacs -l $HOME/.emacs.d/init.el -Q -e kill-emacs
 ```
 
+## Font
+
+Font for coding:
+
+``` bash
+# from https://github.com/adobe-fonts/source-code-pro/issues/17
+# ~/.fonts is now deprecated and that
+#FONT_HOME=~/.fonts
+# ~/.local/share/fonts should be used instead
+FONT_HOME=~/.local/share/fonts
+
+echo "installing fonts at $PWD to $FONT_HOME"
+mkdir -p "$FONT_HOME/adobe-fonts/source-code-pro"
+# find "$FONT_HOME" -iname '*.ttf' -exec echo '{}' \;
+
+(git clone \
+     --branch release \
+     --depth 1 \
+     'https://github.com/adobe-fonts/source-code-pro.git' \
+     "$FONT_HOME/adobe-fonts/source-code-pro" && \
+     fc-cache -f -v "$FONT_HOME/adobe-fonts/source-code-pro")
+```
+
 ## Screenshots
 
 Emacs running in terminal mode
