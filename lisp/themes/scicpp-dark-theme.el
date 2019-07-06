@@ -27,32 +27,6 @@
                             )))
 
   :config
-  (create-spacemacs-theme 'dark 'scicpp-dark)
-  (setq spacemacs-theme-org-highlight t)
-  (setq spacemacs-theme-org-height nil)
-
-  (use-package column-enforce-mode
-    :delight column-enforce-mode
-    :config
-    (setq column-enforce-comments nil)
-    (custom-set-faces '(column-enforce-face ((t (:background "#161616")))))
-    )
-
-  (use-package spaceline-config
-    :ensure spaceline
-    :defer 1
-    :config
-    (spaceline-spacemacs-theme)
-    (spaceline-toggle-version-control-on)
-    (setq-default
-     powerline-height 24
-     powerline-default-separator 'wave
-     spaceline-flycheck-bullet "❖ %s"
-     spaceline-separator-dir-left '(right . right)
-     spaceline-separator-dir-right '(left . left))
-    ;; (use-package semantic/sb
-    ;;  :ensure f)
-    )
 
   (show-paren-mode t)
   (add-hook 'prog-mode-hook 'show-paren-mode t)
@@ -86,6 +60,18 @@
   (use-package cuda-mode
     :load-path "lisp/cuda-mode"
     :ensure f
+    )
+
+  ;; create dark theme
+  (create-spacemacs-theme 'dark 'scicpp-dark)
+  (setq spacemacs-theme-org-highlight t)
+  (setq spacemacs-theme-org-height nil)
+
+  (use-package column-enforce-mode
+    :delight column-enforce-mode
+    :config
+    (setq column-enforce-comments nil)
+    (custom-set-faces '(column-enforce-face ((t (:background "#161616")))))
     )
 
   (set-face-attribute font-lock-keyword-face nil :weight 'normal :underline nil)
@@ -127,6 +113,22 @@
   (add-hook 'cuda-mode-hook 'highlight-numbers-mode) ; conflicts too (write 'unsigned const' in func sign -> it hangs up)
   (add-hook 'cuda-mode-hook #'rainbow-delimiters-mode) ; same
 
+
+  (use-package spaceline-config
+    :ensure spaceline
+    ;;:defer 1
+    :config
+    (spaceline-spacemacs-theme)
+    (spaceline-toggle-version-control-on)
+    (setq-default
+     powerline-height 24
+     powerline-default-separator 'wave
+     spaceline-flycheck-bullet "❖ %s"
+     spaceline-separator-dir-left '(right . right)
+     spaceline-separator-dir-right '(left . left))
+    ;; (use-package semantic/sb
+    ;;  :ensure f)
+    )
 
   (use-package highlight-numbers)
   (use-package rainbow-delimiters)
