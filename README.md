@@ -3,18 +3,16 @@
 ## Features
 
 - Supports various languages such as C++11, CUDA, CMake, GLSL, gnuplot, R, LaTeX, ...
-- dumb-jump for navigating through code ([use](https://github.com/jacktasia/dumb-jump#configuration) a `.dumbjump` file to exclude folders is recommended)
-- magit, git-timemachine for git
-- neotree for folder navigation
-- ESS for R
-- polymode, poly-markdown, poly-R for files that contain multiple languages
+- `dumb-jump` for navigating through code ([use](https://github.com/jacktasia/dumb-jump#configuration) a `.dumbjump` file to exclude folders is recommended)
+- `magit`, `git-timemachine` for git
+- `neotree` for folder navigation
+- `polymode` to support multiple languages in a file
 - org-ref + org-noter + pdf-tools for paper reading (`user/` is a separate, private, versioned folder)
-- undo-tree is optional
-- counsel only where it helps
-- hideshow for code folding
-- quelpa-use-package for package installation and configuration
+- org capture for creating diaries with work times and ToDo/notes lists (support for archiving todo points)
+- `hideshow` for code folding
+- `quelpa-use-package` for package installation and configuration
 - Tuned startup, but emacsclient/server setup is recommended
-- custom theme, that has dark and bright mode (toggle by key `C-c M-l`)
+- custom theme, that has dark and bright mode (toggle by key `C-c M-l`, powered by [heaven-and-hell](https://github.com/valignatev/heaven-and-hell))
 - Note: some of the key mappings contain German umlauts
 - Note: local copy of [hideshow.el](https://github.com/jwiegley/emacs-release/raw/master/lisp/progmodes/hideshow.el) and [dired-x.el](https://github.com/emacs-mirror/emacs/raw/master/lisp/dired-x.el) (cannot download file via emacs anymore)
 
@@ -28,8 +26,8 @@
 | `C-<PageDown/PageUp>` | cycle source files only             |
 | `F6`                  | bs-show (opened sources files list) |
 | `F5`                  | reload buffer                       |
-| `C-M-<prior/next>`    | scroll-down/up-line                 |
-| `M-<PageDwn>`         | scroll other window                 |
+| `C-M-<prior/next>`    | scroll-down/up row-wise             |
+| `M-<PageDown/PageUp>` | scroll other window                 |
 | `C-M-s`               | regexp search                       |
 | `C-f`                 | expand-region                       |
 | `C-M <up/down>`       | move through level of parentheses   |
@@ -42,6 +40,28 @@
 | `M-q`                 | swiper at point                     |
 | `C-c t`               | neotree (folder navigation)         |
 | `C-x u`               | undo-tree                           |
+| `C-<Space> <Space>`   | set marker                          |
+| `C-u <Space>`         | jump back                           |
+| `C-x C-x`             | select marked region                |
+| `C-x <Space>`         | rectangle selection mode            |
+| `C-M <Up/Down>`       | go through level of parentheses     |
+| `C-l`                 | center at position                  |
+| `M-a`                 | backward-sentence                   |
+| `C-v`                 | ivy/avy goto line                   |
+
+### Org
+
+| Command     | Description                                                           |
+| :---        | :---                                                                  |
+| `C-c a`     | org agenda                                                            |
+| `C-c q`     | org agenda list                                                       |
+| `C-c v`     | org capture                                                           |
+| `C-c a v d` | create diary entry                                                    |
+| `C-c C-c`   | run org action                                                        |
+| `C-c -`     | org itemize                                                           |
+| ...         | Alt+Enter, Alt+Shift+Right Subitem, Alt+Shift+Up, [Shift]-Tab Folding |
+| `C-c l`     | store link                                                            |
+|             |                                                                       |
 
 ### Textwork
 
@@ -72,47 +92,49 @@
 | `C-x c`       | all-like-this                       |
 | `C-c e`       | edit-lines                          |
 
-### Coding (jump-to without rtags)
+### Coding
 
-| Command | Description               |
-| :---    | :---                      |
-| `M-g o` | dumb-jump-go-other-window |
-| `M-g j` | dumb-jump-go              |
-| `M-g i` | dumb-jump-go-prompt       |
+| Command | Description                                               |
+| :---    | :---                                                      |
+| `M-g o` | dumb-jump-go-other-window                                 |
+| `M-g j` | dumb-jump-go                                              |
+| `M-g i` | dumb-jump-go-prompt                                       |
+| `M-m`   | start of code line                                        |
+| `M-g k` | align code columns along regexp (like aligning along '=') |
+| `C-;`   | comment/uncomment                                         |
 
 ### Misc
 
-| Command               | Description                         |
-| :---                  | :---                                |
-| `M-/`                 | dabbrev-expand          |
-| `M-r`                 | line to bottom top      |
-| `M-\`                 | delete whitespaces      |
-| `M-^`                 | join to previous line   |
-| `C-M-x`               | eval defun (lisp)       |
-| `C-c M-l`             | toggle theme lightness  |
+| Command          | Description                                              |
+| :---             | :---                                                     |
+| `M-/`            | dabbrev-expand                                           |
+| `M-r`            | line to bottom top                                       |
+| `M-\`            | delete whitespaces                                       |
+| `M-^`            | join to previous line                                    |
+| `C-M-x`          | eval defun (lisp)                                        |
+| `C-c M-l`        | toggle theme lightness                                   |
+| `M-<digit>` + .. | repeats <digit>-times (`M-3 C-d` duplicates row 3 times) |
 
 ### Folding
 
 | Command               | Description                         |
 | :---                  | :---                                |
-| `C-c T h`             | hs-minor-mode                       |
-| `C-c h a`             | ha/hs-hide-all                      |
-| `C-c h s`             | ha/hs-show-all                      |
-| `C-c h h`             | ha/hs-toggle-hiding                 |
+| `C-c s d`             | ha/hs-hide-all                      |
+| `C-c s a`             | ha/hs-show-all                      |
+| `C-c s s`             | ha/hs-toggle-hiding                 |
 
 ...
 
 ## Install
 
-- Run recursive git clone for loading submodules `glsl-mode`, `cuda-mode`, `snippets` and `ESS`:
+- Run recursive git clone for loading snippets:
 ```bash
 git clone --recursive https://github.com/tdd11235813/emacs_config.git
 ```
-- Run `make` in lisp/ESS (for rebuild run `make clean` before)
 
 ## Misc
 
-### Aliases
+### Recommended Aliases
 
 ```bash
 alias em="emacs -l $HOME/.emacs.d/init.el"

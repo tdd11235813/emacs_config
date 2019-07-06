@@ -5,60 +5,6 @@
 
 ;; to debug on error, use toggle-debug-on-error
 
-;; C-SPC SPC - set marker
-;; C-u SPC - jump back
-;; C-x C-x - select marked region, rectangle mode: C-x SPC
-
-;;; Org
-;; Alt+Enter, Alt+Shift+Right Subitem, Alt+Shift+Up, [Shift]-Tab Folding
-;; C-c C-c Actions
-;; C-c [ -> org.agenda
-;; C-c - -> itemize
-
-;;;
-;; M-/ dabbrev-expand
-;; M-m start of code line
-;; M-<PageDwn> scroll other window
-;; C-M-s regexp search
-;; C-f expand-region
-;; M-{ insert as pair
-;; M-r line to bottom top
-;; C-M <up/down> move level of parentheses
-;; C-M-<prior|next> scroll-down|up-line
-
-;; M-\ delete whitespaces
-;; M-^ join to previous line
-;; C-M-x eval defun (lisp)
-;; M-a backward-sentence
-;; M-<digit> for C-u <digit> ... (M-3 C-d duplicates 3 times)
-
-;;; hs-minor-mode
-;; C-c s d ha/hs-hide-all
-;; C-c s a ha/hs-show-all
-;; C-c s s ha/hs-toggle-hiding
-
-;; swiper
-;; M-s
-;; M-q swiper at point
-;; counsel
-;; C-c C-g counsel-git-grep
-;; neotree
-;; C-c t
-;; undo-tree
-;; C-x u
-
-;; multiple-cursors
-;; C-c <right> next-like-this
-;; C-c <left> previous-like-this
-;; C-x c all-like-this
-;; C-c e edit-lines
-
-;; ivy/avy
-;; C-l goto line
-
-;; theme
-;; C-c M-l lightness
-
 ;;(add-to-list 'load-path "~/.emacs.d/tmp/benchmark-init-el/")
 ;;(require 'benchmark-init-loaddefs)
 ;;(benchmark-init/activate)
