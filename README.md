@@ -180,7 +180,7 @@ Emacs running in window mode (showing dumb-jump and neotree)
 
 ## Used Packages
 
-```
+```bash
 academic-phrases
 ansi-color
 anzu
@@ -193,23 +193,20 @@ cc-mode
 cd-compile
 cmake-font-lock
 cmake-mode
-column-enforce-mode
 company
 company-quickhelp
 counsel
 cuda-mode
-deft
 delight
 dired
 dired+
 dired-x
-display-line-numbers
 drag-stuff
+dumb-diff
 dumb-jump
 duplicate-thing
 ess-site
 expand-region
-fill-column-indicator
 flycheck
 flyspell
 general
@@ -218,14 +215,12 @@ git-timemachine
 glsl-mode
 gnuplot-mode
 hideshow
-highlight-numbers
 interleave
 ivy
 ivy-bibtex
 ivy-hydra
 ivy-yasnippet
 json-mode
-linum
 magit
 markdown-mode
 misc-cmds
@@ -234,6 +229,12 @@ multiple-cursors
 neotree
 nov
 org
+org-agenda
+org-brain
+org-cliplink
+org-clock
+org-clock-convenience
+org-clock-today
 org-habit
 org-noter
 org-ref
@@ -245,14 +246,10 @@ poly-noweb
 poly-R
 powerthesaurus
 ppindent
-rainbow-delimiters
 recentf
 reftex
 saveplace
-semantic/sb
 smex
-spaceline-config
-spacemacs-common
 subword
 swiper
 tex-site
@@ -264,6 +261,21 @@ ws-butler
 yaml-mode
 yasnippet
 zotxt
+
+# by themes
+
+column-enforce-mode
+cuda-mode
+display-line-numbers
+glsl-mode
+highlight-numbers
+linum
+rainbow-delimiters
+semantic/sb
+spaceline-config
+spacemacs-common
+
+heaven-and-hell
 ```
 
 ## License
