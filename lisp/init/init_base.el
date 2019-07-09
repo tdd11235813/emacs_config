@@ -1,6 +1,6 @@
-;;; package --- org setting
+;;; package --- basic settings
 ;;; Commentary:
-;;;  Packs org based settings for init
+;;;  Packs basic settings for init
 ;;; Code:
 
 

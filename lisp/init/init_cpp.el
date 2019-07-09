@@ -1,6 +1,6 @@
-;;; package --- org setting
+;;; package --- cpp setting
 ;;; Commentary:
-;;;  Packs org based settings for init
+;;;  Packs cpp + code settings for init
 ;;; Code:
 
 (setq-default c-default-style "linux"

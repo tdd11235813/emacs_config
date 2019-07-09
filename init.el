@@ -15,6 +15,8 @@
 ;; byte compile init.el script (not working)
 ;; emacs -Q --batch -l ~/.emacs.d/init.el -f batch-byte-compile ~/.emacs.d/init.el
 
+;; theme: describe-char to get face name
+
 (setq max-lisp-eval-depth 1000)
 ;; By default Emacs triggers garbage collection at ~0.8MB which makes
 ;; startup really slow. Since most systems have at least 64MB of memory,
@@ -120,12 +122,17 @@
   (add-to-list 'custom-theme-load-path "~/.emacs.d/lisp/themes")
   (setq heaven-and-hell-theme-type 'dark) ;; Omit to use light by default
   (setq heaven-and-hell-themes
-        '((light . scicpp-light)
-          (dark . scicpp-dark))) ;; Themes can be the list: (dark . (tsdh-dark wombat))
+        '((light . spacemacs-light)
+          (dark . spacemacs-dark))) ;; Themes can be the list: (dark . (tsdh-dark wombat))
 ;;  :hook (after-init . heaven-and-hell-init-hook) ;; did not work
   :hook (emacs-startup . heaven-and-hell-init-hook)
   :bind (("C-c M-k" . heaven-and-hell-load-default-theme)
          ("C-c M-l" . heaven-and-hell-toggle-theme)))
+
+(use-package init_theme
+ :ensure f
+ :load-path "lisp/init"
+ )
 
 
 ;; for the custom variable definitions

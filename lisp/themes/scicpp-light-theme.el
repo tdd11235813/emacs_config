@@ -3,58 +3,34 @@
 (deftheme scicpp-light
   "Modified spacemacs light theme.")
 
-(create-spacemacs-theme 'light 'scicpp-light)
+  (set-background-color "#ffffff")
+  (set-foreground-color "#000000")
 
 (use-package spacemacs-common
   :ensure spacemacs-theme
   :init
-  (setq spacemacs-theme-org-highlight t)
-  (setq spacemacs-theme-org-height nil)
-
   (custom-set-variables '(spacemacs-theme-comment-bg . nil))
   ;; https://caiorss.github.io/Emacs-Elisp-Programming/Elisp_Programming.html#sec-1-8
   (custom-set-variables '(spacemacs-theme-custom-colors
                           '(
-                            (str . "#ff8866")
-                            (act1 . "#000030")
-                            (act2 . "#111111")
+                            (str . "#aa0000")
+                            (act1 . "#888888")
+                            (act2 . "#999999")
                             (lnum . "#999999")
-                            (highlight . "#444444")
-                            (green-bg-s . "#444444") ; for lazy highlight
-                            (bg1 . "#202020")
-                            (keyword . "#22ddff")
-                            (const . "#ffffff")
-                            (type . "#88ee88")
-                            (var . "#aaffaa")
-                            (func . "#ff99ff")
-                            (base . "#cccccc")
-                            (base-dim . "#999999")
-                            (comment . "#666666")
+                            (highlight . "#cccccc")
+                            (green-bg-s . "#cccccc") ; for lazy highlight
+                            (bg1 . "#ffffff")
+                            (keyword . "#2200dd")
+                            (const . "#000000")
+                            (type . "#000044")
+                            (var . "#000000")
+                            (func . "#0000aa")
+                            (base . "#101010")
+                            (base-dim . "#121212")
+                            (comment . "#006600")
                             )))
 
   :config
-  (use-package column-enforce-mode
-    :delight column-enforce-mode
-    :config
-    (setq column-enforce-comments nil)
-    (custom-set-faces '(column-enforce-face ((t (:background "#161616")))))
-    )
-
-  (use-package spaceline-config
-    :ensure spaceline
-    :defer 1
-    :config
-    (spaceline-spacemacs-theme)
-    (spaceline-toggle-version-control-on)
-    (setq-default
-     powerline-height 24
-     powerline-default-separator 'wave
-     spaceline-flycheck-bullet "❖ %s"
-     spaceline-separator-dir-left '(right . right)
-     spaceline-separator-dir-right '(left . left))
-    ;; (use-package semantic/sb
-    ;;  :ensure f)
-    )
 
   (show-paren-mode t)
   (add-hook 'prog-mode-hook 'show-paren-mode t)
@@ -75,7 +51,7 @@
       (customize-set-variable 'display-line-numbers-width-start 3)
       ;; Disable line-numbers minor mode for neotree
       ;; https://github.crookster.org/macOS-Emacs-26-display-line-numbers-and-me/#display-line-numbers
-      (add-hook 'neo-after-create-hook (lambda (&optional dummy) (display-line-numbers-mode -1)))
+     (add-hook 'neo-after-create-hook (lambda (&optional dummy) (display-line-numbers-mode -1)))
       )
     )
 
@@ -88,6 +64,25 @@
   (use-package cuda-mode
     :load-path "lisp/cuda-mode"
     :ensure f
+    )
+
+  ;; (set-background-color "#ffffff")
+  ;; (set-foreground-color "#000000")
+
+  ;; create light theme
+  (create-spacemacs-theme 'light 'scicpp-light)
+
+  (setq spacemacs-theme-org-highlight t)
+  (setq spacemacs-theme-org-height nil)
+
+  (use-package column-enforce-mode
+    :delight column-enforce-mode
+    :config
+    (setq column-enforce-comments nil)
+    (global-column-enforce-mode nil)
+    (setq column-enforce-comments nil)
+    (setq column-enforce-column 999)
+    (custom-set-faces '(column-enforce-face ((t (:background "#ffffff")))))
     )
 
   (set-face-attribute font-lock-keyword-face nil :weight 'normal :underline nil)
@@ -130,23 +125,29 @@
   (add-hook 'cuda-mode-hook #'rainbow-delimiters-mode) ; same
 
 
+  (use-package spaceline-config
+    :ensure spaceline
+    ;;:defer 1
+    :config
+    (spaceline-spacemacs-theme)
+    (spaceline-toggle-version-control-on)
+    (setq-default
+     powerline-height 24
+     powerline-default-separator 'wave
+     spaceline-flycheck-bullet "❖ %s"
+     spaceline-separator-dir-left '(right . right)
+     spaceline-separator-dir-right '(left . left))
+    ;; (use-package semantic/sb
+    ;;  :ensure f)
+    )
+
   (use-package highlight-numbers)
   (use-package rainbow-delimiters)
-
-
-  (setq column-enforce-comments nil)
-  (setq column-enforce-column 999)
-  (global-column-enforce-mode nil)
-
-  (set-background-color "#ffffff")
-  (set-foreground-color "#000000")
-  (custom-set-faces '(column-enforce-face ((t (:background "#ffffff")))))
 
   (when (or (eq major-mode 'c-mode)
             (eq major-mode 'c++-mode))
     (flycheck-mode -1)
     )
-
   )
 
 (provide-theme 'scicpp-light)
