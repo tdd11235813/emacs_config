@@ -15,6 +15,10 @@
 ;; byte compile init.el script (not working)
 ;; emacs -Q --batch -l ~/.emacs.d/init.el -f batch-byte-compile ~/.emacs.d/init.el
 
+;; NOTE: describe-char+describe-face to get face details
+;; NOTE: emacs ... -Q does not invoke after-init-hook
+;; - https://emacs.stackexchange.com/questions/51438/why-after-init-hook-is-not-invoked-workaround-is-emacs-startup-hook
+
 (setq max-lisp-eval-depth 1000)
 ;; By default Emacs triggers garbage collection at ~0.8MB which makes
 ;; startup really slow. Since most systems have at least 64MB of memory,
@@ -92,8 +96,8 @@
 (setq use-package-verbose nil)
 ;;(setq use-package-verbose t)
 
-;;(setq use-package-always-ensure nil)
-(setq use-package-always-ensure t)
+(setq use-package-always-ensure nil)
+;;(setq use-package-always-ensure t)
 ;; ... as quelpa is used, put advice to automatically disable ELPA lookup
 ;; (or add :ensure f for the package that has to be loaded from quelpa)
 (quelpa-use-package-activate-advice)
@@ -101,35 +105,39 @@
 ;; -- own packages --
 
 (use-package init_base
-  :load-path "lisp/init"
   :ensure f
+  :load-path "lisp/init"
   )
 
 (use-package init_cpp
- :ensure f
+  :ensure f
   :load-path "lisp/init"
   )
 
 (use-package init_scivis
- :ensure f
+  :ensure f
   :load-path "lisp/init"
   )
 
+(add-to-list 'custom-theme-load-path "~/.emacs.d/lisp/themes")
+(add-to-list 'load-path "~/.emacs.d/lisp/themes")
+;;(load-theme 'scicpp-dark t)
+
 (use-package heaven-and-hell
+  ;;:defer 0
   :init
-  (add-to-list 'custom-theme-load-path "~/.emacs.d/lisp/themes")
   (setq heaven-and-hell-theme-type 'dark) ;; Omit to use light by default
   (setq heaven-and-hell-themes
         '((light . scicpp-light)
           (dark . scicpp-dark))) ;; Themes can be the list: (dark . (tsdh-dark wombat))
-;;  :hook (after-init . heaven-and-hell-init-hook) ;; did not work
-  :hook (emacs-startup . heaven-and-hell-init-hook)
+  :hook (after-init . heaven-and-hell-init-hook) ;; did not always work
+;;  :hook (emacs-startup . heaven-and-hell-init-hook) ;; does not invoke own parser for syntax highlighting
   :bind (("C-c M-k" . heaven-and-hell-load-default-theme)
          ("C-c M-l" . heaven-and-hell-toggle-theme)))
 
 
 ;; for the custom variable definitions
 (setq custom-file "~/.emacs.d/custom.el")
-(load custom-file)
+(load custom-file 'noerror) ;; TODO: do not do that here when running first time (might not reflect temporary changes)
 ;;
 ;;
