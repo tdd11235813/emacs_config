@@ -3,6 +3,7 @@
 (deftheme test-space
   "Modified spacemacs theme.")
 
+(setq my-var "#ff0000")
 (custom-set-variables '(spacemacs-theme-comment-bg . nil))
 (custom-set-variables '(spacemacs-theme-custom-colors
       '(
@@ -19,9 +20,9 @@
         (keyword . "#ff0000")
         (const . "#ff0000")
         (type . "#ff0000")
-        (var . "#ff0000")
+        (var . my-var)
         (func . "#ff0000")
-        (base . "#ff0000")
+        (base . my-var)
         (base-dim . "#ff0000")
         (comment . "#ff0000")
         )))
