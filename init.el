@@ -138,6 +138,8 @@
 
 ;; for the custom variable definitions
 (setq custom-file "~/.emacs.d/custom.el")
-(load custom-file 'noerror) ;; TODO: do not do that here when running first time (might not reflect temporary changes)
+;;(load custom-file 'noerror) ;; TODO: do not do that here when running first time (might not reflect temporary changes)
+;; (when (file-exists-p custom-file) ;; also did not help initial theme-run issue
+;;   (load custom-file))
 ;;
 ;;
