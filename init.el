@@ -88,8 +88,9 @@
 ;; Ask package.el to not add (package-initialize) to .emacs.
 (setq package--init-file-ensured t)
 
-(eval-when-compile
-  (require 'quelpa-use-package))
+;; (eval-when-compile
+(require 'use-package)
+(require 'quelpa-use-package)
 
 ;; -- use-package settings --
 
@@ -130,16 +131,18 @@
   (setq heaven-and-hell-themes
         '((light . scicpp-light)
           (dark . scicpp-dark))) ;; Themes can be the list: (dark . (tsdh-dark wombat))
-  :hook (after-init . heaven-and-hell-init-hook) ;; did not always work
-;;  :hook (emacs-startup . heaven-and-hell-init-hook) ;; does not invoke own parser for syntax highlighting
+  :hook (after-init . heaven-and-hell-init-hook)
   :bind (("C-c M-k" . heaven-and-hell-load-default-theme)
-         ("C-c M-l" . heaven-and-hell-toggle-theme)))
+         ("C-c M-l" . heaven-and-hell-toggle-theme))
+  :config
+  ;; workaround, see https://github.com/valignatev/heaven-and-hell/issues/11
+  (custom-set-variables `(custom-enabled-themes (quote (scicpp-dark scicpp-light))))
+  )
 
-
+;; -- custom file
 ;; for the custom variable definitions
 (setq custom-file "~/.emacs.d/custom.el")
-;;(load custom-file 'noerror) ;; TODO: do not do that here when running first time (might not reflect temporary changes)
-;; (when (file-exists-p custom-file) ;; also did not help initial theme-run issue
-;;   (load custom-file))
+(when (file-exists-p custom-file)
+  (load custom-file))
 ;;
 ;;
