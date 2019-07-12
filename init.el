@@ -128,6 +128,7 @@
   :init
   (add-to-list 'custom-theme-load-path "~/.emacs.d/lisp/themes")
   (add-to-list 'load-path "~/.emacs.d/lisp/themes")
+  (setq custom-safe-themes t)
   (setq heaven-and-hell-theme-type 'dark) ;; Omit to use light by default
   (setq heaven-and-hell-themes
         '((light . scicpp-light)
