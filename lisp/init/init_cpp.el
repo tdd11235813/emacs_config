@@ -115,5 +115,9 @@
   :config (custom-set-variables '(ppindent-increment 1))
   )
 
+(use-package centaur-tabs
+  :config
+  (centaur-tabs-mode t))
+
 (provide 'init_cpp)
 ;;; init_cpp.el ends here
