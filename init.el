@@ -9,15 +9,19 @@
 ;;(require 'benchmark-init-loaddefs)
 ;;(benchmark-init/activate)
 
-;; startup time measureing on terminal
+;; startup time measuring on terminal
 ;; $ command time -p emacs -l $HOME/.emacs.d/init.el -Q -e kill-emacs
+;; NOTE: Normally, you do not use -l for loading init files!!!
 
 ;; byte compile init.el script (not working)
 ;; emacs -Q --batch -l ~/.emacs.d/init.el -f batch-byte-compile ~/.emacs.d/init.el
+;; NOTE: Normally, you do not use -l for loading init files!!!
 
 ;; NOTE: describe-char+describe-face to get face details
 ;; NOTE: emacs ... -Q does not invoke after-init-hook
 ;; - https://emacs.stackexchange.com/questions/51438/why-after-init-hook-is-not-invoked-workaround-is-emacs-startup-hook
+
+;; NOTE: (setq load-prefer-newer t) ;; use when you want to load modified .el files
 
 (setq max-lisp-eval-depth 1000)
 ;; By default Emacs triggers garbage collection at ~0.8MB which makes
@@ -120,13 +124,10 @@
   :load-path "lisp/init"
   )
 
-(add-to-list 'custom-theme-load-path "~/.emacs.d/lisp/themes")
-(add-to-list 'load-path "~/.emacs.d/lisp/themes")
-;;(load-theme 'scicpp-dark t)
-
 (use-package heaven-and-hell
-  ;;:defer 0
   :init
+  (add-to-list 'custom-theme-load-path "~/.emacs.d/lisp/themes")
+  (add-to-list 'load-path "~/.emacs.d/lisp/themes")
   (setq heaven-and-hell-theme-type 'dark) ;; Omit to use light by default
   (setq heaven-and-hell-themes
         '((light . scicpp-light)
@@ -134,15 +135,11 @@
   :hook (after-init . heaven-and-hell-init-hook)
   :bind (("C-c M-k" . heaven-and-hell-load-default-theme)
          ("C-c M-l" . heaven-and-hell-toggle-theme))
-  :config
-  ;; workaround, see https://github.com/valignatev/heaven-and-hell/issues/11
-  (custom-set-variables `(custom-enabled-themes (quote (scicpp-dark scicpp-light))))
   )
 
 ;; -- custom file
 ;; for the custom variable definitions
 (setq custom-file "~/.emacs.d/custom.el")
-(when (file-exists-p custom-file)
-  (load custom-file))
+(load custom-file 'noerror) ;; noerror when file does not exist
 ;;
 ;;
