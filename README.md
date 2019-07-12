@@ -136,8 +136,9 @@ git clone --recursive https://github.com/tdd11235813/emacs_config.git
 
 ### Common Mistakes
 
-Do **not** use command-line argument to emacs init files. Do **not** use things like `-l init.el` for regular emacs start, it will mess up the init process.
+- Do **not** use command-line argument to emacs init files. Do **not** use things like `-l init.el` for regular emacs start, it will mess up the init process.
 See [emacs startup](https://www.gnu.org/software/emacs/manual/html_node/elisp/Startup-Summary.html) and [after-init-hook issue 1](https://emacs.stackexchange.com/questions/51438/why-after-init-hook-is-not-invoked-workaround-is-emacs-startup-hook) and [after-init-hook issue 2](https://github.com/valignatev/heaven-and-hell/issues/11).
+- Use `setq` in the custom theme. `custom-set-variables` does not seem to work there.
 
 ### Startup Time Measurement
 
