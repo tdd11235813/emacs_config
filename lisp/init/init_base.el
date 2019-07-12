@@ -552,12 +552,13 @@ Attendees: %^{Attendees}
 ;; check https://github.com/AndreaCrotti/yasnippet-snippets.git
 ;; https://joaotavora.github.io/yasnippet/snippet-development.html
 (use-package yasnippet
-  :defer t
-  :config
-  (yas-global-mode 1)
-  (add-to-list 'yas-snippet-dirs "~/.emacs.d/snippets")
-  (use-package ivy-yasnippet)
-  )
+  :defer 1
+  :delight yas-minor-mode
+  :config (yas-global-mode))
+
+(use-package yasnippet-snippets
+  :after yasnippet
+  :config (yasnippet-snippets-initialize))
 
 (use-package dumb-diff
   :bind (("C-c 1" . dumb-diff-set-region-as-buffer1)
