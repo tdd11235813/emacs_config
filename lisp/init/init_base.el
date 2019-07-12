@@ -3,9 +3,14 @@
 ;;;  Packs org based settings for init
 ;;; Code:
 
+;; paths
+(setq my-saves-dir (concat (expand-file-name user-emacs-directory) "saves/"))
+(setq user-dir (concat (expand-file-name user-emacs-directory) "user/"))
+(setq user-papers-dir (concat user-dir "papers/"))
+(setq user-archive-dir (concat user-dir "archive/"))
 
-(setq backup-directory-alist `(("." . "~/.emacs.d/saves"))
-      backup-by-copying t
+(setq backup-directory-alist `(("." . ,my-saves-dir)))
+(setq backup-by-copying t
       delete-old-versions t
       kept-new-versions 6
       kept-old-versions 2
@@ -179,15 +184,15 @@
     :ensure f
     :config
     (custom-set-variables
-     '(org-directory "~/.emacs.d/user")
+     '(org-directory user-dir)
      '(org-agenda-files (list org-directory)))
-    (setq org-default-notes-file "~/.emacs.d/user/todo.org")
+    (setq org-default-notes-file (concat user-dir "todo.org"))
     (setq org-agenda-show-log t
           ;; org-agenda-todo-ignore-scheduled t
           ;; org-agenda-todo-ignore-deadlines t
           )
   )
-  (setq org-archive-location "~/.emacs.d/user/archive/%s_archive::")
+  (setq org-archive-location (concat user-archive-dir "%s_archive::"))
   (defvar org-archive-file-header-format "#+FILETAGS: ARCHIVE\nArchived entries from file %s\n")
 
   (setq org-log-done t)
@@ -241,10 +246,9 @@
   ;; Open PDF file and use org-ref-pdf-to-bibtex
   ;; TODO: org-capture for TODO linking
   ;; TODO: check how to automatically download pdfs from urls
-  (setq papers-dir (expand-file-name "~/.emacs.d/user/papers")
-        papers-pdfs (concat papers-dir "pdf/")
-        papers-notes (concat papers-dir "index.org")
-        papers-refs (concat papers-dir "index.bib"))
+  (setq papers-pdfs (concat user-papers-dir "pdf/")
+        papers-notes (concat user-papers-dir "index.org")
+        papers-refs (concat user-papers-dir "index.bib"))
 
   (use-package interleave)
 
@@ -503,7 +507,7 @@ Attendees: %^{Attendees}
 ;;  (setq tramp-verbose 10)
   (setq tramp-completion-reread-directory-timeout nil)
   (with-eval-after-load 'tramp-cache
-    (setq tramp-persistency-file-name "~/.emacs.d/tramp"))
+    (setq tramp-persistency-file-name (concat (expand-file-name user-emacs-directory) "tramp")))
   ;; don't generate backups for remote files opened as root (security hazzard)
   ;;(setq disable-tramp-backups nil) ;; allow all tramp files to be backuped
   ;;(setq disable-tramp-backups '("su" "sudo")) ;; only 'su' and 'sudo'
@@ -648,7 +652,7 @@ specified.  Select the current line if the LINES prefix is zero."
   (save-place-mode)
   (setq save-place-forget-unreadable-files t
         save-place-skip-check-regexp "\\`/\\(?:cdrom\\|floppy\\|mnt\\|/[0-9]\\|\\(?:[^@/:]*@\\)?[^@/:]*[^@/:.]:\\)"
-        save-place-file "~/.emacs.d/places")
+        save-place-file (concat (expand-file-name user-emacs-directory) "places"))
   (save-place-mode t)
   )
 

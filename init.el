@@ -108,26 +108,23 @@
 (quelpa-use-package-activate-advice)
 
 ;; -- own packages --
-
-(use-package init_base
-  :ensure f
-  :load-path "lisp/init"
-  )
-
-(use-package init_cpp
-  :ensure f
-  :load-path "lisp/init"
-  )
-
-(use-package init_scivis
-  :ensure f
-  :load-path "lisp/init"
-  )
+;; from https://github.com/valignatev/dotfiles/blob/0002d85a66a9aace20be000821018da9c371331d/.emacs.d/init.el#L38
+;;; Load all files from my ~/.emacs.d/lisp/init directory
+;;; It doesn't support nested dirs
+(setq my-init-dir (concat (expand-file-name user-emacs-directory) "lisp/init"))
+(dolist
+    (file
+     (directory-files
+      my-init-dir
+      t
+      "^.[^#].+el$"))
+  (load-file file))
 
 (use-package heaven-and-hell
   :init
-  (add-to-list 'custom-theme-load-path "~/.emacs.d/lisp/themes")
-  (add-to-list 'load-path "~/.emacs.d/lisp/themes")
+  (setq my-themes-dir (concat (expand-file-name user-emacs-directory) "lisp/themes"))
+  (add-to-list 'custom-theme-load-path my-themes-dir)
+  (add-to-list 'load-path my-themes-dir)
   (setq custom-safe-themes t)
   (setq heaven-and-hell-theme-type 'dark) ;; Omit to use light by default
   (setq heaven-and-hell-themes
