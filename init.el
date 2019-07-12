@@ -1,9 +1,7 @@
 ;;; INIT -- STYLE FILE
 ;;; Commentary:
 ;;;  Using no variable. Combined with heaven-and-hell.
-;;;  Only the first theme colors work, but only after you toggle.
-;;;  When you toggle back, then the initial color setup of spacemacs-theme is loaded.
-;;;  When you run load-theme first, then toggling is not needed, but the second theme is still not working.
+;;;  Using setq instead of customize-set-variables works, no issues here.
 ;;; Code:
 
 (package-initialize)

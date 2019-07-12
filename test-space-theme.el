@@ -3,8 +3,8 @@
 (deftheme test-space
   "Modified spacemacs theme.")
 
-(custom-set-variables '(spacemacs-theme-comment-bg . nil))
-(custom-set-variables '(spacemacs-theme-custom-colors
+(setq spacemacs-theme-comment-bg nil)
+(setq spacemacs-theme-custom-colors
       '(
         (str . "#ff0000")
         (act1 . "#ff0000")
@@ -24,7 +24,7 @@
         (base . "#ff0000")
         (base-dim . "#ff0000")
         (comment . "#ff0000")
-        )))
+        ))
 
 (create-spacemacs-theme 'dark 'test-space)
 
