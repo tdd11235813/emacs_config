@@ -101,8 +101,8 @@
 (setq use-package-verbose nil)
 ;;(setq use-package-verbose t)
 
-(setq use-package-always-ensure nil)
-;;(setq use-package-always-ensure t)
+;;(setq use-package-always-ensure nil)
+(setq use-package-always-ensure t)
 ;; ... as quelpa is used, put advice to automatically disable ELPA lookup
 ;; (or add :ensure f for the package that has to be loaded from quelpa)
 (quelpa-use-package-activate-advice)

@@ -707,8 +707,8 @@ comma-separated columns."
    ("C-x <right>" . next-buffer-repeat)
    ("<f6>" . bs-show)
    ("<f5>" . revert-buffer-no-confirm)
-   ("<C-next>" . bs-cycle-previous)
-   ("<C-prior>" . bs-cycle-next)
+   ("<C-prior>" . bs-cycle-previous)
+   ("<C-next>" . bs-cycle-next)
    )
   :config
   (add-to-list 'bs-configurations
