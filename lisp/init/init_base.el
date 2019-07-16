@@ -708,8 +708,8 @@ comma-separated columns."
    ("C-x <right>" . next-buffer-repeat)
    ("<f6>" . bs-show)
    ("<f5>" . revert-buffer-no-confirm)
-   ("<C-prior>" . bs-cycle-previous)
-   ("<C-next>" . bs-cycle-next)
+;;    ("<C-prior>" . bs-cycle-previous)
+;;    ("<C-next>" . bs-cycle-next)
    )
   :config
   (add-to-list 'bs-configurations
@@ -732,6 +732,15 @@ comma-separated columns."
                                 '(c-mode c++-mode cuda-mode cmake-mode glsl-mode))))) nil))
   )
 
+
+(use-package centaur-tabs
+  :bind
+  (("<C-prior>" . centaur-tabs-backward)
+   ("<C-next>" . centaur-tabs-forward)
+   )
+  :config
+  (centaur-tabs-mode t)
+)
 
 (use-package drag-stuff
   :delight drag-stuff-mode

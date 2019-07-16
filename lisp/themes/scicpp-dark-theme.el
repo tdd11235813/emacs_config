@@ -26,8 +26,17 @@
 (create-spacemacs-theme 'dark 'scicpp-dark)
 (scicpp-init-post)
 
-(custom-set-faces '(column-enforce-face ((t (:background "#161616")))))
-
+(custom-set-faces
+ '(column-enforce-face ((t (:background "#161616"))))
+ '(centaur-tabs-default ((t (:background "#333333" :foreground "#aaaaaa"))))
+ '(centaur-tabs-selected ((t (:background "black" :foreground "#cccccc" :box nil))))
+ '(centaur-tabs-unselected ((t (:background "#333333" :foreground "#888888" :box nil))))
+ '(centaur-tabs-selected-modified ((t (:background "#550000" :foreground "#cccccc" :box nil))))
+ '(centaur-tabs-unselected-modified ((t (:background "#663333" :foreground "#cccccc" :box nil))))
+ '(centaur-tabs-active-bar-face ((t (:background "#C9D9FF" :box nil))))
+ '(centaur-tabs-modified-marker-selected ((t (:inherit 'centaur-tabs-selected-modified :foreground "#c9d9ff" :box nil))))
+ '(centaur-tabs-modified-marker-unselected ((t (:inherit 'centaur-tabs-unselected-modified :foreground "#c9d9ff" :box nil))))
+ )
 
 (provide-theme 'scicpp-dark)
 ;;; scicpp-dark ends here
