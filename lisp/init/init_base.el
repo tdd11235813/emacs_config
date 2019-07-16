@@ -556,9 +556,10 @@ Attendees: %^{Attendees}
 ;; check https://github.com/AndreaCrotti/yasnippet-snippets.git
 ;; https://joaotavora.github.io/yasnippet/snippet-development.html
 (use-package yasnippet
-  :defer 1
+  :defer t
   :delight yas-minor-mode
-  :config (yas-global-mode))
+  ;;:config (yas-global-mode)
+  )
 
 (use-package yasnippet-snippets
   :after yasnippet
