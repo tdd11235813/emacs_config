@@ -153,15 +153,25 @@
     (add-hook 'bibtex-mode-hook (lambda () (set-fill-column 120))))
   )
 
-;; after download/update just run make clean && make in lisp/ESS/ to byte-compile it
 (use-package ess-site
   :ensure ess
-  ;; :load-path "lisp/ESS/lisp"
-  ;; :ensure f
-  ;; :defer t
+  :defer t
   :config
   (setq ess-history-file nil)
   (ess-toggle-underscore nil)
+  )
+
+(use-package poly-R
+  :defer t)
+(use-package poly-noweb
+  :defer t)
+(use-package poly-markdown
+  :defer t)
+(use-package markdown-mode
+  :init
+  (setq markdown-command "multimarkdown")
+  :config
+  (setq markdown-command "pandoc --smart -f markdown -t html")
   )
 
 ;; polymode
@@ -180,18 +190,8 @@
    ("\\.md\\'" . markdown-mode)
    ("\\.markdown\\'" . markdown-mode)
    )
-  :init
-  (setq markdown-command "multimarkdown")
-  (use-package markdown-mode
-    :config
-    (setq markdown-command "pandoc --smart -f markdown -t html")
-    )
-  ;;(autoload 'r-mode "ess-site.el" "Major mode for editing R source." t)
-  (use-package poly-R)
-  (use-package poly-noweb )
-  (use-package poly-markdown)
+  :after poly-R
   :config
-
   (setq markdown-toggle-math t)
 
   ;; from https://gist.github.com/benmarwick/ee0f400b14af87a57e4a
@@ -223,8 +223,10 @@
   (define-key polymode-minor-mode-map "\M-ns" 'ess-rmarkdown)
   )
 
-(use-package academic-phrases)
-(use-package powerthesaurus)
+(use-package academic-phrases
+  :defer 1)
+(use-package powerthesaurus
+  :defer 1)
 
 ;;; I am not happy with zotero+zotxt/org-ref, feels clumsy, furthermore zotero does not take given url automatically,
 ;;; zotxt inserts zotero based links, which are not converted to an URL when exporting to e.g. HTML.

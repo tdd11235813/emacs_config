@@ -488,6 +488,7 @@ Attendees: %^{Attendees}
 
 
 (use-package tramp
+  :defer t
   :config
   (setq tramp-default-method "ssh")
   (setq tramp-backup-directory-alist backup-directory-alist)
