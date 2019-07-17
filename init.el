@@ -92,7 +92,6 @@
 ;; Ask package.el to not add (package-initialize) to .emacs.
 (setq package--init-file-ensured t)
 
-;; (eval-when-compile
 (require 'use-package)
 (require 'quelpa-use-package)
 

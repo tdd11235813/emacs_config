@@ -44,6 +44,11 @@
 
   (use-package column-enforce-mode
     :delight column-enforce-mode
+    :init
+    ;; do it here, cuz when setting via custom-set-faces in light/dark theme, bg color will not reset when toggling back
+    (defface column-enforce-face '((((background light)) (:foreground unspecified :background "#dfdfdf"))
+                                   (t                    (:foreground unspecified :background "#161616")))
+      "column-enforce-face overwrite")
     :config
     (setq column-enforce-comments nil)
     )
@@ -100,6 +105,7 @@
     :ensure spaceline
     :defer 1
     :config
+    ;;(spaceline-emacs-theme)
     (spaceline-spacemacs-theme)
     (spaceline-toggle-version-control-on)
     (setq-default

@@ -27,7 +27,6 @@
 (scicpp-init-post)
 
 (custom-set-faces
- '(column-enforce-face ((t (:background "#161616"))))
  '(centaur-tabs-default ((t (:background "#333333" :foreground "#aaaaaa"))))
  '(centaur-tabs-selected ((t (:background "black" :foreground "#cccccc" :box nil))))
  '(centaur-tabs-unselected ((t (:background "#333333" :foreground "#888888" :box nil))))
