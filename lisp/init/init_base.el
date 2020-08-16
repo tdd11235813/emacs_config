@@ -305,6 +305,7 @@
 
 
 (use-package tramp
+  :defer t
   :config
   (setq tramp-default-method "ssh")
   (setq tramp-backup-directory-alist backup-directory-alist)
@@ -373,9 +374,10 @@
 ;; check https://github.com/AndreaCrotti/yasnippet-snippets.git
 ;; https://joaotavora.github.io/yasnippet/snippet-development.html
 (use-package yasnippet
-  :defer 1
+  :defer t
   :delight yas-minor-mode
-  :config (yas-global-mode))
+  ;;:config (yas-global-mode)
+  )
 
 (use-package yasnippet-snippets
   :after yasnippet
@@ -524,8 +526,8 @@ comma-separated columns."
    ("C-x <right>" . next-buffer-repeat)
    ("<f6>" . bs-show)
    ("<f5>" . revert-buffer-no-confirm)
-;   ("<C-next>" . bs-cycle-previous)
-;   ("<C-prior>" . bs-cycle-next)
+;;    ("<C-prior>" . bs-cycle-previous)
+;;    ("<C-next>" . bs-cycle-next)
    )
   :config
   (add-to-list 'bs-configurations
@@ -557,6 +559,15 @@ comma-separated columns."
   ("C-<next>" . centaur-tabs-forward)
   )
 
+
+(use-package centaur-tabs
+  :bind
+  (("<C-prior>" . centaur-tabs-backward)
+   ("<C-next>" . centaur-tabs-forward)
+   )
+  :config
+  (centaur-tabs-mode t)
+)
 
 (use-package drag-stuff
   :delight drag-stuff-mode

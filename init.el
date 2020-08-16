@@ -92,7 +92,6 @@
 ;; Ask package.el to not add (package-initialize) to .emacs.
 (setq package--init-file-ensured t)
 
-;; (eval-when-compile
 (require 'use-package)
 (require 'quelpa-use-package)
 
@@ -101,8 +100,8 @@
 (setq use-package-verbose nil)
 ;;(setq use-package-verbose t)
 
-(setq use-package-always-ensure nil)
-;;(setq use-package-always-ensure t)
+;;(setq use-package-always-ensure nil)
+(setq use-package-always-ensure t)
 ;; ... as quelpa is used, put advice to automatically disable ELPA lookup
 ;; (or add :ensure f for the package that has to be loaded from quelpa)
 (quelpa-use-package-activate-advice)
