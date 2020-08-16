@@ -695,6 +695,15 @@ comma-separated columns."
   (("C-d" . duplicate-thing))
   )
 
+(use-package centaur-tabs
+  :config
+  (centaur-tabs-mode t)
+  (setq centaur-tabs-style "bar")
+  :bind
+  ("C-<prior>" . centaur-tabs-backward)
+  ("C-<next>" . centaur-tabs-forward)
+  )
+
 ;; tried ibuffer, but buffer-list of bs is just more streamlined.
 ;; ibuffer also forced tramp to reload even if next buffer is not in tramp mode.
 (use-package bs
@@ -707,8 +716,8 @@ comma-separated columns."
    ("C-x <right>" . next-buffer-repeat)
    ("<f6>" . bs-show)
    ("<f5>" . revert-buffer-no-confirm)
-   ("<C-next>" . bs-cycle-previous)
-   ("<C-prior>" . bs-cycle-next)
+;   ("<C-next>" . bs-cycle-previous)
+;   ("<C-prior>" . bs-cycle-next)
    )
   :config
   (add-to-list 'bs-configurations
