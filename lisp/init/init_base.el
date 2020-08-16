@@ -804,6 +804,12 @@ comma-separated columns."
     )
   )
 
+(use-package windmove
+  :bind
+  (("M-j" . windmove-left)
+   ("M-i" . windmove-up)
+   ("M-k" . windmove-down)
+   ("M-l" . windmove-right)))
 
 (use-package general
   :defer 0
