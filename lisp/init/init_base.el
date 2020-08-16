@@ -58,7 +58,7 @@
 (use-package smex)
 
 (use-package ivy
-  :defer 0.1
+  :defer t
   ;; :bind
   ;; (
   ;;  ("C-c C-r" . ivy-resume)
