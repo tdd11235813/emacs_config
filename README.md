@@ -22,6 +22,10 @@
 | Command               | Description                         |
 | :---                  | :---                                |
 | `C-x <Up/Down>`       | cycle windows                       |
+| `M-j`                 | Moves cursor to left window         |
+| `M-i`                 | ... upper window                    |
+| `M-k`                 | ... lower window                    |
+| `M-l`                 | ... right window                    |
 | `C-x <Left/Right>`    | cycle buffers                       |
 | `C-<PageDown/PageUp>` | cycle source files only             |
 | `F6`                  | bs-show (opened sources files list) |
@@ -102,6 +106,15 @@
 | `M-m`   | start of code line                                        |
 | `M-g k` | align code columns along regexp (like aligning along '=') |
 | `C-;`   | comment/uncomment                                         |
+
+### Python
+
+| Command   | Description                                             |
+| :---      | :---                                                    |
+| `C-c C-c` | eval script or region                                   |
+| `C-RET`   | eval current line plus the following nested lines).     |
+| `C-c C-z` | switches between your script and the interactive shell. |
+| `C-c C-d` | displays doc for the thing under cursor.                |
 
 ### Misc
 

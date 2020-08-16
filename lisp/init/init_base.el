@@ -552,7 +552,6 @@ comma-separated columns."
   :defer 0.05
   :config
   (centaur-tabs-mode t)
-  (setq centaur-tabs-style "bar")
   :bind
   ("C-<prior>" . centaur-tabs-backward)
   ("C-<next>" . centaur-tabs-forward)
