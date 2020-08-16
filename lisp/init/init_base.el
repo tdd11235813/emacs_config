@@ -255,10 +255,10 @@
   (use-package nov
     :mode ("\\.epub\\'" . nov-mode))
 
-  (use-package pdf-tools
-    :magic ("%PDF" . pdf-view-mode)
-    :config
-    (pdf-tools-install))
+  ;; (use-package pdf-tools
+  ;;   :magic ("%PDF" . pdf-view-mode)
+  ;;   :config
+  ;;   (pdf-tools-install))
 
   (use-package org-ref
     :init
