@@ -510,15 +510,6 @@ comma-separated columns."
   (("C-d" . duplicate-thing))
   )
 
-(use-package centaur-tabs
-  :config
-  (centaur-tabs-mode t)
-  (setq centaur-tabs-style "bar")
-  :bind
-  ("C-<prior>" . centaur-tabs-backward)
-  ("C-<next>" . centaur-tabs-forward)
-  )
-
 ;; tried ibuffer, but buffer-list of bs is just more streamlined.
 ;; ibuffer also forced tramp to reload even if next buffer is not in tramp mode.
 (use-package bs
@@ -553,6 +544,16 @@ comma-separated columns."
                    (with-current-buffer buf
                      (not (memq major-mode
                                 '(c-mode c++-mode cuda-mode cmake-mode glsl-mode))))) nil))
+  )
+
+(use-package centaur-tabs
+  :defer 0.05
+  :config
+  (centaur-tabs-mode t)
+  (setq centaur-tabs-style "bar")
+  :bind
+  ("C-<prior>" . centaur-tabs-backward)
+  ("C-<next>" . centaur-tabs-forward)
   )
 
 
