@@ -3,6 +3,19 @@
 ;;;  Packs org based settings for init
 ;;; Code:
 
+;; Font, pacman ttf-hack
+(add-to-list 'default-frame-alist
+             '(font . "Hack 12"))
+(set-face-attribute 'mode-line nil :font "Hack 10")
+
+;; Use bash.. zsh may cause slowdown
+(setq shell-file-name "/bin/bash")
+
+;; Show filename in title
+(setq frame-title-format
+      (list (format "%s %%S: %%j " (system-name))
+            '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
+
 ;; paths
 (setq my-saves-dir (concat (expand-file-name user-emacs-directory) "saves/"))
 (setq user-dir (concat (expand-file-name user-emacs-directory) "user/"))
