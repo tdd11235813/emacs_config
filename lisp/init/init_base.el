@@ -58,7 +58,7 @@
 (use-package smex)
 
 (use-package ivy
-  :defer t
+  :defer 2
   ;; :bind
   ;; (
   ;;  ("C-c C-r" . ivy-resume)
@@ -79,6 +79,7 @@
         )
   ;;  (use-package ivy-hydra) ;; further key-bindings ?
   (use-package avy ;; move cursor to visible by searching
+    :defer t
     :bind
     (
      ("C-v" . avy-goto-line)
@@ -87,6 +88,7 @@
   (ivy-mode t)
 
   (use-package ivy-bibtex
+    :defer t
     :config
     (setq bibtex-completion-bibliography papers-refs
           bibtex-completion-library-path papers-pdfs
