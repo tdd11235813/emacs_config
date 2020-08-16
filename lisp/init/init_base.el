@@ -297,6 +297,34 @@
   (setq diredp-hide-details-initially-flag nil)
   )
 
+;;  Open a file/directory: Enter
+;;  Switch panes: TAB
+;;  Create a directory: +
+;;  Delete a file/directory: D
+;;  Move file/directory (between panes): R
+;;  Move one directory up: J
+;;  Sync other pane to current pane: M-o
+;; https://github.com/sunrise-commander/sunrise-commander
+(use-package sunrise
+  :init
+  (use-package diminish)
+  :quelpa (sunrise :fetcher github :repo "sunrise-commander/sunrise-commander")
+  :config
+  (use-package sunrise-x-buttons
+    :quelpa (sunrise :fetcher github :repo "sunrise-commander/sunrise-commander")
+    :ensure f
+    )
+  (use-package sunrise-x-modeline
+    :quelpa (sunrise :fetcher github :repo "sunrise-commander/sunrise-commander")
+    :ensure f
+    )
+  (use-package sunrise-x-tree
+    :quelpa (sunrise :fetcher github :repo "sunrise-commander/sunrise-commander")
+    :ensure f
+    )
+  :bind ("<f8>" . sunrise-cd)
+  )
+
 (use-package bookmark                   ; Bookmarks for Emacs buffers
   :bind (("C-c f b" . list-bookmarks))
   ;; Save bookmarks immediately after a bookmark was added
