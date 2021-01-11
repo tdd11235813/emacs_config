@@ -255,10 +255,10 @@
   (use-package nov
     :mode ("\\.epub\\'" . nov-mode))
 
-  (use-package pdf-tools
-    :magic ("%PDF" . pdf-view-mode)
-    :config
-    (pdf-tools-install))
+  ;; (use-package pdf-tools
+  ;;   :magic ("%PDF" . pdf-view-mode)
+  ;;   :config
+  ;;   (pdf-tools-install))
 
   (use-package org-ref
     :init
@@ -788,7 +788,14 @@ comma-separated columns."
   :bind (:map prog-mode-map
          ("C-c c" . compile)
          ("C-c x" . my-compile)
-         ("C-c y" . kill-compilation))
+         ("C-c y" . kill-compilation)
+         ("<f7>" . recompile)
+         :map markdown-mode-map
+         ("C-c c" . compile)
+         ("C-c x" . my-compile)
+         ("C-c y" . kill-compilation)
+         ("<f7>" . recompile)
+         )
   :config
 
   (defun my-compile ()

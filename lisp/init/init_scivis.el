@@ -187,7 +187,7 @@
    ("\\.Snw\\'" . poly-noweb+r-mode)
    ("\\.Rnw\\'" . poly-noweb+r-mode)
    ("README\\.md\\'" . gfm-mode)
-   ("\\.md\\'" . markdown-mode)
+   ("\\.md\\'" . poly-markdown+latex-mode)
    ("\\.markdown\\'" . markdown-mode)
    )
   :after poly-R
@@ -221,6 +221,29 @@
           (ess-show-buffer (buffer-name sbuffer) nil)))))
 
   (define-key polymode-minor-mode-map "\M-ns" 'ess-rmarkdown)
+
+  (define-hostmode poly-markdown-hostmode
+    :mode 'markdown-mode)
+
+  (define-innermode poly-markdown-yaml-metadata-innermode
+  :mode 'yaml-mode
+  :head-matcher "\`[ \t\n]*---\n"
+  :tail-matcher "^---\n"
+  :head-mode 'host
+  :tail-mode 'host)
+
+  (define-auto-innermode poly-markdown-fenced-code-innermode
+  :head-matcher (cons "^[ \t]*\\(```{?[[:alpha:]].*\n\\)" 1)
+  :tail-matcher (cons "^[ \t]*\\(```\\)[ \t]*$" 1)
+  :mode-matcher (cons "```[ \t]*{?\\(?:lang *= *\\)?\\([^ \t\n;=,}]+\\)" 1)
+  :head-mode 'host
+  :tail-mode 'host)
+
+  (define-polymode poly-markdown-mode
+  :hostmode 'pm-host/markdown
+  :innermodes '(poly-markdown-yaml-metadata-innermode
+                poly-markdown-fenced-code-innermode))
+
   )
 
 (use-package academic-phrases
