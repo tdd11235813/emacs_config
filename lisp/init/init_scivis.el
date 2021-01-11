@@ -251,6 +251,38 @@
 (use-package powerthesaurus
   :defer 1)
 
+(defun overwrite-org-rst-fun ()
+    (defun org-rst-plain-text (text info)
+      text)
+  )
+
+;; https://docutils.sourceforge.io/docs/user/emacs.html
+(use-package rst
+  :mode
+  ("\\.rst\\'" . rst-mode)
+  :config
+  (use-package ox-rst
+    :hook
+    (rst-mode . (lambda ()
+                  ;; (message "overwrite !!!")
+                  (defun org-rst-plain-text (text info)
+                    text)
+                  (defun org-rst-subscript (_subscript contents _info)
+                    "Transcode a SUBSCRIPT object from Org to reStructuredText.
+CONTENTS is the contents of the object.  INFO is a plist holding
+contextual information."
+                    contents
+                    )
+                  (defun org-rst--wrap-latex-math-block (data info)
+                    data)
+                  (defun org-rst--text-markup (text markup info)
+                    text)
+                  (defun org-rst-latex-fragment (latex-fragment _contents _info)
+                    latex-fragment)
+                  ))
+    )
+  )
+
 ;;; I am not happy with zotero+zotxt/org-ref, feels clumsy, furthermore zotero does not take given url automatically,
 ;;; zotxt inserts zotero based links, which are not converted to an URL when exporting to e.g. HTML.
 ;; http://nickjudd.com/blog/2016/02/13/emacs-notes/

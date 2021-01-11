@@ -35,6 +35,19 @@
  '(centaur-tabs-active-bar-face ((t (:background "#C9D9FF" :box nil))))
  '(centaur-tabs-modified-marker-selected ((t (:inherit 'centaur-tabs-selected-modified :foreground "#c9d9ff" :box nil))))
  '(centaur-tabs-modified-marker-unselected ((t (:inherit 'centaur-tabs-unselected-modified :foreground "#c9d9ff" :box nil))))
+ ;; sunrise commander
+ '(sunrise-marked-file-face ((t :foreground "yellow")))
+ '(sunrise-highlight-path-face ((t :background nil :foreground "#ace6ac" :bold t :height 120)))
+ '(sunrise-active-path-face ((((type tty) (class color) (min-colors 8))
+                              :background nil :foreground "yellow" :bold t)
+                             (((type tty) (class mono)) :inverse-video t)
+                             (t :background nil :foreground "yellow" :bold t :height 120)))
+
+ '(sunrise-passive-path-face ((((type tty) (class color) (min-colors 8) (background dark))
+                               :background nil :foreground "cyan")
+                              (((type tty) (class color) (min-colors 8) (background light))
+                               :background nil :foreground "cyan")
+                              (t :background nil :foreground "lightgray" :bold t :height 120)))
  )
 
 (provide-theme 'scicpp-dark)
